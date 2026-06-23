@@ -235,11 +235,8 @@ function PracticeContent() {
                 }
             } else {
                 const constraints: QueryConstraint[] = [];
-                // Admin/Moderator sees all, others (including guests) see verified
-                if (!userInfo || (userInfo.role !== 'admin' && userInfo.role !== 'moderator')) {
-                    constraints.push(where('verified', '==', true));
-                }
-
+                // All users now see all questions regardless of verification status
+                
                 if (questionTypeFilter !== 'all') constraints.push(where('question_type', '==', questionTypeFilter));
                 if (subjectFilter !== 'all') constraints.push(where('subject', '==', subjectFilter));
                 if (topicFilter !== 'all') constraints.push(where('topic', '==', topicFilter));
@@ -258,8 +255,6 @@ function PracticeContent() {
                 // 2. Query Configuration
                 if (sortOrder === 'year-desc') constraints.push(orderBy('year', 'desc'));
                 else if (sortOrder === 'year-asc') constraints.push(orderBy('year', 'asc'));
-                else if (sortOrder === 'qIndex-desc') constraints.push(orderBy('qIndex', 'desc'));
-                else constraints.push(orderBy('qIndex', 'asc'));
 
                 // Guest limitation: if they are guest, we only let them fetch the first page
                 if (!user && pageToFetch > 1) {
@@ -688,15 +683,17 @@ function PracticeContent() {
                                         </button>
                                     </div>
                                 ) : (
-                                    questions.map((q) => {
+                                    questions.map((q, index) => {
                                         let status: 'correct' | 'incorrect' | 'unattempted' = 'unattempted';
                                         if (solvedQuestionIds.has(q.id)) status = 'correct';
                                         else if (incorrectQuestionIds.has(q.id)) status = 'incorrect';
                                         
+                                        const displayQuestion = { ...q, qIndex: q.qIndex || (index + 1 + (currentPage - 1) * CLIENT_PAGE_SIZE) };
+
                                         return (
                                             <QuestionCard
                                                 key={q.id}
-                                                question={q}
+                                                question={displayQuestion}
                                                 submissionStatus={status}
                                             />
                                         );

@@ -272,7 +272,7 @@ const RankModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-200" onClick={onClose}>
             <div className="bg-white dark:bg-zinc-950 rounded-3xl shadow-2xl p-6 max-w-md w-full relative transform transition-all border border-zinc-200/50 dark:border-zinc-800/50 flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
                 <button onClick={onClose} className="absolute top-5 right-5 p-2 rounded-full text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors z-10"><X className="w-5 h-5" /></button>
-                
+
                 <div className="text-center mb-6">
                     <div className="mx-auto w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-2xl flex items-center justify-center mb-3">
                         <Trophy className="w-6 h-6 text-yellow-500" />
@@ -320,10 +320,10 @@ export default function ProfileClient({ username }: { username: string }) {
             const html2canvas = (await import('html2canvas')).default;
             const node = document.getElementById('shareable-profile-card');
             if (!node) return;
-            
+
             // Adding a small delay to ensure rendering is complete
             await new Promise(resolve => setTimeout(resolve, 200));
-            
+
             const canvas = await html2canvas(node, {
                 scale: 2,
                 useCORS: true,
@@ -331,11 +331,11 @@ export default function ProfileClient({ username }: { username: string }) {
                 logging: false,
                 width: 1080
             });
-            
+
             const dataUrl = canvas.toDataURL('image/png');
 
             const link = document.createElement('a');
-            link.download = `${profileUser?.username || 'user'}-gatecode-stats.png`;
+            link.download = `${profileUser?.username || 'user'}-CDACode-stats.png`;
             link.href = dataUrl;
             link.click();
         } catch (err) {
@@ -475,7 +475,7 @@ export default function ProfileClient({ username }: { username: string }) {
         const pRating = profileUser.ratings?.[selectedBranch] || 0;
         const cElo = profileUser.sectionRatings?.[selectedBranch] || 1500;
         const hElo = profileUser.highestSectionRatings?.[selectedBranch] || 1500;
-        
+
         const stats = profileUser.sectionStats?.[selectedBranch] || { attempted: 0, correct: 0, accuracy: 0, subjects: {} };
         const streak = profileUser.sectionStreakData?.[selectedBranch] || { currentStreak: 0, lastSubmissionDate: '' };
         const calendar = profileUser.sectionActivityCalendar?.[selectedBranch] || {};
@@ -575,10 +575,10 @@ export default function ProfileClient({ username }: { username: string }) {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {/* Centered button */}
                             <div className="flex justify-center w-full mt-4 border-t border-zinc-200 dark:border-zinc-800 pt-4">
-                                <button 
+                                <button
                                     onClick={() => setIsRankInfoOpen(true)}
                                     className="flex items-center justify-center gap-2 text-sm font-semibold text-blue-500 bg-blue-50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 px-6 py-2.5 rounded-xl transition-all duration-200 w-full md:w-auto hover:shadow-md"
                                 >
@@ -589,7 +589,7 @@ export default function ProfileClient({ username }: { username: string }) {
 
                             {isOwnProfile && (
                                 <div className="flex justify-center w-full mt-3">
-                                    <button 
+                                    <button
                                         onClick={handleShareProfile}
                                         disabled={isSharing}
                                         className="flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-6 py-2.5 rounded-xl transition-all duration-200 w-full md:w-auto shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
@@ -727,17 +727,17 @@ export default function ProfileClient({ username }: { username: string }) {
             </div>
 
             {/* Hidden Shareable Profile Card */}
-            <div 
-                id="shareable-profile-card" 
-                style={{ 
-                    display: 'flex', 
-                    position: 'absolute', 
-                    top: '-9999px', 
-                    left: '-9999px', 
-                    width: '1080px', 
-                    minHeight: '1080px', 
-                    background: 'linear-gradient(135deg, #18181b 0%, #09090b 100%)', 
-                    color: 'white', 
+            <div
+                id="shareable-profile-card"
+                style={{
+                    display: 'flex',
+                    position: 'absolute',
+                    top: '-9999px',
+                    left: '-9999px',
+                    width: '1080px',
+                    minHeight: '1080px',
+                    background: 'linear-gradient(135deg, #18181b 0%, #09090b 100%)',
+                    color: 'white',
                     fontFamily: 'Inter, sans-serif',
                     padding: '80px',
                     flexDirection: 'column',
@@ -757,19 +757,19 @@ export default function ProfileClient({ username }: { username: string }) {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src="/logo.png" alt="Logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
-                            <h2 style={{ fontSize: '56px', fontWeight: 900, margin: 0, letterSpacing: '-1px', whiteSpace: 'nowrap', lineHeight: 1 }}>GATECode</h2>
+                            <h2 style={{ fontSize: '56px', fontWeight: 900, margin: 0, letterSpacing: '-1px', whiteSpace: 'nowrap', lineHeight: 1 }}>CDACode</h2>
                         </div>
-                        <p style={{ fontSize: '26px', color: '#71717a', margin: '8px 0 0 0' }}>gatecode.co.in</p>
+                        <p style={{ fontSize: '26px', color: '#71717a', margin: '8px 0 0 0' }}>CDACode.co.in</p>
                     </div>
 
                     {/* User Details */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img 
-                            src={profileUser.avatar || '/user.png'} 
-                            alt="Avatar" 
-                            style={{ width: '150px', height: '150px', borderRadius: '50%', border: '6px solid #27272a', objectFit: 'cover' }} 
-                            crossOrigin="anonymous" 
+                        <img
+                            src={profileUser.avatar || '/user.png'}
+                            alt="Avatar"
+                            style={{ width: '150px', height: '150px', borderRadius: '50%', border: '6px solid #27272a', objectFit: 'cover' }}
+                            crossOrigin="anonymous"
                             onError={(e) => { e.currentTarget.src = '/user.png'; e.currentTarget.removeAttribute('crossOrigin'); }}
                         />
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -809,17 +809,17 @@ export default function ProfileClient({ username }: { username: string }) {
                     <div style={{ zIndex: 10, padding: '40px', backgroundColor: 'rgba(39, 39, 42, 0.4)', borderRadius: '24px', border: '1px solid #3f3f46', flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <h3 style={{ fontSize: '26px', color: '#a1a1aa', margin: '0 0 30px 0', fontWeight: 'normal' }}>Elo History ({selectedBranch.toUpperCase()})</h3>
                         <svg viewBox="-40 -60 1080 320" style={{ width: '100%', height: 'auto', minHeight: '250px', overflow: 'visible', flex: 1 }} preserveAspectRatio="none">
-                            <polyline 
+                            <polyline
                                 points={ratingHistory.map((h: any, i: number) => {
                                     const x = (i / (ratingHistory.length - 1)) * 1000;
                                     const minRating = Math.min(...ratingHistory.map((r: any) => r.newRating)) - 50;
                                     const maxRating = Math.max(...ratingHistory.map((r: any) => r.newRating)) + 50;
                                     const y = 200 - ((h.newRating - minRating) / (maxRating - minRating)) * 200;
                                     return `${x},${y}`;
-                                }).join(' ')} 
-                                fill="none" 
-                                stroke="#8b5cf6" 
-                                strokeWidth="8" 
+                                }).join(' ')}
+                                fill="none"
+                                stroke="#8b5cf6"
+                                strokeWidth="8"
                             />
                             {ratingHistory.map((h: any, i: number) => {
                                 const x = (i / (ratingHistory.length - 1)) * 1000;

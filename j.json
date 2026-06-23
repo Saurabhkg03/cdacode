@@ -1,0 +1,877 @@
+[
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\n#define SQUARE(x) (x * x)\nint main() {\n    int a = 3;\n    printf(\"%d\", SQUARE(a + 1));\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\n#define SQUARE(x) (x * x)\nint main() {\n    int a = 3;\n    printf(\"%d\", SQUARE(a + 1));\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Preprocessor Directives",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q1",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "16",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "7",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "9",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Compilation Error",
+"is_correct": false
+}
+],
+"explanation_text": "The macro SQUARE(x) is expanded by the preprocessor exactly as given. SQUARE(a + 1) expands to (a + 1 * a + 1). With a = 3, this evaluates to 3 + 1 * 3 + 1 = 7 based on operator precedence.",
+"explanation_html": "The macro SQUARE(x) is expanded by the preprocessor exactly as given. SQUARE(a + 1) expands to (a + 1 * a + 1). With a = 3, this evaluates to 3 + 1 * 3 + 1 = 3 + 3 + 1 = 7 based on standard mathematical operator precedence.",
+"tags": ["Macros", "Operator Precedence", "Let Us C"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nvoid count() {\n    static int c = 0;\n    c++;\n    printf(\"%d \", c);\n}\nint main() {\n    count();\n    count();\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nvoid count() {\n    static int c = 0;\n    c++;\n    printf(\"%d \", c);\n}\nint main() {\n    count();\n    count();\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Storage Classes",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q2",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "1 1",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "1 2",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "0 1",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Compilation Error",
+"is_correct": false
+}
+],
+"explanation_text": "A static variable is initialized only once and retains its value between function calls. During the first call, c becomes 1. During the second call, it increments the retained value to 2.",
+"explanation_html": "A static variable is initialized only once and retains its value between function calls. During the first call, c becomes 1. During the second call, it increments the retained value to 2. Hence, the output is 1 2.",
+"tags": ["Static Variables", "Storage Classes", "Scope"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int arr[] = {10, 20, 30};\n    int *ptr = arr;\n    printf(\"%d \", *(ptr++));\n    printf(\"%d\", *ptr);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int arr[] = {10, 20, 30};\n    int *ptr = arr;\n    printf(\"%d \", *(ptr++));\n    printf(\"%d\", *ptr);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Pointers and Arrays",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q3",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "20 20",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "10 20",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "10 10",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "20 30",
+"is_correct": false
+}
+],
+"explanation_text": "The expression *(ptr++) uses the post-increment operator. It first dereferences the current value of ptr (which points to 10), then increments the pointer to point to the next element (20). The second printf prints the updated value.",
+"explanation_html": "The expression *(ptr++) uses the post-increment operator. It first dereferences the current value of ptr (which points to 10), then increments the pointer to point to the next element (20). The second printf prints the updated value.",
+"tags": ["Pointers", "Pointer Arithmetic", "Post-increment"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int i = 1;\n    switch(i) {\n        case 1: printf(\"A\");\n        case 2: printf(\"B\"); break;\n        case 3: printf(\"C\");\n    }\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int i = 1;\n    switch(i) {\n        case 1: printf(\"A\");\n        case 2: printf(\"B\"); break;\n        case 3: printf(\"C\");\n    }\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Control Statements",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q4",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "A",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "AB",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "ABC",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Compilation Error",
+"is_correct": false
+}
+],
+"explanation_text": "In a switch statement, execution starts at the matching case and falls through subsequent cases until a break statement is encountered. It prints 'A' at case 1, falls through to case 2, prints 'B', and then breaks out.",
+"explanation_html": "In a switch statement, execution starts at the matching case and falls through subsequent cases until a break statement is encountered. It prints 'A' at case 1, falls through to case 2, prints 'B', and then breaks out.",
+"tags": ["Switch Case", "Fall-through", "Control Flow"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int i = printf(\"CDAC\");\n    printf(\"%d\", i);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int i = printf(\"CDAC\");\n    printf(\"%d\", i);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Input/Output",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q5",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "CDAC",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "4",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "CDAC4",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "Compilation Error",
+"is_correct": false
+}
+],
+"explanation_text": "The printf function returns the number of characters successfully printed. First, it prints \"CDAC\" and returns 4. The returned value is stored in 'i', which is then printed by the second printf.",
+"explanation_html": "The printf function returns the number of characters successfully printed. First, it prints \"CDAC\" and returns 4. The returned value is stored in i, which is then printed by the second printf, resulting in CDAC4.",
+"tags": ["printf", "Return Values", "Standard I/O"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int a = -1, b = 1, c;\n    c = ++a && ++b;\n    printf(\"%d %d %d\", a, b, c);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int a = -1, b = 1, c;\n    c = ++a && ++b;\n    printf(\"%d %d %d\", a, b, c);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Operators",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q6",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "0 2 1",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "0 1 0",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "0 2 0",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "-1 1 0",
+"is_correct": false
+}
+],
+"explanation_text": "The logical AND (&&) operator evaluates strictly left-to-right and short-circuits. ++a changes a to 0. Since 0 is false, the condition fails immediately, and ++b is not evaluated. Therefore, b remains 1, and c is assigned 0.",
+"explanation_html": "The logical AND (&&) operator evaluates strictly left-to-right and short-circuits. ++a changes a to 0. Since 0 is false, the condition fails immediately, and ++b is NOT evaluated. Therefore, b remains 1, and c is assigned 0.",
+"tags": ["Logical Operators", "Short Circuiting", "Pre-increment"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int a = (10, 20, 30);\n    int b;\n    b = 10, 20, 30;\n    printf(\"%d %d\", a, b);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int a = (10, 20, 30);\n    int b;\n    b = 10, 20, 30;\n    printf(\"%d %d\", a, b);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Operators",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q7",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "30 30",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "10 10",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "30 10",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "10 30",
+"is_correct": false
+}
+],
+"explanation_text": "The comma operator evaluates left to right and returns the rightmost value. Thus, (10, 20, 30) evaluates to 30, so a = 30. For b = 10, 20, 30; the assignment operator (=) has higher precedence than the comma operator, so b is assigned 10.",
+"explanation_html": "The comma operator evaluates left to right and returns the rightmost value. Thus, (10, 20, 30) evaluates to 30, so a = 30. For b = 10, 20, 30; the assignment operator (=) has higher precedence than the comma operator, so b is directly assigned 10.",
+"tags": ["Comma Operator", "Operator Precedence"]
+},
+{
+"question_text": "What is the expected behavior of the following C program?\n\n#include <stdio.h>\nint main() {\n    char *str = \"Hello\";\n    str[0] = 'h';\n    printf(\"%s\", str);\n    return 0;\n}",
+"question_html": "What is the expected behavior of the following C program?#include <stdio.h>\nint main() {\n    char *str = \"Hello\";\n    str[0] = 'h';\n    printf(\"%s\", str);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Strings and Pointers",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q8",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "hello",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "Hello",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "Compilation Error",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Undefined Behavior / Segmentation Fault",
+"is_correct": true
+}
+],
+"explanation_text": "String literals like \"Hello\" are generally stored in read-only memory. Attempting to modify them through a char pointer results in undefined behavior, which commonly manifests as a Segmentation Fault at runtime.",
+"explanation_html": "String literals like \"Hello\" are generally stored in read-only memory (read-only data segment). Attempting to modify them through a character pointer results in undefined behavior, which commonly manifests as a Segmentation Fault at runtime.",
+"tags": ["Strings", "Pointers", "Memory Segments"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    char a[] = \"C-CAT\";\n    printf(\"%d\", (int)sizeof(a));\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    char a[] = \"C-CAT\";\n    printf(\"%d\", (int)sizeof(a));\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Arrays and Strings",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q9",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "5",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "6",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "4",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "8",
+"is_correct": false
+}
+],
+"explanation_text": "The string literal \"C-CAT\" contains 5 printable characters plus a hidden null-terminator ('\\0') at the end. Therefore, the total size allocated for the array is 6 bytes.",
+"explanation_html": "The string literal \"C-CAT\" contains 5 printable characters plus a hidden null-terminator ('\\0') at the end. Therefore, the total size allocated for the array is exactly 6 bytes.",
+"tags": ["sizeof", "Strings", "Null Terminator"]
+},
+{
+"question_text": "What is the problem with the following C program?\n\n#include <stdio.h>\nint* getPtr() {\n    int x = 10;\n    return &x;\n}\nint main() {\n    int *p = getPtr();\n    printf(\"%d\", *p);\n    return 0;\n}",
+"question_html": "What is the problem with the following C program?#include <stdio.h>\nint* getPtr() {\n    int x = 10;\n    return &x;\n}\nint main() {\n    int *p = getPtr();\n    printf(\"%d\", *p);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Functions and Pointers",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q10",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "Memory Leak",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "Compilation Error",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "Dangling Pointer (Undefined Behavior)",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "Prints 10 accurately without issues",
+"is_correct": false
+}
+],
+"explanation_text": "The function getPtr returns the address of a local variable 'x'. Since local variables are destroyed once the function returns, the returned pointer 'p' points to invalid memory, creating a dangling pointer.",
+"explanation_html": "The function getPtr returns the address of a local variable x. Since local variables are allocated on the stack and destroyed once the function returns, the returned pointer p points to invalid memory, creating a dangling pointer and resulting in undefined behavior.",
+"tags": ["Dangling Pointer", "Local Scope", "Functions"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int a = 5, b = 10;\n    a = a ^ b;\n    b = a ^ b;\n    a = a ^ b;\n    printf(\"%d %d\", a, b);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int a = 5, b = 10;\n    a = a ^ b;\n    b = a ^ b;\n    a = a ^ b;\n    printf(\"%d %d\", a, b);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Bitwise Operators",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q11",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "5 10",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "10 5",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "0 0",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "15 15",
+"is_correct": false
+}
+],
+"explanation_text": "This code swaps the values of 'a' and 'b' using the bitwise XOR (^) operator without requiring a temporary third variable.",
+"explanation_html": "This code is a classic algorithm to swap the values of two variables (a and b) using the bitwise XOR (^) operator without requiring a temporary third variable. Hence, the output will be 10 5.",
+"tags": ["Bitwise XOR", "Swapping", "Let Us C"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint func(int n) {\n    if(n == 0) return 0;\n    return n + func(n - 1);\n}\nint main() {\n    printf(\"%d\", func(5));\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint func(int n) {\n    if(n == 0) return 0;\n    return n + func(n - 1);\n}\nint main() {\n    printf(\"%d\", func(5));\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Functions and Recursion",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q12",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "10",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "120",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "15",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "Infinite Recursion",
+"is_correct": false
+}
+],
+"explanation_text": "This recursive function calculates the sum of the first 'n' natural numbers. For n = 5, it evaluates as 5 + 4 + 3 + 2 + 1 + 0 = 15.",
+"explanation_html": "This recursive function calculates the sum of the first n natural numbers. For n = 5, it evaluates as 5 + 4 + 3 + 2 + 1 + 0 = 15.",
+"tags": ["Recursion", "Mathematical Computation"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nenum colors {RED = 2, GREEN, BLUE = 6, YELLOW};\nint main() {\n    printf(\"%d %d\", GREEN, YELLOW);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nenum colors {RED = 2, GREEN, BLUE = 6, YELLOW};\nint main() {\n    printf(\"%d %d\", GREEN, YELLOW);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Enumerations",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q13",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "3 7",
+"is_correct": true
+},
+{
+"label": "B",
+"text_html": "2 6",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "0 1",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Compilation Error",
+"is_correct": false
+}
+],
+"explanation_text": "In enumerations, unassigned identifiers automatically take the value of the previous identifier plus 1. RED is 2, so GREEN is 3. BLUE is explicitly set to 6, so YELLOW takes 6 + 1 = 7.",
+"explanation_html": "In C enumerations, unassigned identifiers automatically take the value of the previous identifier plus 1. RED is explicitly 2, so GREEN is automatically 3. BLUE is explicitly set to 6, so YELLOW automatically takes 6 + 1 = 7. Output is 3 7.",
+"tags": ["Enum", "Constants"]
+},
+{
+"question_text": "What is the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int x = 5;\n    int y = ++x * ++x;\n    printf(\"%d\", y);\n    return 0;\n}",
+"question_html": "What is the output of the following C program?#include <stdio.h>\nint main() {\n    int x = 5;\n    int y = ++x * ++x;\n    printf(\"%d\", y);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Undefined Behavior",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q14",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "36",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "49",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "42",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Undefined Behavior",
+"is_correct": true
+}
+],
+"explanation_text": "Modifying a variable multiple times (e.g., ++x) between two sequence points results in undefined behavior in C. The compiler is free to evaluate it in any order, meaning the output cannot be reliably predicted.",
+"explanation_html": "Modifying a variable multiple times (e.g., ++x) between two consecutive sequence points results in undefined behavior in C. The compiler is free to evaluate the operands of the multiplication in any order, meaning the output cannot be strictly reliably predicted and may vary across compilers.",
+"tags": ["Sequence Points", "Undefined Behavior", "Pre-increment"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int arr[2][3] = {{1, 2, 3}, {4, 5, 6}};\n    printf(\"%d\", *(*(arr + 1) + 2));\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int arr[2][3] = {{1, 2, 3}, {4, 5, 6}};\n    printf(\"%d\", *(*(arr + 1) + 2));\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Multidimensional Arrays and Pointers",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q15",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "3",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "4",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "6",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "Garbage Value",
+"is_correct": false
+}
+],
+"explanation_text": "In a 2D array, *(arr + 1) decays to a pointer to the first element of the second row (i.e., arr[1]). Adding 2 moves the pointer to the third element of that row. Dereferencing it yields arr[1][2], which is 6.",
+"explanation_html": "In a 2D array, *(arr + 1) decays to a pointer to the first element of the second row (i.e., arr[1]). Adding 2 to this pointer (*(arr + 1) + 2) moves it to the third element of that row. Dereferencing it yields arr[1][2], which is 6.",
+"tags": ["2D Arrays", "Pointer Arithmetic", "Let Us C"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int a = 0;\n    int b = a ? 10 : 20 ? 30 : 40;\n    printf(\"%d\", b);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int a = 0;\n    int b = a ? 10 : 20 ? 30 : 40;\n    printf(\"%d\", b);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Ternary Operator",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q16",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "10",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "20",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "30",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "40",
+"is_correct": false
+}
+],
+"explanation_text": "The ternary operator is right-associative. The expression groups as a ? 10 : (20 ? 30 : 40). Since a is 0 (false), it evaluates the second part: (20 ? 30 : 40). 20 is non-zero (true), so the result is 30.",
+"explanation_html": "The ternary conditional operator is right-associative. The expression groups as a ? 10 : (20 ? 30 : 40). Since a is 0 (false), it evaluates the second part: (20 ? 30 : 40). Since 20 is non-zero (true), it returns 30.",
+"tags": ["Ternary Operator", "Associativity", "Operator Precedence"]
+},
+{
+"question_text": "Assuming a 32-bit compiler with 4-byte word alignment, what is the output of the following program?\n\n#include <stdio.h>\nstruct Node {\n    char a;\n    int b;\n    char c;\n};\nint main() {\n    printf(\"%d\", (int)sizeof(struct Node));\n    return 0;\n}",
+"question_html": "Assuming a 32-bit compiler with 4-byte word alignment, what is the output of the following program?#include <stdio.h>\nstruct Node {\n    char a;\n    int b;\n    char c;\n};\nint main() {\n    printf(\"%d\", (int)sizeof(struct Node));\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Structures and Unions",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q17",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "6",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "9",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "10",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "12",
+"is_correct": true
+}
+],
+"explanation_text": "Due to memory alignment rules, 'a' (1 byte) is padded with 3 bytes. 'b' takes 4 bytes. 'c' (1 byte) is padded with 3 bytes to make the total struct size a multiple of the largest member's alignment requirement (4 bytes). Total: 4 + 4 + 4 = 12.",
+"explanation_html": "Due to memory alignment (padding) rules, char a (1 byte) is padded with 3 empty bytes so int b begins on a 4-byte boundary. int b takes 4 bytes. char c (1 byte) is padded with 3 bytes at the end to make the total structure size a multiple of the largest member's alignment requirement (4 bytes). Total size = 4 + 4 + 4 = 12 bytes.",
+"tags": ["Struct Padding", "Memory Alignment", "sizeof"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int x = 100;\n    int *p = &x;\n    int q = &p;\n    q = 200;\n    printf(\"%d\", x);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int x = 100;\n    int *p = &x;\n    int q = &p;\n    q = 200;\n    printf(\"%d\", x);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Pointers",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q18",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "100",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "200",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "Garbage Value",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Compilation Error",
+"is_correct": false
+}
+],
+"explanation_text": "The double pointer 'q' points to pointer 'p', which in turn points to variable 'x'. Using the double dereference operator (q = 200) directly updates the value at the address of 'x' to 200.",
+"explanation_html": "The double pointer q points to pointer p, which in turn points to variable x. Using the double dereference operator (q = 200) directly updates the value stored at the address of x to 200.",
+"tags": ["Double Pointers", "Dereferencing"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int i = 5;\n    while(i-- > 0) {\n        printf(\"%d\", i);\n    }\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int i = 5;\n    while(i-- > 0) {\n        printf(\"%d\", i);\n    }\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Loops",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q19",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "54321",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "4321",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "43210",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "Infinite Loop",
+"is_correct": false
+}
+],
+"explanation_text": "The post-decrement operator checks the condition with the current value of 'i' and then immediately decrements it. When i=5, 5>0 is true, but inside the loop, i becomes 4. This prints 43210 until the condition evaluates to false at i=0.",
+"explanation_html": "The post-decrement operator checks the condition with the current value of i and then immediately decrements it. When i=5, 5 > 0 is true, but inside the loop body, i has already become 4. This pattern prints 43210 until the condition evaluates to false when checking 0 > 0.",
+"tags": ["While Loop", "Post-decrement", "Control Statements"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int arr[5] = {1, 2};\n    printf(\"%d\", arr[3]);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int arr[5] = {1, 2};\n    printf(\"%d\", arr[3]);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Arrays",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q20",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "Garbage Value",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "0",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "Compilation Error",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "2",
+"is_correct": false
+}
+],
+"explanation_text": "When an array is partially initialized, the compiler automatically sets the uninitialized elements to 0. Since arr[3] was not explicitly initialized, it will hold the value 0.",
+"explanation_html": "When an array in C is partially initialized, the compiler automatically sets all remaining uninitialized elements to 0. Since only indices 0 and 1 were initialized, arr[3] will hold the default value 0.",
+"tags": ["Array Initialization", "Default Values"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint x = 10;\nint main() {\n    int x = 20;\n    {\n        extern int x;\n        printf(\"%d\", x);\n    }\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint x = 10;\nint main() {\n    int x = 20;\n    {\n        extern int x;\n        printf(\"%d\", x);\n    }\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Storage Classes and Scope",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q21",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "10",
+"is_correct": true
+},
+{
+"label": "B",
+"text_html": "20",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "Compilation Error",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Garbage Value",
+"is_correct": false
+}
+],
+"explanation_text": "The local variable x (20) shadows the global x (10) inside the main function. However, the 'extern' declaration in the inner block explicitly brings the global variable x (10) back into scope for that block.",
+"explanation_html": "The local variable x (20) shadows the global x (10) inside the main function. However, the extern declaration in the nested inner block explicitly refers to the file-scope global variable x, bringing its value (10) back into scope.",
+"tags": ["Extern", "Variable Shadowing", "Scope Rules"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int a = 4, b = 2;\n    printf(\"%d\", a << b);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int a = 4, b = 2;\n    printf(\"%d\", a << b);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Bitwise Operators",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q22",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "1",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "8",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "16",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "0",
+"is_correct": false
+}
+],
+"explanation_text": "The bitwise left shift operator (<<) shifts the bits of 'a' to the left by 'b' positions. Mathematically, a << b is equivalent to a * (2^b). Here, 4 * (2^2) = 16.",
+"explanation_html": "The bitwise left shift operator (<<) shifts the bits of a to the left by b positions. Mathematically, a << b is equivalent to a * (2b). Here, 4 * (22) = 4 * 4 = 16.",
+"tags": ["Left Shift", "Bitwise Operators", "Mathematics"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    float x = 0.1;\n    if (x == 0.1)\n        printf(\"Equal\");\n    else\n        printf(\"Not Equal\");\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    float x = 0.1;\n    if (x == 0.1)\n        printf(\"Equal\");\n    else\n        printf(\"Not Equal\");\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Data Types and Precision",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q23",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "Equal",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "Not Equal",
+"is_correct": true
+},
+{
+"label": "C",
+"text_html": "Compilation Error",
+"is_correct": false
+},
+{
+"label": "D",
+"text_html": "Runtime Error",
+"is_correct": false
+}
+],
+"explanation_text": "In C, fractional literal values like 0.1 are treated as 'double' by default. Assigning it to a 'float' truncates its precision. Since the exact binary representations of 0.1 as a float and as a double differ, the comparison evaluates to false.",
+"explanation_html": "In C, fractional literal values like 0.1 are treated as double by default. Assigning it to a float truncates its precision. Since the exact binary representations of 0.1 as a float and as a double differ slightly in memory, the comparison x == 0.1 evaluates to false, printing Not Equal.",
+"tags": ["Floating Point", "Type Promotion", "Data Types"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    char str[] = \"CDAC\\0CCAT\";\n    printf(\"%s\", str);\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    char str[] = \"CDAC\\0CCAT\";\n    printf(\"%s\", str);\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Strings",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q24",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "CDACCCAT",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "CDAC\\0CCAT",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "CDAC",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "CCAT",
+"is_correct": false
+}
+],
+"explanation_text": "The %s format specifier in printf prints characters sequentially until it encounters the first null character ('\\0'). Even though the array contains more characters after '\\0', it stops printing right after 'CDAC'.",
+"explanation_html": "The %s format specifier in printf instructs it to print characters sequentially until it encounters the first null character ('\\0'). Even though the array contains more characters after the null byte, it stops printing right after CDAC.",
+"tags": ["Strings", "Null Character", "Format Specifiers"]
+},
+{
+"question_text": "What will be the output of the following C program?\n\n#include <stdio.h>\nint main() {\n    int i;\n    for(i = 0; i < 5; i++) {\n        i = i + 1;\n        printf(\"%d\", i);\n    }\n    return 0;\n}",
+"question_html": "What will be the output of the following C program?#include <stdio.h>\nint main() {\n    int i;\n    for(i = 0; i < 5; i++) {\n        i = i + 1;\n        printf(\"%d\", i);\n    }\n    return 0;\n}",
+"subject": "C Programming",
+"topic": "Loops",
+"year": "2026",
+"branch": "Section B",
+"question_label": "Q25",
+"question_type": "mcq",
+"options": [
+{
+"label": "A",
+"text_html": "12345",
+"is_correct": false
+},
+{
+"label": "B",
+"text_html": "01234",
+"is_correct": false
+},
+{
+"label": "C",
+"text_html": "135",
+"is_correct": true
+},
+{
+"label": "D",
+"text_html": "246",
+"is_correct": false
+}
+],
+"explanation_text": "The variable 'i' is manipulated both inside the loop body and in the loop update expression. It starts at 0, becomes 1 in the body, prints 1. Then it increments to 2 in the loop structure. Next, inside the body it becomes 3, prints 3. It increments to 4, becomes 5, and prints 5. Then it increments to 6, and the loop terminates.",
+"explanation_html": "The variable i is modified both inside the loop body and in the loop's update statement. It starts at 0, becomes 1 in the body, and prints 1. The loop then increments it to 2. Next iteration: inside the body it becomes 3, and prints 3. The loop increments it to 4. Next iteration: inside the body it becomes 5, and prints 5. The loop increments it to 6, condition (6 < 5) fails, and execution terminates.",
+"tags": ["For Loop", "Control Flow", "Variable Modification"]
+}
+]

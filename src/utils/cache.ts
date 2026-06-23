@@ -7,7 +7,7 @@ interface CacheItem<T> {
   expiry: number; // Timestamp when the cache expires
 }
 
-const CACHE_PREFIX = 'gatecode_cache_';
+const CACHE_PREFIX = 'CDACode_cache_';
 
 /**
  * Sets an item in the cache with an expiry duration.
@@ -63,26 +63,26 @@ export function getCache<T>(key: string): T | null {
  * @param key The cache key.
  */
 export function clearCache(key: string): void {
-    try {
-        localStorage.removeItem(CACHE_PREFIX + key);
-        console.log(`[Cache] Cleared: ${key}`);
-    } catch (error) {
-        console.error(`[Cache] Error clearing item ${key}:`, error);
-    }
+  try {
+    localStorage.removeItem(CACHE_PREFIX + key);
+    console.log(`[Cache] Cleared: ${key}`);
+  } catch (error) {
+    console.error(`[Cache] Error clearing item ${key}:`, error);
+  }
 }
 
 /**
  * Clears all items managed by this cache utility.
  */
 export function clearAllCache(): void {
-    try {
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith(CACHE_PREFIX)) {
-                localStorage.removeItem(key);
-            }
-        });
-        console.log('[Cache] Cleared all.');
-    } catch (error) {
-        console.error('[Cache] Error clearing all items:', error);
-    }
+  try {
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith(CACHE_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+    console.log('[Cache] Cleared all.');
+  } catch (error) {
+    console.error('[Cache] Error clearing all items:', error);
+  }
 }

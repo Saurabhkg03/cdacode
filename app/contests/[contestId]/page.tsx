@@ -302,7 +302,7 @@ export default function ContestDescriptionPage() {
                   {isWeekly ? <><Trophy className="w-3 h-3" /> Weekly Contest</> : <><Sparkles className="w-3 h-3" /> Biweekly Contest</>}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-blue-500/30 backdrop-blur-sm text-blue-100 text-[10px] font-black uppercase tracking-widest rounded-full px-3 py-1 border border-blue-500/30">
-                   Rated
+                  Rated
                 </span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 drop-shadow tracking-tight">{title}</h1>
@@ -387,7 +387,7 @@ export default function ContestDescriptionPage() {
             <div className="absolute inset-0 z-0">
               <ContestThumbnail contestId={contestId} title={title} />
             </div>
-            
+
             <div className="relative z-10">
               {/* Status badges */}
               <div className="flex gap-2 flex-wrap mb-4">
@@ -432,64 +432,48 @@ export default function ContestDescriptionPage() {
                 )}
               </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Primary action */}
-              {upcoming ? (
-                <button
-                  onClick={handleRegister}
-                  disabled={registering}
-                  className={`px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center gap-2 ${isRegistered
-                    ? "bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 hover:bg-emerald-500/30"
-                    : "bg-[#ffa116] hover:bg-[#ffb03a] text-black hover:-translate-y-0.5"
-                    }`}
-                >
-                  {registering ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : isRegistered ? (
-                    <><CheckCircle2 className="w-4 h-4" /> Registered</>
-                  ) : !user ? (
-                    <><Lock className="w-4 h-4" /> Login to Register</>
-                  ) : (
-                    <><Bell className="w-4 h-4" /> Register</>
-                  )}
-                </button>
-              ) : (
-                <button
-                  onClick={handleAction}
-                  className="px-6 py-2.5 rounded-full font-bold text-sm bg-[#ffa116] hover:bg-[#ffb03a] text-black hover:-translate-y-0.5 transition-all shadow-lg flex items-center gap-2"
-                >
-                  {!user ? <><Lock className="w-4 h-4" /> Login to Start</> : <><Trophy className="w-4 h-4" /> {live ? "Join Live" : "Start Contest"}</>}
-                </button>
-              )}
-
-              {/* Bell toggle for upcoming */}
-              {upcoming && isRegistered && (
-                <button
-                  onClick={handleRegister}
-                  disabled={registering}
-                  title="Remove registration"
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
-                >
-                  <BellOff className="w-4 h-4" />
-                </button>
-              )}
-              {upcoming && !isRegistered && (
-                <button
-                  onClick={handleShare}
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white text-zinc-900 hover:bg-zinc-100 transition-all active:scale-95 shadow-lg"
-                  title="Share"
-                >
-                  {isCopied ? <Copy className="w-4.5 h-4.5 text-emerald-600" /> : <Share2 className="w-4.5 h-4.5" />}
-                </button>
-              )}
-              {!upcoming && (
-                <>
-                  <Link
-                    href={`/contests/${contestId}/leaderboard`}
-                    className="px-5 py-2.5 rounded-full font-bold text-sm bg-white/10 hover:bg-white/20 text-white transition-all shadow-lg flex items-center gap-2 border border-white/5"
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Primary action */}
+                {upcoming ? (
+                  <button
+                    onClick={handleRegister}
+                    disabled={registering}
+                    className={`px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center gap-2 ${isRegistered
+                      ? "bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 hover:bg-emerald-500/30"
+                      : "bg-[#ffa116] hover:bg-[#ffb03a] text-black hover:-translate-y-0.5"
+                      }`}
                   >
-                    <Trophy className="w-4 h-4 text-[#ffa116]" /> Leaderboard
-                  </Link>
+                    {registering ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : isRegistered ? (
+                      <><CheckCircle2 className="w-4 h-4" /> Registered</>
+                    ) : !user ? (
+                      <><Lock className="w-4 h-4" /> Login to Register</>
+                    ) : (
+                      <><Bell className="w-4 h-4" /> Register</>
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleAction}
+                    className="px-6 py-2.5 rounded-full font-bold text-sm bg-[#ffa116] hover:bg-[#ffb03a] text-black hover:-translate-y-0.5 transition-all shadow-lg flex items-center gap-2"
+                  >
+                    {!user ? <><Lock className="w-4 h-4" /> Login to Start</> : <><Trophy className="w-4 h-4" /> {live ? "Join Live" : "Start Contest"}</>}
+                  </button>
+                )}
+
+                {/* Bell toggle for upcoming */}
+                {upcoming && isRegistered && (
+                  <button
+                    onClick={handleRegister}
+                    disabled={registering}
+                    title="Remove registration"
+                    className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                  >
+                    <BellOff className="w-4 h-4" />
+                  </button>
+                )}
+                {upcoming && !isRegistered && (
                   <button
                     onClick={handleShare}
                     className="w-10 h-10 rounded-full flex items-center justify-center bg-white text-zinc-900 hover:bg-zinc-100 transition-all active:scale-95 shadow-lg"
@@ -497,9 +481,25 @@ export default function ContestDescriptionPage() {
                   >
                     {isCopied ? <Copy className="w-4.5 h-4.5 text-emerald-600" /> : <Share2 className="w-4.5 h-4.5" />}
                   </button>
-                </>
-              )}
-            </div>
+                )}
+                {!upcoming && (
+                  <>
+                    <Link
+                      href={`/contests/${contestId}/leaderboard`}
+                      className="px-5 py-2.5 rounded-full font-bold text-sm bg-white/10 hover:bg-white/20 text-white transition-all shadow-lg flex items-center gap-2 border border-white/5"
+                    >
+                      <Trophy className="w-4 h-4 text-[#ffa116]" /> Leaderboard
+                    </Link>
+                    <button
+                      onClick={handleShare}
+                      className="w-10 h-10 rounded-full flex items-center justify-center bg-white text-zinc-900 hover:bg-zinc-100 transition-all active:scale-95 shadow-lg"
+                      title="Share"
+                    >
+                      {isCopied ? <Copy className="w-4.5 h-4.5 text-emerald-600" /> : <Share2 className="w-4.5 h-4.5" />}
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -586,11 +586,11 @@ export default function ContestDescriptionPage() {
                     ? "The Weekly Contest is held every Sunday covering the full C-CAT syllabus — General Aptitude and Technical questions. Test your speed and accuracy against the community!"
                     : scheduledMeta?.type === "biweekly"
                       ? "The Biweekly Contest runs every alternate Saturday with a slightly longer duration for more in-depth problem sets. Perfect for tracking your long-term progress."
-                      : "Welcome to this GATECode contest. Challenge yourself against other engineers and test your knowledge and speed.")}
+                      : "Welcome to this CDACode contest. Challenge yourself against other engineers and test your knowledge and speed.")}
               </p>
               {scheduledMeta && (
                 <p className="text-gray-400 italic text-sm">
-                  This contest is sponsored by <strong className="text-gray-300">GATECode Community</strong>.
+                  This contest is sponsored by <strong className="text-gray-300">CDACode Community</strong>.
                 </p>
               )}
 
@@ -632,8 +632,8 @@ export default function ContestDescriptionPage() {
                       <span><strong>Format:</strong> {contest.sections.reduce((sum, sec) => sum + sec.questions.length, 0)} questions ({
                         contest.sections.reduce((sum, sec) => sum + sec.questions.filter(q => Number(q.marks) === 1).length, 0)
                       } × 1-Mark, {
-                        contest.sections.reduce((sum, sec) => sum + sec.questions.filter(q => Number(q.marks) === 2).length, 0)
-                      } × 2-Mark). Total: {contest.totalMarks || 0} Marks.</span>
+                          contest.sections.reduce((sum, sec) => sum + sec.questions.filter(q => Number(q.marks) === 2).length, 0)
+                        } × 2-Mark). Total: {contest.totalMarks || 0} Marks.</span>
                     </li>
                   </>
                 ) : (
@@ -693,7 +693,7 @@ export default function ContestDescriptionPage() {
                   {[
                     { emoji: "🎒", label: "Premium Backpack", gradient: "from-yellow-700 to-yellow-400", key: 'backpack' },
                     { emoji: "🫙", label: "Steel Water Bottle", gradient: "from-gray-500 to-gray-300", key: 'bottle' },
-                    { emoji: "📓", label: "GATECode Notebook", gradient: "from-amber-800 to-amber-600", key: 'notebook' },
+                    { emoji: "📓", label: "CDACode Notebook", gradient: "from-amber-800 to-amber-600", key: 'notebook' },
                   ].filter(item => contest.prizes!.some(p => p.prize.toLowerCase().includes(item.key))).map((item) => (
                     <div
                       key={item.label}

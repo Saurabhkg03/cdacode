@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Leaderboard | GATECode',
+  title: 'Leaderboard | CDACode',
   description: 'Check your global Elo rating and rank among other C-CAT aspirants.',
 };
 

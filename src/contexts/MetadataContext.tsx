@@ -32,7 +32,7 @@ const BRANCH_MAP_STRICT: Record<string, string> = {
 };
 
 const DEFAULT_BRANCH = 'ece';
-const BRANCH_CACHE_KEY = 'gatecode_selected_branch';
+const BRANCH_CACHE_KEY = 'CDACode_selected_branch';
 const METADATA_CACHE_TTL = 3600;
 
 export interface BranchMetadata {
@@ -83,8 +83,8 @@ export function MetadataProvider({ children }: { children: ReactNode }) {
 
   const { questionCollectionPath, metadataDocPath } = useMemo(() => {
     return {
-      questionCollectionPath: `questions_${selectedBranch}`,
-      metadataDocPath: `metadata/${selectedBranch}`,
+      questionCollectionPath: `ccat_questions`,
+      metadataDocPath: `ccat_metadata/global`,
     };
   }, [selectedBranch]);
 
@@ -112,7 +112,8 @@ export function MetadataProvider({ children }: { children: ReactNode }) {
 
     // 2. Subscribe to Firestore updates
     console.log(`[MetadataContext] Subscribing to: ${metadataDocPath}`);
-    const metadataRef = doc(db, 'metadata', selectedBranch);
+    const [metadataCollection, metadataDoc] = metadataDocPath.split('/');
+    const metadataRef = doc(db, metadataCollection, metadataDoc);
 
     const unsubscribe = onSnapshot(
       metadataRef,
@@ -120,7 +121,7 @@ export function MetadataProvider({ children }: { children: ReactNode }) {
         if (docSnap.exists()) {
           const data = docSnap.data() as BranchMetadata;
           console.log(
-            `[MetadataContext] SNAPSHOT: Metadata loaded for ${data.branch.toUpperCase()}. Total Questions: ${data.questionCount}`
+            `[MetadataContext] SNAPSHOT: Metadata loaded for ${(data.branch || 'Global').toUpperCase()}. Total Questions: ${data.questionCount}`
           );
           setMetadata(data);
           setCache(cacheKey, data, METADATA_CACHE_TTL);

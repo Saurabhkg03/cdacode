@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profile | GATECode',
-  description: 'View your GATECode profile, statistics, and history.',
+  title: 'Profile | CDACode',
+  description: 'View your CDACode profile, statistics, and history.',
 };
 
 export default function ProfileLayout({

@@ -27,7 +27,7 @@ interface BranchContextType {
 const BranchContext = createContext<BranchContextType | undefined>(undefined);
 
 // --- LOCAL STORAGE KEY ---
-const BRANCH_STORAGE_KEY = 'gatecode_active_branch';
+const BRANCH_STORAGE_KEY = 'CDACode_active_branch';
 
 export function BranchProvider({ children }: { children: ReactNode }) {
   const [activeBranch, setActiveBranchState] = useState<string>(() => {

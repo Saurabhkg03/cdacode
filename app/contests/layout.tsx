@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contests | GATECode',
+  title: 'Contests | CDACode',
   description: 'Participate in live weekly and biweekly C-CAT contests to compete globally.',
 };
 

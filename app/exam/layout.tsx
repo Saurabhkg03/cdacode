@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export const metadata: Metadata = {
-  title: 'Exam | GATECode',
+  title: 'Exam | CDACode',
   description: 'Take a realistic C-CAT contest.',
 };
 

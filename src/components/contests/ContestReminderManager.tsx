@@ -18,7 +18,7 @@ interface ReminderToast {
     contestId: string;
 }
 
-const LS_KEY = "gatecode_reminded_contests";
+const LS_KEY = "CDACode_reminded_contests";
 
 function getFiredSet(): Set<string> {
     try {
@@ -99,7 +99,7 @@ export default function ContestReminderManager() {
                     // Browser notification
                     if (reg.notifyEnabled && Notification.permission === "granted") {
                         new Notification("🏆 Contest starting now!", {
-                            body: `${reg.title} is live! Open GATECode to join.`,
+                            body: `${reg.title} is live! Open CDACode to join.`,
                             icon: "/favicon.ico",
                             tag: reg.contestId,
                         });

@@ -13,8 +13,8 @@ import { Toaster } from 'sonner';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-    title: "GATECode",
-    description: "Master C-CAT with GATECode",
+    title: "CDACode",
+    description: "Master C-CAT with CDACode",
 };
 
 export const viewport = {

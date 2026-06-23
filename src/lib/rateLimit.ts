@@ -6,8 +6,8 @@ const hasUpstash = !!process.env.UPSTASH_REDIS_REST_URL && !!process.env.UPSTASH
 
 // Create Redis instance only if env vars are present
 const redis = hasUpstash ? new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    url: process.env.UPSTASH_REDIS_REST_URL!,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 }) : {} as any;
 
 // Fallback mock ratelimiter that always succeeds if env vars are not set
@@ -24,12 +24,12 @@ export const getRateLimiter = (options: { limit: number, window: `${number} s` |
         console.warn('[RateLimit] Upstash Redis credentials not found, using mock rate limiter.');
         return createMockRatelimiter() as unknown as Ratelimit;
     }
-    
+
     return new Ratelimit({
         redis,
         limiter: Ratelimit.slidingWindow(options.limit, options.window),
         analytics: true,
-        prefix: 'gatecode_ratelimit',
+        prefix: 'CDACode_ratelimit',
     });
 };
 

@@ -70,7 +70,7 @@ export default function Login() {
                     <Link href="/" className="mb-1 sm:mb-4">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/logo.png" alt="GATECode" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl" />
+                        <img src="/logo.png" alt="CDACode" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl" />
                     </Link>
                     <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
                         {mode === 'login' && 'Welcome Back'}

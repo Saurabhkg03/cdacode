@@ -175,7 +175,7 @@ export default function ExamResultPage() {
         q.marks = marks;
         q.negative_marks = negativeMarks;
 
-        const response = attempt.responses[q.id];
+        const response = attempt.responses?.[q.id];
         // Defensive check for response existence
         // C-CAT Rule: 'marked_for_review' (Purple) without answer -> Score 0 (Not Attempted)
         // 'answered_marked_for_review' (Purple + Green) -> Evaluated (Attempted)

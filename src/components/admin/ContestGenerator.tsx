@@ -6,36 +6,36 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const BRANCH_SUBJECTS: Record<string, string[]> = {
     cse: [
-        'Digital Logic', 'General Aptitude', 'Software Engg', 'Compiler Design', 
-        'Data Structure', 'Theory of Computation', 'Engineering Mathematics', 
-        'Computer Network', 'Discrete Mathematics', 'Operating System', 
-        'Algorithm', 'Computer Organization', 'Database Management System', 
+        'Digital Logic', 'General Aptitude', 'Software Engg', 'Compiler Design',
+        'Data Structure', 'Theory of Computation', 'Engineering Mathematics',
+        'Computer Network', 'Discrete Mathematics', 'Operating System',
+        'Algorithm', 'Computer Organization', 'Database Management System',
         'C Programming', 'Web Technology', 'General'
     ],
     ece: [
-        'Communication Systems', 'Digital Circuits', 'Analog Circuits', 
-        'Signals and Systems', 'General Aptitude', 'Electromagnetics', 
-        'Network Theory', 'Engineering Mathematics', 'Control Systems', 
+        'Communication Systems', 'Digital Circuits', 'Analog Circuits',
+        'Signals and Systems', 'General Aptitude', 'Electromagnetics',
+        'Network Theory', 'Engineering Mathematics', 'Control Systems',
         'Electronic Devices', 'Microprocessors', 'General'
     ],
     me: [
-        'Manufacturing Engineering', 'Industrial Engineering', 'Engineering Mathematics', 
-        'Theory of Machine', 'Heat Transfer', 'Strength of Materials', 
-        'General Aptitude', 'Fluid Mechanics', 'Machine Design', 
-        'Thermodynamics', 'General', 'Engineering Mechanics', 
+        'Manufacturing Engineering', 'Industrial Engineering', 'Engineering Mathematics',
+        'Theory of Machine', 'Heat Transfer', 'Strength of Materials',
+        'General Aptitude', 'Fluid Mechanics', 'Machine Design',
+        'Thermodynamics', 'General', 'Engineering Mechanics',
         'Refrigeration and Air-conditioning'
     ],
     ee: [
-        'Power Electronics', 'Engineering Mathematics', 'Electrical Machines', 
-        'Electric Circuits', 'Analog Electronics', 'Signals and Systems', 
-        'Control Systems', 'Digital Electronics', 'Power Systems', 
-        'Electrical and Electronic Measurements', 'Electromagnetic Theory', 
+        'Power Electronics', 'Engineering Mathematics', 'Electrical Machines',
+        'Electric Circuits', 'Analog Electronics', 'Signals and Systems',
+        'Control Systems', 'Digital Electronics', 'Power Systems',
+        'Electrical and Electronic Measurements', 'Electromagnetic Theory',
         'General Aptitude', 'Electromagnetic Fields', 'General'
     ],
     in: [
-        'Engineering Mathematics', 'Control Systems', 'Electrical Circuits and Machines', 
-        'Measurements', 'Analog Electronics', 'Digital Electronics', 
-        'Signals and Systems', 'Sensors and Industrial Instrumentation', 
+        'Engineering Mathematics', 'Control Systems', 'Electrical Circuits and Machines',
+        'Measurements', 'Analog Electronics', 'Digital Electronics',
+        'Signals and Systems', 'Sensors and Industrial Instrumentation',
         'Communication and Optical Instrumentation', 'General Aptitude', 'General'
     ]
 };
@@ -64,7 +64,7 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
     const [target1MarkCount, setTarget1MarkCount] = useState<number>(10);
     const [target2MarkCount, setTarget2MarkCount] = useState<number>(5);
 
-    const [description, setDescription] = useState('Welcome to this GATECode contest. Challenge yourself against other engineers and test your knowledge and speed.');
+    const [description, setDescription] = useState('Welcome to this CDACode contest. Challenge yourself against other engineers and test your knowledge and speed.');
     const [prizes, setPrizes] = useState<Array<{ rank: string; prize: string }>>([]);
 
     // Get local datetime string for min attribute (now)
@@ -228,17 +228,17 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                 </h3>
                 <div className="bg-gray-50/50 dark:bg-zinc-900/20 p-4 rounded-xl border border-gray-100 dark:border-zinc-800/50 space-y-4">
                     <div className="flex bg-gray-200/50 dark:bg-zinc-800/50 p-1.5 rounded-xl w-full">
-                        <button 
-                            onClick={() => setExamMode('full')} 
+                        <button
+                            onClick={() => setExamMode('full')}
                             className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${examMode === 'full' ? 'bg-white dark:bg-zinc-700 shadow-sm text-purple-600 dark:text-purple-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
                         >
                             Full C-CAT Mock (65 Qs)
                         </button>
-                        <button 
+                        <button
                             onClick={() => {
                                 setExamMode('custom');
                                 if (isAdminContest) setIsRated(false);
-                            }} 
+                            }}
                             className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${examMode === 'custom' ? 'bg-white dark:bg-zinc-700 shadow-sm text-purple-600 dark:text-purple-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
                         >
                             Custom Subject Test
@@ -316,7 +316,7 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                     <span className="flex items-center justify-center w-5 h-5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs">3</span>
                     Scheduling & Access
                 </h3>
-                
+
                 <div className="space-y-3">
                     {/* Schedule Block */}
                     <div className="rounded-xl border border-gray-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900 shadow-sm">
@@ -439,7 +439,7 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                             onChange={(e) => setDescription(e.target.value)}
                             rows={3}
                             className="w-full p-3 border border-gray-200 dark:border-zinc-700 rounded-xl bg-gray-50 dark:bg-zinc-800/50 dark:text-white text-sm focus:ring-2 focus:ring-orange-500 outline-none transition resize-y"
-                            placeholder="Welcome to this GATECode contest..."
+                            placeholder="Welcome to this CDACode contest..."
                         />
                     </div>
 
@@ -481,7 +481,7 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                                             newPrizes[idx] = { ...newPrizes[idx], prize: e.target.value };
                                             setPrizes(newPrizes);
                                         }}
-                                        placeholder="Prize (e.g. GATECode Premium)"
+                                        placeholder="Prize (e.g. CDACode Premium)"
                                         className="flex-1 p-2.5 border border-gray-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 dark:text-white text-sm focus:ring-2 focus:ring-orange-500 outline-none shadow-sm"
                                     />
                                     <button

@@ -4,8 +4,8 @@ import HomeClient from "./HomeClient";
 import { Question } from "@/data/mockData";
 
 export const metadata: Metadata = {
-    title: "GATECode",
-    description: "Join GATECode to practice verified C-CAT questions. Track your progress, compete on the leaderboard, and master concepts with AI explanations.",
+    title: "CDACode",
+    description: "Join CDACode to practice verified C-CAT questions. Track your progress, compete on the leaderboard, and master concepts with AI explanations.",
 };
 
 export default async function Home() {

@@ -288,11 +288,11 @@ export default function HomeClient({
               {/* Premium Gradient Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-orange-500 to-red-500" />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_38%,rgba(255,255,255,0.25),transparent_65%)]" />
-              
+
               {/* Decorative Elements */}
               <div className="absolute -bottom-10 -right-10 w-56 h-56 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15),transparent_70%)]" />
               <div className="absolute top-3 right-10 w-16 h-16 rounded-full border border-white/10" />
-              
+
               {/* Lightning Illustration */}
               <div className="absolute bottom-6 right-4 select-none leading-none filter drop-shadow-[0_12px_32px_rgba(0,0,0,0.4)] transition-transform duration-700 group-hover:-translate-y-3 group-hover:scale-110">
                 <span className="text-[80px] drop-shadow-lg">⚡</span>
@@ -325,7 +325,7 @@ export default function HomeClient({
               {/* Premium Gradient Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-violet-600 to-purple-700" />
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_72%_28%,rgba(255,255,255,0.2),transparent_60%)]" />
-              
+
               {/* Decorative Elements */}
               <div className="absolute -bottom-10 -left-10 w-56 h-56 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12),transparent_70%)]" />
               <div className="absolute top-3 left-10 w-16 h-16 rounded-full border border-white/10" />
@@ -574,7 +574,7 @@ export default function HomeClient({
                   Ready to crack C-CAT?
                 </h3>
                 <p className="text-blue-100 mb-8 max-w-2xl text-lg">
-                  Join thousands of students practicing with GATECode. Track your progress, identify weak subjects, and master your branch today.
+                  Join thousands of students practicing with CDACode. Track your progress, identify weak subjects, and master your branch today.
                 </p>
                 <Link
                   href="/login"

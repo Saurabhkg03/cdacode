@@ -1,5 +1,6 @@
 {
   "projects": {
+    "default": "cdacode",
     "staging": "gatecode-1"
   },
   "targets": {},

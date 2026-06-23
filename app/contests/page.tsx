@@ -425,11 +425,11 @@ const ContestsPage = () => {
                 conditions.push(where("type", "==", "mock"));
             }
 
-            // Dropdown Filters
-            if (selectedBranch !== "All") {
-                const dbBranch = mapPageBranchToDbBranch(selectedBranch);
-                conditions.push(where("branch", "==", dbBranch));
-            }
+            // Removed branch filter as per user request to show all created contests
+            // if (selectedBranch !== "All") {
+            //     const dbBranch = mapPageBranchToDbBranch(selectedBranch);
+            //     conditions.push(where("branch", "==", dbBranch));
+            // }
             if (selectedDifficulty !== "All") {
                 conditions.push(where("difficulty", "==", selectedDifficulty));
             }
@@ -575,20 +575,20 @@ const ContestsPage = () => {
             if (selectedDuration === "Long (> 90m)" && c.durationMinutes <= 90) return false;
         }
 
-        // Filter out weekly/biweekly contests of other branches
-        const isWeeklyBiweekly = c.id.startsWith("weekly-") || 
-                                 c.id.startsWith("biweekly-") || 
-                                 c.title.toLowerCase().includes("weekly") || 
-                                 c.title.toLowerCase().includes("biweekly");
-        if (isWeeklyBiweekly) {
-            const dbBranch = c.section?.toLowerCase();
-            const targetBranch = selectedBranch !== "All"
-                ? mapPageBranchToDbBranch(selectedBranch)
-                : globalBranch?.toLowerCase();
-            if (dbBranch && targetBranch && dbBranch !== targetBranch) {
-                return false;
-            }
-        }
+        // Removed weekly/biweekly branch local filtering
+        // const isWeeklyBiweekly = c.id.startsWith("weekly-") || 
+        //                          c.id.startsWith("biweekly-") || 
+        //                          c.title.toLowerCase().includes("weekly") || 
+        //                          c.title.toLowerCase().includes("biweekly");
+        // if (isWeeklyBiweekly) {
+        //     const dbBranch = c.section?.toLowerCase();
+        //     const targetBranch = selectedBranch !== "All"
+        //         ? mapPageBranchToDbBranch(selectedBranch)
+        //         : globalBranch?.toLowerCase();
+        //     if (dbBranch && targetBranch && dbBranch !== targetBranch) {
+        //         return false;
+        //     }
+        // }
         return true;
     });
 

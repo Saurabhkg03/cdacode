@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gatecode.co.in/sitemap.xml
+Sitemap: https://CDACode.co.in/sitemap.xml

@@ -34,6 +34,7 @@ export interface Contest {
     title: string;
     type?: 'admin' | 'mock';
     section?: string;
+    branch?: string;
     createdBy?: string;
     isPublic?: boolean;
     isRated?: boolean; // True for Weekly/Biweekly, False for Mocks

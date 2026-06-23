@@ -59,14 +59,14 @@ service cloud.firestore {
 
     // 2. Questions (Dynamic Collections like questions_ece, questions_cse, AND main 'questions')
     match /{collectionName}/{questionId} {
-      // Allow read for generic 'questions', 'questions_*', AND 'gate_questions_*'
-      allow read: if collectionName == 'questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*');
+      // Allow read for generic 'questions', 'questions_*', 'gate_questions_*', and 'ccat_questions'
+      allow read: if collectionName == 'questions' || collectionName == 'ccat_questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*');
       
       // Full access for admins
-      allow create, delete: if (collectionName == 'questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*')) && isSignedIn() && isAdmin();
+      allow create, delete: if (collectionName == 'questions' || collectionName == 'ccat_questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*')) && isSignedIn() && isAdmin();
       
       // Controlled update for accuracy stats
-      allow update: if (collectionName == 'questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*')) && isSignedIn() && (
+      allow update: if (collectionName == 'questions' || collectionName == 'ccat_questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*')) && isSignedIn() && (
         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attempts', 'correctCount', 'accuracy']) ||
         isAdmin()
       );
@@ -74,6 +74,11 @@ service cloud.firestore {
 
     // 3. Metadata (Read-only for public, Write for admins)
     match /metadata/{branch} {
+      allow read: if true;
+      allow write: if isSignedIn() && isAdmin();
+    }
+    
+    match /ccat_metadata/{docId} {
       allow read: if true;
       allow write: if isSignedIn() && isAdmin();
     }

@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'GATECode',
-    short_name: 'GATECode',
-    description: 'Master C-CAT with GATECode',
+    name: 'CDACode',
+    short_name: 'CDACode',
+    description: 'Master C-CAT with CDACode',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',

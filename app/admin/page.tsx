@@ -31,6 +31,8 @@ import { Contest } from '@/types/exam';
 import { AdminPanelSkeleton } from '@/components/Skeletons';
 import JsonImportModal from '@/components/admin/JsonImportModal';
 import ContestGenerator from '@/components/admin/ContestGenerator';
+import AIContestGenerator from '@/components/admin/AIContestGenerator';
+import QuestionGenerator from '@/components/admin/QuestionGenerator';
 
 type AdminView = 'pending' | 'all' | 'contests';
 const PAGE_SIZE = 10;
@@ -416,7 +418,14 @@ export default function AdminPage() {
                     <div className="space-y-6">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                             <ContestGenerator isAdminContest={true} onContestCreated={() => { alert("Contest created securely."); fetchAdminContests(); }} />
-                            
+                            <QuestionGenerator onGenerationSuccess={() => { fetchQuestions(1, 'first'); }} />
+                        </div>
+                        
+                        <div className="mb-6">
+                            <AIContestGenerator />
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
                             <div className="bg-white dark:bg-zinc-950 p-6 rounded-2xl border border-gray-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center">
                                 <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-2">
                                     <Shield className="w-5 h-5 text-indigo-500" /> Platform Seeding

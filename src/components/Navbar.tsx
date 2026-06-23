@@ -103,7 +103,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2 font-bold text-zinc-900 dark:text-white shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="C-DAC C-CAT Logo" className="w-8 h-8 rounded-lg" />
-            <span className="text-xl tracking-tight">C-DAC C-CAT</span>
+            <span className="text-xl tracking-tight">CDACode</span>
           </Link>
 
           {/* Desktop Navigation */}
