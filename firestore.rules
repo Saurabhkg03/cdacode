@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+    
+    // Check if user is logged in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Check if the user accessing the doc is the owner
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // Check if user has admin/moderator role
+    function isAdmin() {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'moderator'];
+    }
+
+    // --- Collection Rules ---
+
+    // 1. Users Collection
+    match /users/{userId} {
+      allow create, delete: if isSignedIn() && isOwner(userId);
+      allow update: if isSignedIn() && isOwner(userId) &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'rating', 'branchRatings', 'stats']);
+      
+      // Allow PUBLIC read for Leaderboard visibility
+      allow read: if true; 
+      
+      // Publicly readable submissions (for profile view)
+      match /submissions/{submissionId} {
+        allow read: if true;
+        allow write: if isSignedIn() && isOwner(userId);
+      }
+
+      // Bookmarks
+      match /bookmarks/{bookmarkId} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+
+      // User Question Data
+      match /userQuestionData/{dataId} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+
+      // Question Lists
+      match /questionLists/{listId} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+
+      // Other User Subcollections (Stats, etc.) - RESTRICTED
+      match /{document=**} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+    }
+
+    // 2. Questions (Dynamic Collections like questions_ece, questions_cse, AND main 'questions')
+    match /{collectionName}/{questionId} {
+      // Allow read for generic 'questions', 'questions_*', AND 'gate_questions_*'
+      allow read: if collectionName == 'questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*');
+      
+      // Full access for admins
+      allow create, delete: if (collectionName == 'questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*')) && isSignedIn() && isAdmin();
+      
+      // Controlled update for accuracy stats
+      allow update: if (collectionName == 'questions' || collectionName.matches('questions_.*') || collectionName.matches('gate_questions_.*')) && isSignedIn() && (
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attempts', 'correctCount', 'accuracy']) ||
+        isAdmin()
+      );
+    }
+
+    // 3. Metadata (Read-only for public, Write for admins)
+    match /metadata/{branch} {
+      allow read: if true;
+      allow write: if isSignedIn() && isAdmin();
+    }
+
+    // 4. Contests
+    match /contests/{contestId} {
+      // Allow PUBLIC read so logged-out users can see contest list
+      allow read: if true;
+
+      // Allow users to create (for Seeding purposes - restrict to Admin in logic if needed, but Rule allows signedIn)
+      allow create: if isSignedIn();
+      
+      // Allow admin to delete
+      allow delete: if isAdmin();
+
+      // Updates:
+      allow update: if isSignedIn() && (
+        // Allow user to add themselves to participants only
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['participants']) ||
+        isAdmin()
+      );
+
+      // Contest Submissions Subcollection
+      match /submissions/{userId} {
+        // Users can read/write their OWN submission
+        allow write: if isSignedIn() && isOwner(userId);
+        
+        // Allow PUBLIC read for Contest Leaderboards
+        allow read: if true;
+      }
+    }
+    // 5. Contest Attempts (Exam Sessions)
+    match /contest_attempts/{attemptId} {
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      // Allow public read for Leaderboard
+      allow read: if true;
+    }
+
+    // 6. Contest Registrations
+    match /contestRegistrations/{regId} {
+      // Users can read if it doesn't exist yet, or if they own it
+      allow read: if isSignedIn() && (resource == null || request.auth.uid == resource.data.uid);
+      // Allow update, delete if they own it
+      allow update, delete: if isSignedIn() && request.auth.uid == resource.data.uid;
+      // Allow create if they set themselves as the uid
+      allow create: if isSignedIn() && request.auth.uid == request.resource.data.uid;
+    }
+  }
+}
