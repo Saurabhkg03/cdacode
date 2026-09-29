@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Loader2, BookOpen, Bookmark, Calendar, RotateCcw, Save, Timer as TimerIcon, Play, Pause, LogIn, Check as CheckIcon, X as XIcon, FolderPlus, ListPlus, ClipboardList } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, Circle, Loader2, BookOpen, Bookmark, Calendar, RotateCcw, Save, Timer as TimerIcon, Play, Pause, LogIn, Check as CheckIcon, X as XIcon, FolderPlus, ListPlus, ClipboardList } from 'lucide-react';
 import Image from 'next/image';
 
 import { doc, getDoc, setDoc, collection, getDocs, arrayUnion, arrayRemove, query, serverTimestamp, writeBatch, orderBy, addDoc, increment } from 'firebase/firestore';
@@ -363,12 +363,10 @@ export default function QuestionClient({ id }: { id: string }) {
 
                         if (submissionSnap.exists()) {
                             const sub = submissionSnap.data() as Submission;
-                            if (sub.section === selectedBranch) {
-                                setSubmitted(true);
-                                setIsCorrect(sub.correct);
-                                setSelectedOptions(sub.selectedOptions || []);
-                                setTimeElapsed(sub.timeTaken || 0);
-                            }
+                            setSubmitted(true);
+                            setIsCorrect(Boolean(sub.correct));
+                            setSelectedOptions(sub.selectedOptions || []);
+                            setTimeElapsed(sub.timeTaken || 0);
                         }
                         if (userQuestionDataSnap.exists()) {
                             const data = userQuestionDataSnap.data() as UserQuestionData;
@@ -700,6 +698,13 @@ export default function QuestionClient({ id }: { id: string }) {
     const otherTags = (question.tags || []).filter(tag => tag && !primaryInfo.has(tag.toLowerCase()));
 
 
+    const submissionStatus: 'correct' | 'incorrect' | 'unattempted' =
+        (!isAuthenticated || !submitted)
+            ? 'unattempted'
+            : isCorrect
+                ? 'correct'
+                : 'incorrect';
+
     return (
         <>
             {isAuthenticated && user && id && (
@@ -716,13 +721,37 @@ export default function QuestionClient({ id }: { id: string }) {
 
                     {/* Top Navigation Bar */}
                     <div className="flex justify-between items-center mb-4 shrink-0 px-4 sm:px-8">
-                        <button
-                            onClick={() => router.push('/practice')}
-                            className="flex items-center gap-2 text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors uppercase tracking-wide"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Back to List
-                        </button>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => router.push('/practice')}
+                                className="flex items-center gap-2 text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors uppercase tracking-wide"
+                            >
+                                <ArrowLeft className="w-4 h-4" />
+                                Back to List
+                            </button>
+
+                            <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800 hidden sm:block" />
+
+                            {/* Status Indicator in Top Bar */}
+                            <div className="hidden sm:flex items-center">
+                                {submissionStatus === 'correct' ? (
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
+                                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
+                                        Solved
+                                    </span>
+                                ) : submissionStatus === 'incorrect' ? (
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/60">
+                                        <XCircle className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
+                                        Attempted
+                                    </span>
+                                ) : (
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/60">
+                                        <Circle className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+                                        Unsolved
+                                    </span>
+                                )}
+                            </div>
+                        </div>
 
                         <div className="flex items-center gap-2">
                             <button
@@ -758,15 +787,41 @@ export default function QuestionClient({ id }: { id: string }) {
                                     <div className="flex flex-col gap-4">
 
                                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                            <div className="flex items-start gap-2">
-                                                {metadata?.allQuestionIds && metadata.allQuestionIds.indexOf(id) !== -1 && (
-                                                    <span className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight pt-0.5 md:pt-1">
-                                                        {metadata.allQuestionIds.indexOf(id) + 1}.
-                                                    </span>
-                                                )}
-                                                <h1 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight pt-0.5 md:pt-1">
-                                                    {question.title}
-                                                </h1>
+                                            <div className="flex items-start gap-2.5">
+                                                {/* Status Indicator Tick */}
+                                                <div
+                                                    className="flex-shrink-0 pt-1 md:pt-1.5"
+                                                    title={
+                                                        submissionStatus === 'correct'
+                                                            ? 'Solved'
+                                                            : submissionStatus === 'incorrect'
+                                                                ? 'Attempted'
+                                                                : 'Unsolved'
+                                                    }
+                                                >
+                                                    {submissionStatus === 'correct' ? (
+                                                        <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-emerald-500 dark:text-emerald-400" />
+                                                    ) : submissionStatus === 'incorrect' ? (
+                                                        <XCircle className="w-5 h-5 md:w-6 md:h-6 text-red-500 dark:text-red-400" />
+                                                    ) : (
+                                                        <Circle className="w-5 h-5 md:w-6 md:h-6 text-zinc-300 dark:text-zinc-600" />
+                                                    )}
+                                                </div>
+
+                                                <div className="flex items-baseline gap-2 flex-wrap">
+                                                    {question.qIndex ? (
+                                                        <span className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">
+                                                            {question.qIndex}.
+                                                        </span>
+                                                    ) : metadata?.allQuestionIds && metadata.allQuestionIds.indexOf(id) !== -1 ? (
+                                                        <span className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">
+                                                            {metadata.allQuestionIds.indexOf(id) + 1}.
+                                                        </span>
+                                                    ) : null}
+                                                    <h1 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight">
+                                                        {question.title}
+                                                    </h1>
+                                                </div>
                                             </div>
 
                                             {/* Toolbar */}
@@ -824,11 +879,34 @@ export default function QuestionClient({ id }: { id: string }) {
                                             </div>
                                         </div>
 
-                                        {/* Tags */}
+                                        {/* Tags & Status */}
                                         <div className="flex flex-wrap items-center gap-2">
+                                            {/* Status Badge */}
+                                            {submissionStatus === 'correct' ? (
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
+                                                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
+                                                    Solved
+                                                </span>
+                                            ) : submissionStatus === 'incorrect' ? (
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/60 shadow-xs">
+                                                    <XCircle className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
+                                                    Attempted
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/60 shadow-xs">
+                                                    <Circle className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+                                                    Unsolved
+                                                </span>
+                                            )}
+
                                             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide uppercase ${getQuestionTypeColor(question.question_type)}`}>
                                                 {question.question_type || 'MCQ'}
                                             </span>
+                                            {question.accuracy !== undefined && question.attempts !== undefined && question.attempts > 0 && (
+                                                <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/50">
+                                                    Accuracy: {question.accuracy.toFixed(1)}%
+                                                </span>
+                                            )}
                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/50">
                                                 <BookOpen className="w-3 h-3" /> {question.subject}
                                             </span>
