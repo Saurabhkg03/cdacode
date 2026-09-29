@@ -255,6 +255,8 @@ function PracticeContent() {
                 // 2. Query Configuration
                 if (sortOrder === 'year-desc') constraints.push(orderBy('year', 'desc'));
                 else if (sortOrder === 'year-asc') constraints.push(orderBy('year', 'asc'));
+                else if (sortOrder === 'qIndex-desc') constraints.push(orderBy('qIndex', 'desc'));
+                else constraints.push(orderBy('qIndex', 'asc')); // Default to qIndex-asc
 
                 // Guest limitation: if they are guest, we only let them fetch the first page
                 if (!user && pageToFetch > 1) {

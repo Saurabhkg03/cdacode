@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { db } from '@/firebase';
-import { collection, writeBatch, doc, setDoc, getDoc } from 'firebase/firestore';
+import { collection, writeBatch, doc, setDoc, getDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { X, Upload, FileJson, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 interface JsonImportModalProps {
@@ -156,6 +156,18 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 }
                 addLog("✅ Metadata calculated.");
 
+                // --- Part 1.5: Determine Starting qIndex from Metadata ---
+                addLog("Fetching existing metadata to determine next available index...");
+                const globalMetadataRef = doc(db, "ccat_metadata", "global");
+                const globalMetadataSnap = await getDoc(globalMetadataRef);
+                let existingData: any = { allQuestionIds: [], subjects: [], topics: [], subjectCounts: {} };
+                if (globalMetadataSnap.exists()) {
+                    existingData = globalMetadataSnap.data();
+                }
+                
+                let startingQIndex = (existingData.allQuestionIds || []).length;
+                addLog(`Found ${startingQIndex} existing questions in metadata. Starting index at ${startingQIndex}.`);
+
                 // --- Part 2: Seed Questions ---
                 const targetCollectionName = `ccat_questions`;
                 addLog(`Starting database upload to '${targetCollectionName}'...`);
@@ -177,9 +189,13 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                     const branch = q.branch || selectedBranch;
                     const topic = q.topic || "General";
                     const year = q.year || "N/A";
-                    const sequentialIndex = i + 1;
-                    const newLabel = `Question ${sequentialIndex}`;
-                    const title = q.title || newLabel;
+                    
+                    // Automatically append to the last known qIndex
+                    const autoIndex = startingQIndex + i + 1;
+                    
+                    const newLabel = `Question ${autoIndex}`;
+                    // Override the title with the auto-generated sequential label to avoid collisions
+                    const title = newLabel;
 
                     const question_images = extractOriginalImageUrls(q.question_images);
                     const explanation_images = extractOriginalImageUrls(q.explanation_images);
@@ -226,8 +242,8 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                         verified: false,
                         attempts: 0,
                         accuracy: 0,
-                        // Add an index for sorting if needed, or rely on title parsing
-                        qIndex: sequentialIndex // Sequential index as per user request
+                        // Automatically append index to prevent collisions
+                        qIndex: autoIndex
                     };
 
                     batch.set(docRef, questionData);
@@ -265,13 +281,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 // OR we can fetch existing metadata first. 
                 // For now, I will derive them from the mapped data to ensure self-consistency.
 
-                // Fetch existing metadata to merge
-                const globalMetadataRef = doc(db, "ccat_metadata", "global");
-                const globalMetadataSnap = await getDoc(globalMetadataRef);
-                let existingData: any = { allQuestionIds: [], subjects: [], topics: [], subjectCounts: {} };
-                if (globalMetadataSnap.exists()) {
-                    existingData = globalMetadataSnap.data();
-                }
+                // We already fetched existing metadata in Part 1.5 (existingData)
 
                 const finalSubjects = Array.from(new Set([...(existingData.subjects || []), ...Object.keys(subjectCounts)])).sort();
                 const finalTopics = Array.from(new Set([...(existingData.topics || []), ...Object.keys(topicCounts)])).sort();
