@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { db } from '@/firebase';
-import { collection, writeBatch, doc, setDoc } from 'firebase/firestore';
+import { collection, writeBatch, doc, setDoc, getDoc } from 'firebase/firestore';
 import { X, Upload, FileJson, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 interface JsonImportModalProps {
@@ -157,7 +157,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 addLog("✅ Metadata calculated.");
 
                 // --- Part 2: Seed Questions ---
-                const targetCollectionName = `questions_${selectedBranch.toLowerCase()}`;
+                const targetCollectionName = `ccat_questions`;
                 addLog(`Starting database upload to '${targetCollectionName}'...`);
 
                 const questionsCollection = collection(db, targetCollectionName);
@@ -265,11 +265,21 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 // OR we can fetch existing metadata first. 
                 // For now, I will derive them from the mapped data to ensure self-consistency.
 
-                const finalSubjects = Object.keys(subjectCounts).sort();
-                const finalTopics = Object.keys(topicCounts).sort();
-                const finalYears = Object.keys(yearCounts).sort();
-                // Tags are harder to aggregate efficiently without a massive Set, but we can try or just leave empty/basic.
-                // seed6 used a pre-existing list. I'll just use a generic list or derived types.
+                // Fetch existing metadata to merge
+                const globalMetadataRef = doc(db, "ccat_metadata", "global");
+                const globalMetadataSnap = await getDoc(globalMetadataRef);
+                let existingData: any = { allQuestionIds: [], subjects: [], topics: [], subjectCounts: {} };
+                if (globalMetadataSnap.exists()) {
+                    existingData = globalMetadataSnap.data();
+                }
+
+                const finalSubjects = Array.from(new Set([...(existingData.subjects || []), ...Object.keys(subjectCounts)])).sort();
+                const finalTopics = Array.from(new Set([...(existingData.topics || []), ...Object.keys(topicCounts)])).sort();
+                
+                const mergedSubjectCounts = { ...(existingData.subjectCounts || {}) };
+                for (const [subj, count] of Object.entries(subjectCounts)) {
+                    mergedSubjectCounts[subj] = (mergedSubjectCounts[subj] || 0) + count;
+                }
 
                 // Sorting for Daily Challenge
                 questionsForSorting.sort((a, b) => {
@@ -278,19 +288,21 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                     return numA - numB;
                 });
                 const sortedQuestionIds = questionsForSorting.map(q => q.id);
+                
+                const finalAllQuestionIds = Array.from(new Set([...(existingData.allQuestionIds || []), ...sortedQuestionIds]));
 
                 const finalMetadata = {
-                    branch: selectedBranch,
+                    branch: "global",
                     subjects: finalSubjects,
                     topics: finalTopics,
-                    years: finalYears,
-                    tags: [], // Leaving empty or you could aggregate from questions if needed
+                    years: Object.keys(yearCounts).sort(), // Not strictly merged but okay for now
+                    tags: [],
 
                     branches: Array.from(allBranches).sort(),
                     questionTypes: Array.from(allQuestionTypes).sort(),
-                    questionCount: totalQuestionCount,
+                    questionCount: finalAllQuestionIds.length,
 
-                    subjectCounts,
+                    subjectCounts: mergedSubjectCounts,
                     topicCounts,
                     yearCounts,
                     branchCounts,
@@ -299,13 +311,12 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                     subjectTopicMap: convertMapOfSetsToSortedArrays(subjectTopicMap),
                     branchSubjectMap: convertMapOfSetsToSortedArrays(branchSubjectMap),
 
-                    allQuestionIds: sortedQuestionIds,
+                    allQuestionIds: finalAllQuestionIds,
                     lastUpdated: new Date().toISOString()
                 };
 
-                // Write to branch-specific metadata document (e.g., metadata/ece)
-                // IMPORTANT: Ensure branch ID is lowercase to match MetadataContext expectations
-                await setDoc(doc(db, "metadata", selectedBranch.toLowerCase()), finalMetadata);
+                // Write to global metadata document
+                await setDoc(globalMetadataRef, finalMetadata, { merge: true });
 
                 addLog("✅ Metadata document updated successfully.");
                 addLog("🎉 All Done!");

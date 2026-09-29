@@ -1,0 +1,1127 @@
+[
+  {
+    "question_html": "<p>Which SQL clause is used to filter individual rows before grouping and aggregation?</p>",
+    "question_text": "Which SQL clause is used to filter individual rows before grouping and aggregation?",
+    "subject": "SQL",
+    "topic": "WHERE Clause",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 1",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "WHERE",
+        "text": "WHERE",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "HAVING",
+        "text": "HAVING",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "GROUP BY",
+        "text": "GROUP BY",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "ORDER BY",
+        "text": "ORDER BY",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> The <code>WHERE</code> clause filters individual rows before grouping and aggregation take place. For example, <code>SELECT * FROM employees WHERE salary &gt; 50000;</code> returns only employees whose salary is greater than 50000. The <code>HAVING</code> clause is used to filter groups after aggregation.</p>",
+    "explanation_text": "The WHERE clause filters individual rows before grouping and aggregation take place. For example, SELECT * FROM employees WHERE salary > 50000; returns only employees whose salary is greater than 50000. The HAVING clause is used to filter groups after aggregation.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "WHERE", "Filtering"],
+    "question_id": "dbda_sql_001"
+  },
+  {
+    "question_html": "<p>Which SQL constraint uniquely identifies each row in a table and does not allow NULL values?</p>",
+    "question_text": "Which SQL constraint uniquely identifies each row in a table and does not allow NULL values?",
+    "subject": "SQL",
+    "topic": "Constraints",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 2",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "FOREIGN KEY",
+        "text": "FOREIGN KEY",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "PRIMARY KEY",
+        "text": "PRIMARY KEY",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "CHECK",
+        "text": "CHECK",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "DEFAULT",
+        "text": "DEFAULT",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> A <code>PRIMARY KEY</code> uniquely identifies every row in a table. Primary key values must be unique and cannot be NULL. A table can have only one primary key constraint, although it may contain multiple columns as part of a composite primary key.</p>",
+    "explanation_text": "A PRIMARY KEY uniquely identifies every row in a table. Primary key values must be unique and cannot be NULL. A table can have only one primary key constraint, although it may contain multiple columns as part of a composite primary key.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Constraints", "Primary Key"],
+    "question_id": "dbda_sql_002"
+  },
+  {
+    "question_html": "<p>Which SQL statement removes all rows from a table while keeping the table structure intact?</p>",
+    "question_text": "Which SQL statement removes all rows from a table while keeping the table structure intact?",
+    "subject": "SQL",
+    "topic": "DELETE and TRUNCATE",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 3",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "DROP TABLE employees;",
+        "text": "DROP TABLE employees;",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "DELETE DATABASE employees;",
+        "text": "DELETE DATABASE employees;",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "TRUNCATE TABLE employees;",
+        "text": "TRUNCATE TABLE employees;",
+        "is_correct": true
+      },
+      {
+        "label": "D",
+        "text_html": "REMOVE TABLE employees;",
+        "text": "REMOVE TABLE employees;",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>TRUNCATE TABLE</code> removes all rows from a table while retaining the table definition. <code>DROP TABLE</code> removes both the table structure and its data. <code>DELETE</code> removes rows and can use a <code>WHERE</code> clause to selectively delete records. Transaction behavior of TRUNCATE can vary between database systems.</p>",
+    "explanation_text": "TRUNCATE TABLE removes all rows from a table while retaining the table definition. DROP TABLE removes both the table structure and its data. DELETE removes rows and can use a WHERE clause to selectively delete records. Transaction behavior of TRUNCATE can vary between database systems.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "TRUNCATE", "DELETE", "DDL", "DML"],
+    "question_id": "dbda_sql_003"
+  },
+  {
+    "question_html": "<p>Which aggregate function is used to calculate the average value of a numeric column?</p>",
+    "question_text": "Which aggregate function is used to calculate the average value of a numeric column?",
+    "subject": "SQL",
+    "topic": "Aggregate Functions",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 4",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "SUM()",
+        "text": "SUM()",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "AVG()",
+        "text": "AVG()",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "MEAN()",
+        "text": "MEAN()",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "AVERAGE()",
+        "text": "AVERAGE()",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>AVG()</code> calculates the arithmetic mean of the non-NULL values in a numeric column. Other commonly used aggregate functions are <code>SUM()</code>, <code>COUNT()</code>, <code>MIN()</code>, and <code>MAX()</code>.</p>",
+    "explanation_text": "AVG() calculates the arithmetic mean of the non-NULL values in a numeric column. Other commonly used aggregate functions are SUM(), COUNT(), MIN(), and MAX().",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Aggregate Functions", "AVG"],
+    "question_id": "dbda_sql_004"
+  },
+  {
+    "question_html": "<p>Consider the table <code>employees</code> with columns <code>department</code> and <code>salary</code>. Which query calculates the average salary for every department?</p>",
+    "question_text": "Consider the table employees with columns department and salary. Which query calculates the average salary for every department?",
+    "subject": "SQL",
+    "topic": "GROUP BY",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 5",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "SELECT department, AVG(salary) FROM employees GROUP BY department;",
+        "text": "SELECT department, AVG(salary) FROM employees GROUP BY department;",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "SELECT department, AVG(salary) FROM employees;",
+        "text": "SELECT department, AVG(salary) FROM employees;",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "SELECT AVG(salary) FROM employees GROUP BY salary;",
+        "text": "SELECT AVG(salary) FROM employees GROUP BY salary;",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "SELECT department FROM employees GROUP BY AVG(salary);",
+        "text": "SELECT department FROM employees GROUP BY AVG(salary);",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>GROUP BY department</code> creates one group for each department. <code>AVG(salary)</code> is then calculated independently for every group. Therefore, the query returns each department along with its average salary.</p>",
+    "explanation_text": "GROUP BY department creates one group for each department. AVG(salary) is then calculated independently for every group. Therefore, the query returns each department along with its average salary.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "GROUP BY", "Aggregation"],
+    "question_id": "dbda_sql_005"
+  },
+  {
+    "question_html": "<p>Which clause is used to filter groups after aggregate functions have been applied?</p>",
+    "question_text": "Which clause is used to filter groups after aggregate functions have been applied?",
+    "subject": "SQL",
+    "topic": "HAVING Clause",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 6",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "WHERE",
+        "text": "WHERE",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "HAVING",
+        "text": "HAVING",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "FILTER",
+        "text": "FILTER",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "ORDER BY",
+        "text": "ORDER BY",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>HAVING</code> filters groups after the <code>GROUP BY</code> and aggregation phase. For example, <code>HAVING AVG(salary) &gt; 60000</code> keeps only departments whose average salary exceeds 60000. <code>WHERE</code> filters individual rows before grouping.</p>",
+    "explanation_text": "HAVING filters groups after the GROUP BY and aggregation phase. For example, HAVING AVG(salary) > 60000 keeps only departments whose average salary exceeds 60000. WHERE filters individual rows before grouping.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "HAVING", "GROUP BY"],
+    "question_id": "dbda_sql_006"
+  },
+  {
+    "question_html": "<p>Consider <code>employees(emp_id, name, dept_id)</code> and <code>departments(dept_id, dept_name)</code>. Which query correctly retrieves employee names and their department names?</p>",
+    "question_text": "Consider employees(emp_id, name, dept_id) and departments(dept_id, dept_name). Which query correctly retrieves employee names and their department names?",
+    "subject": "SQL",
+    "topic": "INNER JOIN",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 7",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "SELECT e.name, d.dept_name FROM employees e INNER JOIN departments d ON e.dept_id = d.dept_id;",
+        "text": "SELECT e.name, d.dept_name FROM employees e INNER JOIN departments d ON e.dept_id = d.dept_id;",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "SELECT e.name, d.dept_name FROM employees e INNER JOIN departments d ON e.name = d.dept_name;",
+        "text": "SELECT e.name, d.dept_name FROM employees e INNER JOIN departments d ON e.name = d.dept_name;",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "SELECT e.name, d.dept_name FROM employees e GROUP BY d.dept_id;",
+        "text": "SELECT e.name, d.dept_name FROM employees e GROUP BY d.dept_id;",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "SELECT e.name, d.dept_name FROM employees e WHERE e.dept_id != d.dept_id;",
+        "text": "SELECT e.name, d.dept_name FROM employees e WHERE e.dept_id != d.dept_id;",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> An <code>INNER JOIN</code> combines rows from two tables where the specified join condition matches. Here, <code>employees.dept_id</code> is matched with <code>departments.dept_id</code>. Only employees having a matching department record are returned.</p>",
+    "explanation_text": "An INNER JOIN combines rows from two tables where the specified join condition matches. Here, employees.dept_id is matched with departments.dept_id. Only employees having a matching department record are returned.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "JOIN", "INNER JOIN"],
+    "question_id": "dbda_sql_007"
+  },
+  {
+    "question_html": "<p>What happens when a row from the left table has no matching row in the right table during a LEFT JOIN?</p>",
+    "question_text": "What happens when a row from the left table has no matching row in the right table during a LEFT JOIN?",
+    "subject": "SQL",
+    "topic": "LEFT JOIN",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 8",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "The row from the left table is removed.",
+        "text": "The row from the left table is removed.",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "The row is retained and columns from the right table contain NULL.",
+        "text": "The row is retained and columns from the right table contain NULL.",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "The row is automatically duplicated.",
+        "text": "The row is automatically duplicated.",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "The query returns an error.",
+        "text": "The query returns an error.",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> A <code>LEFT JOIN</code> preserves every row from the left table. If no matching row exists in the right table, the right-table columns are returned as <code>NULL</code>. This makes LEFT JOIN useful for identifying records that do not have a corresponding record in another table.</p>",
+    "explanation_text": "A LEFT JOIN preserves every row from the left table. If no matching row exists in the right table, the right-table columns are returned as NULL. This makes LEFT JOIN useful for identifying records that do not have a corresponding record in another table.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "LEFT JOIN", "JOIN"],
+    "question_id": "dbda_sql_008"
+  },
+  {
+    "question_html": "<p>Which condition correctly checks whether a column contains a NULL value?</p>",
+    "question_text": "Which condition correctly checks whether a column contains a NULL value?",
+    "subject": "SQL",
+    "topic": "NULL Handling",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 9",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "WHERE manager_id = NULL",
+        "text": "WHERE manager_id = NULL",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "WHERE manager_id IS NULL",
+        "text": "WHERE manager_id IS NULL",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "WHERE manager_id == NULL",
+        "text": "WHERE manager_id == NULL",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "WHERE manager_id EQUALS NULL",
+        "text": "WHERE manager_id EQUALS NULL",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> SQL uses <code>IS NULL</code> to test whether a value is NULL. Normal equality using <code>= NULL</code> does not work because NULL represents an unknown or missing value. Similarly, <code>IS NOT NULL</code> checks for non-NULL values.</p>",
+    "explanation_text": "SQL uses IS NULL to test whether a value is NULL. Normal equality using = NULL does not work because NULL represents an unknown or missing value. Similarly, IS NOT NULL checks for non-NULL values.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "NULL", "IS NULL"],
+    "question_id": "dbda_sql_009"
+  },
+  {
+    "question_html": "<p>Which query finds employees whose salary is greater than the average salary of all employees?</p>",
+    "question_text": "Which query finds employees whose salary is greater than the average salary of all employees?",
+    "subject": "SQL",
+    "topic": "Subqueries",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 10",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "SELECT * FROM employees WHERE salary &gt; (SELECT AVG(salary) FROM employees);",
+        "text": "SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "SELECT * FROM employees WHERE salary &gt; AVG(salary);",
+        "text": "SELECT * FROM employees WHERE salary > AVG(salary);",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "SELECT * FROM employees HAVING salary &gt; AVG(salary);",
+        "text": "SELECT * FROM employees HAVING salary > AVG(salary);",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "SELECT AVG(salary) FROM employees WHERE salary &gt; employees;",
+        "text": "SELECT AVG(salary) FROM employees WHERE salary > employees;",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> The subquery <code>SELECT AVG(salary) FROM employees</code> calculates a single average salary. The outer query compares every employee's salary against that value. Because the subquery returns one value, this is a scalar subquery.</p>",
+    "explanation_text": "The subquery SELECT AVG(salary) FROM employees calculates a single average salary. The outer query compares every employee's salary against that value. Because the subquery returns one value, this is a scalar subquery.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Subquery", "AVG"],
+    "question_id": "dbda_sql_010"
+  },
+  {
+    "question_html": "<p>Which operator is appropriate when a subquery can return multiple values?</p>",
+    "question_text": "Which operator is appropriate when a subquery can return multiple values?",
+    "subject": "SQL",
+    "topic": "Subqueries and IN",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 11",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "IN",
+        "text": "IN",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "IS",
+        "text": "IS",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "BETWEEN ONLY",
+        "text": "BETWEEN ONLY",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "EQUALS",
+        "text": "EQUALS",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> The <code>IN</code> operator tests whether a value belongs to a set of values. A subquery used with <code>IN</code> can return multiple rows. For example, <code>WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Pune')</code> finds employees belonging to departments located in Pune.</p>",
+    "explanation_text": "The IN operator tests whether a value belongs to a set of values. A subquery used with IN can return multiple rows. For example, WHERE dept_id IN (SELECT dept_id FROM departments WHERE location = 'Pune') finds employees belonging to departments located in Pune.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Subquery", "IN"],
+    "question_id": "dbda_sql_011"
+  },
+  {
+    "question_html": "<p>What does the EXISTS operator check in SQL?</p>",
+    "question_text": "What does the EXISTS operator check in SQL?",
+    "subject": "SQL",
+    "topic": "EXISTS",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 12",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "Whether a subquery returns at least one row",
+        "text": "Whether a subquery returns at least one row",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "Whether all columns contain unique values",
+        "text": "Whether all columns contain unique values",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "Whether a table has a primary key",
+        "text": "Whether a table has a primary key",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "Whether a column contains only numbers",
+        "text": "Whether a column contains only numbers",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>EXISTS</code> checks whether its subquery returns at least one row. It evaluates to TRUE if a matching row exists and FALSE otherwise. EXISTS is frequently used with correlated subqueries.</p>",
+    "explanation_text": "EXISTS checks whether its subquery returns at least one row. It evaluates to TRUE if a matching row exists and FALSE otherwise. EXISTS is frequently used with correlated subqueries.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "EXISTS", "Subquery"],
+    "question_id": "dbda_sql_012"
+  },
+  {
+    "question_html": "<p>Which keyword is used to define a Common Table Expression (CTE)?</p>",
+    "question_text": "Which keyword is used to define a Common Table Expression (CTE)?",
+    "subject": "SQL",
+    "topic": "CTE",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 13",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "WITH",
+        "text": "WITH",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "DEFINE",
+        "text": "DEFINE",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "TEMP",
+        "text": "TEMP",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "COMMON",
+        "text": "COMMON",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> A Common Table Expression is introduced using the <code>WITH</code> keyword. For example, <code>WITH high_salary AS (SELECT * FROM employees WHERE salary &gt; 60000) SELECT * FROM high_salary;</code>. CTEs make complex queries easier to organize and read.</p>",
+    "explanation_text": "A Common Table Expression is introduced using the WITH keyword. For example, WITH high_salary AS (SELECT * FROM employees WHERE salary > 60000) SELECT * FROM high_salary;. CTEs make complex queries easier to organize and read.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "CTE", "WITH"],
+    "question_id": "dbda_sql_013"
+  },
+  {
+    "question_html": "<p>Which window function assigns a unique sequential number to each row within a partition?</p>",
+    "question_text": "Which window function assigns a unique sequential number to each row within a partition?",
+    "subject": "SQL",
+    "topic": "ROW_NUMBER",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 14",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "ROW_NUMBER()",
+        "text": "ROW_NUMBER()",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "COUNT()",
+        "text": "COUNT()",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "NUMBER()",
+        "text": "NUMBER()",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "SEQUENCE()",
+        "text": "SEQUENCE()",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>ROW_NUMBER()</code> assigns a unique sequential integer to rows within a window. For example, <code>ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC)</code> gives each employee a unique position within their department according to salary.</p>",
+    "explanation_text": "ROW_NUMBER() assigns a unique sequential integer to rows within a window. For example, ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) gives each employee a unique position within their department according to salary.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Window Functions", "ROW_NUMBER"],
+    "question_id": "dbda_sql_014"
+  },
+  {
+    "question_html": "<p>Suppose salaries are 100000, 100000, and 90000. What ranks are produced by <code>RANK() OVER (ORDER BY salary DESC)</code>?</p>",
+    "question_text": "Suppose salaries are 100000, 100000, and 90000. What ranks are produced by RANK() OVER (ORDER BY salary DESC)?",
+    "subject": "SQL",
+    "topic": "RANK and DENSE_RANK",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 15",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "1, 1, 2",
+        "text": "1, 1, 2",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "1, 1, 3",
+        "text": "1, 1, 3",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "1, 2, 3",
+        "text": "1, 2, 3",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "0, 0, 1",
+        "text": "0, 0, 1",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>RANK()</code> assigns the same rank to tied values and leaves gaps after the tie. Therefore, the two employees earning 100000 both receive rank 1, while the employee earning 90000 receives rank 3. <code>DENSE_RANK()</code> would instead produce 1, 1, 2.</p>",
+    "explanation_text": "RANK() assigns the same rank to tied values and leaves gaps after the tie. Therefore, the two employees earning 100000 both receive rank 1, while the employee earning 90000 receives rank 3. DENSE_RANK() would instead produce 1, 1, 2.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "RANK", "DENSE_RANK", "Window Functions"],
+    "question_id": "dbda_sql_015"
+  },
+  {
+    "question_html": "<p>What is the purpose of <code>PARTITION BY</code> in a window function?</p>",
+    "question_text": "What is the purpose of PARTITION BY in a window function?",
+    "subject": "SQL",
+    "topic": "PARTITION BY",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 16",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "It permanently divides a table into separate tables.",
+        "text": "It permanently divides a table into separate tables.",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "It divides rows into logical groups for independent window calculations.",
+        "text": "It divides rows into logical groups for independent window calculations.",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "It deletes duplicate rows.",
+        "text": "It deletes duplicate rows.",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "It sorts all rows alphabetically.",
+        "text": "It sorts all rows alphabetically.",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>PARTITION BY</code> divides rows into logical groups for a window calculation. It does not physically split the table. For example, <code>RANK() OVER (PARTITION BY department ORDER BY salary DESC)</code> ranks employees independently within each department while retaining all employee rows.</p>",
+    "explanation_text": "PARTITION BY divides rows into logical groups for a window calculation. It does not physically split the table. For example, RANK() OVER (PARTITION BY department ORDER BY salary DESC) ranks employees independently within each department while retaining all employee rows.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Window Functions", "PARTITION BY"],
+    "question_id": "dbda_sql_016"
+  },
+  {
+    "question_html": "<p>Which statement correctly distinguishes GROUP BY from window functions?</p>",
+    "question_text": "Which statement correctly distinguishes GROUP BY from window functions?",
+    "subject": "SQL",
+    "topic": "GROUP BY vs Window Functions",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 17",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "GROUP BY generally collapses rows into groups, while window functions retain individual rows.",
+        "text": "GROUP BY generally collapses rows into groups, while window functions retain individual rows.",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "Window functions always remove duplicate rows.",
+        "text": "Window functions always remove duplicate rows.",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "GROUP BY cannot use aggregate functions.",
+        "text": "GROUP BY cannot use aggregate functions.",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "There is no difference between them.",
+        "text": "There is no difference between them.",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>GROUP BY</code> normally produces one result row per group, thereby collapsing multiple input rows. Window functions perform calculations across related rows but retain the individual rows. For example, <code>AVG(salary) OVER (PARTITION BY department)</code> can display the department average alongside every employee.</p>",
+    "explanation_text": "GROUP BY normally produces one result row per group, thereby collapsing multiple input rows. Window functions perform calculations across related rows but retain the individual rows. For example, AVG(salary) OVER (PARTITION BY department) can display the department average alongside every employee.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "GROUP BY", "Window Functions"],
+    "question_id": "dbda_sql_017"
+  },
+  {
+    "question_html": "<p>Which window function is commonly used to access the value from the previous row according to a specified ordering?</p>",
+    "question_text": "Which window function is commonly used to access the value from the previous row according to a specified ordering?",
+    "subject": "SQL",
+    "topic": "LAG and LEAD",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 18",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "LAG()",
+        "text": "LAG()",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "LEAD()",
+        "text": "LEAD()",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "PREVIOUS()",
+        "text": "PREVIOUS()",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "BACK()",
+        "text": "BACK()",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>LAG()</code> accesses a value from a preceding row according to the ordering specified in the window. Conversely, <code>LEAD()</code> accesses a value from a following row. These functions are widely used for time-series analysis, such as comparing current sales with previous-month sales.</p>",
+    "explanation_text": "LAG() accesses a value from a preceding row according to the ordering specified in the window. Conversely, LEAD() accesses a value from a following row. These functions are widely used for time-series analysis, such as comparing current sales with previous-month sales.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "LAG", "LEAD", "Window Functions"],
+    "question_id": "dbda_sql_018"
+  },
+  {
+    "question_html": "<p>Which SQL expression is used to implement conditional logic inside a query?</p>",
+    "question_text": "Which SQL expression is used to implement conditional logic inside a query?",
+    "subject": "SQL",
+    "topic": "CASE Expression",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 19",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "CASE",
+        "text": "CASE",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "SWITCH",
+        "text": "SWITCH",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "IFCASE",
+        "text": "IFCASE",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "CONDITION",
+        "text": "CONDITION",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> The <code>CASE</code> expression provides conditional logic in SQL. For example, <code>CASE WHEN salary &gt;= 100000 THEN 'High' ELSE 'Normal' END</code> can categorize employees according to salary. CASE can be used in SELECT, ORDER BY, aggregation expressions, and other contexts.</p>",
+    "explanation_text": "The CASE expression provides conditional logic in SQL. For example, CASE WHEN salary >= 100000 THEN 'High' ELSE 'Normal' END can categorize employees according to salary. CASE can be used in SELECT, ORDER BY, aggregation expressions, and other contexts.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "CASE", "Conditional Logic"],
+    "question_id": "dbda_sql_019"
+  },
+  {
+    "question_html": "<p>What does <code>COALESCE(a, b, c)</code> return?</p>",
+    "question_text": "What does COALESCE(a, b, c) return?",
+    "subject": "SQL",
+    "topic": "COALESCE and NULL Handling",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 20",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "The first non-NULL value among a, b, and c",
+        "text": "The first non-NULL value among a, b, and c",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "The last non-NULL value among a, b, and c",
+        "text": "The last non-NULL value among a, b, and c",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "The average of a, b, and c",
+        "text": "The average of a, b, and c",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "Always the value of c",
+        "text": "Always the value of c",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>COALESCE()</code> evaluates its arguments from left to right and returns the first value that is not NULL. For example, <code>COALESCE(phone, email, 'Not Available')</code> returns the phone number when available, otherwise the email, and finally the default text if both are NULL.</p>",
+    "explanation_text": "COALESCE() evaluates its arguments from left to right and returns the first value that is not NULL. For example, COALESCE(phone, email, 'Not Available') returns the phone number when available, otherwise the email, and finally the default text if both are NULL.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "COALESCE", "NULL"],
+    "question_id": "dbda_sql_020"
+  },
+  {
+    "question_html": "<p>Which statement correctly creates a view containing employees with salary greater than 80000?</p>",
+    "question_text": "Which statement correctly creates a view containing employees with salary greater than 80000?",
+    "subject": "SQL",
+    "topic": "Views",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 21",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "CREATE VIEW high_salary AS SELECT * FROM employees WHERE salary &gt; 80000;",
+        "text": "CREATE VIEW high_salary AS SELECT * FROM employees WHERE salary > 80000;",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "CREATE TABLE VIEW high_salary AS SELECT * FROM employees;",
+        "text": "CREATE TABLE VIEW high_salary AS SELECT * FROM employees;",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "MAKE VIEW high_salary FROM employees;",
+        "text": "MAKE VIEW high_salary FROM employees;",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "VIEW high_salary = SELECT * FROM employees;",
+        "text": "VIEW high_salary = SELECT * FROM employees;",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> The standard syntax for creating a view is <code>CREATE VIEW view_name AS SELECT ...</code>. A view stores a query definition that can be queried like a table. A normal view generally does not represent a separately stored copy of the result rows.</p>",
+    "explanation_text": "The standard syntax for creating a view is CREATE VIEW view_name AS SELECT .... A view stores a query definition that can be queried like a table. A normal view generally does not represent a separately stored copy of the result rows.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Views", "CREATE VIEW"],
+    "question_id": "dbda_sql_021"
+  },
+  {
+    "question_html": "<p>What is the primary purpose of an index in a relational database?</p>",
+    "question_text": "What is the primary purpose of an index in a relational database?",
+    "subject": "SQL",
+    "topic": "Indexes",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 22",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "To guarantee that every SQL query executes faster",
+        "text": "To guarantee that every SQL query executes faster",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "To improve the efficiency of suitable data retrieval operations",
+        "text": "To improve the efficiency of suitable data retrieval operations",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "To permanently replace the table",
+        "text": "To permanently replace the table",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "To automatically remove duplicate records",
+        "text": "To automatically remove duplicate records",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> An index is a data structure that can improve the efficiency of suitable lookup, filtering, joining, or sorting operations. However, indexes are not universally beneficial. They consume storage and may increase the cost of INSERT, UPDATE, and DELETE operations because index structures must also be maintained.</p>",
+    "explanation_text": "An index is a data structure that can improve the efficiency of suitable lookup, filtering, joining, or sorting operations. However, indexes are not universally beneficial. They consume storage and may increase the cost of INSERT, UPDATE, and DELETE operations because index structures must also be maintained.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Indexes", "Performance"],
+    "question_id": "dbda_sql_022"
+  },
+  {
+    "question_html": "<p>Which SQL command makes the changes of the current transaction permanent?</p>",
+    "question_text": "Which SQL command makes the changes of the current transaction permanent?",
+    "subject": "SQL",
+    "topic": "Transactions",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 23",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "SAVE",
+        "text": "SAVE",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "COMMIT",
+        "text": "COMMIT",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "PERSIST",
+        "text": "PERSIST",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "FINALIZE",
+        "text": "FINALIZE",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>COMMIT</code> completes a transaction and makes its changes permanent according to the transaction semantics of the database system. <code>ROLLBACK</code> is used to undo applicable changes that have not been committed.</p>",
+    "explanation_text": "COMMIT completes a transaction and makes its changes permanent according to the transaction semantics of the database system. ROLLBACK is used to undo applicable changes that have not been committed.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Transactions", "COMMIT", "ROLLBACK", "ACID"],
+    "question_id": "dbda_sql_023"
+  },
+  {
+    "question_html": "<p>Which command is used to undo applicable changes made during the current uncommitted transaction?</p>",
+    "question_text": "Which command is used to undo applicable changes made during the current uncommitted transaction?",
+    "subject": "SQL",
+    "topic": "Transactions",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 24",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "COMMIT",
+        "text": "COMMIT",
+        "is_correct": false
+      },
+      {
+        "label": "B",
+        "text_html": "ROLLBACK",
+        "text": "ROLLBACK",
+        "is_correct": true
+      },
+      {
+        "label": "C",
+        "text_html": "UNDO TABLE",
+        "text": "UNDO TABLE",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "REVERSE",
+        "text": "REVERSE",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>ROLLBACK</code> reverses applicable changes made during an uncommitted transaction. Transactions help group multiple database operations into a logical unit of work and are central to maintaining database consistency and the ACID model.</p>",
+    "explanation_text": "ROLLBACK reverses applicable changes made during an uncommitted transaction. Transactions help group multiple database operations into a logical unit of work and are central to maintaining database consistency and the ACID model.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Transactions", "ROLLBACK", "ACID"],
+    "question_id": "dbda_sql_024"
+  },
+  {
+    "question_html": "<p>Which query correctly assigns a row number to employees within each department, ordering employees by salary from highest to lowest?</p>",
+    "question_text": "Which query correctly assigns a row number to employees within each department, ordering employees by salary from highest to lowest?",
+    "subject": "SQL",
+    "topic": "Advanced Window Functions",
+    "year": "2026",
+    "branch": "DBDA",
+    "question_label": "Question 25",
+    "options": [
+      {
+        "label": "A",
+        "text_html": "SELECT *, ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rn FROM employees;",
+        "text": "SELECT *, ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rn FROM employees;",
+        "is_correct": true
+      },
+      {
+        "label": "B",
+        "text_html": "SELECT *, ROW_NUMBER() GROUP BY department ORDER BY salary DESC AS rn FROM employees;",
+        "text": "SELECT *, ROW_NUMBER() GROUP BY department ORDER BY salary DESC AS rn FROM employees;",
+        "is_correct": false
+      },
+      {
+        "label": "C",
+        "text_html": "SELECT *, RANK(department, salary) FROM employees;",
+        "text": "SELECT *, RANK(department, salary) FROM employees;",
+        "is_correct": false
+      },
+      {
+        "label": "D",
+        "text_html": "SELECT *, TOP(2) OVER department FROM employees;",
+        "text": "SELECT *, TOP(2) OVER department FROM employees;",
+        "is_correct": false
+      }
+    ],
+    "question_type": "mcq",
+    "nat_answer_min": null,
+    "nat_answer_max": null,
+    "explanation_redirect_url": null,
+    "explanation_html": "<p><strong>Explanation:</strong> <code>ROW_NUMBER()</code> assigns sequential numbers to rows. <code>PARTITION BY department</code> restarts the numbering for each department, while <code>ORDER BY salary DESC</code> puts the highest-paid employee first. This pattern can be placed inside a CTE or derived table and then filtered with <code>WHERE rn &lt;= 2</code> to obtain the top two employees from every department.</p>",
+    "explanation_text": "ROW_NUMBER() assigns sequential numbers to rows. PARTITION BY department restarts the numbering for each department, while ORDER BY salary DESC puts the highest-paid employee first. This pattern can be placed inside a CTE or derived table and then filtered with WHERE rn <= 2 to obtain the top two employees from every department.",
+    "question_images": [],
+    "explanation_images": [],
+    "tags": ["DBDA", "SQL", "Window Functions", "ROW_NUMBER", "CTE", "Top N"],
+    "question_id": "dbda_sql_025"
+  }
+]
