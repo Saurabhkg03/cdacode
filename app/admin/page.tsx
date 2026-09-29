@@ -30,6 +30,7 @@ import { Question } from '@/data/mockData';
 import { Contest } from '@/types/exam';
 import { AdminPanelSkeleton } from '@/components/Skeletons';
 import JsonImportModal from '@/components/admin/JsonImportModal';
+import PromptConfigModal from '@/components/admin/PromptConfigModal';
 import ContestGenerator from '@/components/admin/ContestGenerator';
 import AIContestGenerator from '@/components/admin/AIContestGenerator';
 import QuestionGenerator from '@/components/admin/QuestionGenerator';
@@ -280,6 +281,7 @@ export default function AdminPage() {
     };
 
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+    const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
 
     const handleImportSuccess = () => {
         // Refresh data after successful import
@@ -363,24 +365,39 @@ export default function AdminPage() {
                             Add New Question
                         </Link>
                         {userInfo?.role === 'admin' && (
-                            <button
-                                onClick={() => setIsImportModalOpen(true)}
-                                className="inline-flex items-center gap-2 bg-zinc-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-zinc-700 transition-all shadow hover:shadow-md border border-white/5"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-json"><path d="M10 12h4" /><path d="M14 12v4" /><path d="M2.5 12c0-1.7 1.3-3 3-3 2 0 4 1.3 4 3s-2 3-4 3c-1.7 0-3-1.3-3-3" /><path d="M14.5 9c0-.8.7-1.5 1.5-1.5h3c.8 0 1.5.7 1.5 1.5v3c0 .8-.7 1.5-1.5 1.5h-3c-.8 0-1.5-.7-1.5-1.5z" /></svg>
-                                Import JSON
-                            </button>
+                            <>
+                                <button
+                                    onClick={() => setIsImportModalOpen(true)}
+                                    className="inline-flex items-center gap-2 bg-zinc-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-zinc-700 transition-all shadow hover:shadow-md border border-white/5"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-json"><path d="M10 12h4" /><path d="M14 12v4" /><path d="M2.5 12c0-1.7 1.3-3 3-3 2 0 4 1.3 4 3s-2 3-4 3c-1.7 0-3-1.3-3-3" /><path d="M14.5 9c0-.8.7-1.5 1.5-1.5h3c.8 0 1.5.7 1.5 1.5v3c0 .8-.7 1.5-1.5 1.5h-3c-.8 0-1.5-.7-1.5-1.5z" /></svg>
+                                    Import JSON
+                                </button>
+                                <button
+                                    onClick={() => setIsPromptModalOpen(true)}
+                                    className="inline-flex items-center gap-2 bg-indigo-600/10 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 px-6 py-3 rounded-lg font-bold hover:bg-indigo-600/20 dark:hover:bg-indigo-500/20 transition-all shadow-sm border border-indigo-200 dark:border-indigo-800"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                    Prompt Config
+                                </button>
+                            </>
                         )}
                     </div>
                 )}
 
                 {/* Import Modal */}
                 {userInfo?.role === 'admin' && (
-                    <JsonImportModal
-                        isOpen={isImportModalOpen}
-                        onClose={() => setIsImportModalOpen(false)}
-                        onSuccess={handleImportSuccess}
-                    />
+                    <>
+                        <JsonImportModal
+                            isOpen={isImportModalOpen}
+                            onClose={() => setIsImportModalOpen(false)}
+                            onSuccess={handleImportSuccess}
+                        />
+                        <PromptConfigModal
+                            isOpen={isPromptModalOpen}
+                            onClose={() => setIsPromptModalOpen(false)}
+                        />
+                    </>
                 )}
 
                 {userInfo?.role === 'admin' && (
