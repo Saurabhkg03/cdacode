@@ -828,7 +828,6 @@ function PracticeContent() {
                                             const newPage = Math.max(1, currentPage - 1);
                                             setCurrentPage(newPage);
                                             fetchQuestions(newPage);
-                                            window.scrollTo({ top: 0, behavior: 'smooth' });
                                         }}
                                         disabled={currentPage === 1 || isLoadingQuestions}
                                         className="px-3 py-1.5 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-zinc-600 dark:text-zinc-300"
@@ -855,7 +854,6 @@ function PracticeContent() {
                                                             if (!isReachable) return;
                                                             setCurrentPage(page);
                                                             fetchQuestions(page);
-                                                            window.scrollTo({ top: 0, behavior: 'smooth' });
                                                         }}
                                                         disabled={isLoadingQuestions || !isReachable}
                                                         title={!isReachable ? "Please visit the previous page first to minimize database reads." : ""}
@@ -883,7 +881,6 @@ function PracticeContent() {
                                             const newPage = Math.min(totalPages, currentPage + 1);
                                             setCurrentPage(newPage);
                                             fetchQuestions(newPage);
-                                            window.scrollTo({ top: 0, behavior: 'smooth' });
                                         }}
                                         disabled={currentPage === totalPages || isLoadingQuestions}
                                         className="px-3 py-1.5 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-zinc-600 dark:text-zinc-300"
