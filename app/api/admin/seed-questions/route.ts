@@ -36,21 +36,27 @@ export async function POST(req: NextRequest) {
         let actualCount = 0;
 
         for (const q of questions) {
-            const newDocRef = collectionRef.doc();
+            const docId = q.question_id || collectionRef.doc().id;
+            const newDocRef = collectionRef.doc(docId);
             
             // Format question to match expected DB schema closely
             const formattedQuestion = {
                 id: newDocRef.id,
-                title: q.title || q.question_text || "Untitled Question",
+                title: q.question_label || q.title || q.question_text || "Untitled Question",
+                question_text: q.question_text || "",
+                question_html: q.question_html || "",
                 subject: q.subject || subject,
                 topic: q.topic || "General",
-                question_html: q.question_html || "",
-                explanation_html: q.explanation_html || "",
                 options: q.options || [],
-                question_type: 'mcq',
-                branch: q.branch || section || "Section A",
-                year: q.year || new Date().getFullYear().toString(),
+                question_type: q.question_type || 'mcq',
+                explanation_html: q.explanation_html || "",
+                explanation_text: q.explanation_text || "",
                 tags: q.tags || [subject],
+                
+                // Retain fallbacks for backward compatibility
+                branch: "bda",
+                year: new Date().getFullYear().toString(),
+                
                 verified: true, // Auto-verified since admin generated it
                 createdAt: new Date().toISOString(),
                 addedBy: decoded.uid,

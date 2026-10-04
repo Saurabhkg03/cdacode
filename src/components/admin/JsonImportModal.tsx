@@ -5,6 +5,8 @@ import { db } from '@/firebase';
 import { collection, writeBatch, doc, setDoc, getDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { X, Upload, FileJson, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
+import { useMetadata } from '@/contexts/MetadataContext';
+
 interface JsonImportModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -13,31 +15,38 @@ interface JsonImportModalProps {
 
 // Types based on the structure in seed6.js and Question interface
 interface ImportedQuestion {
-    question_id: string;
-    title?: string;
-    subject: string;
-    topic: string;
-    year: string;
-    branch: string;
-    question_type: string;
-    question_label?: string;
+    question_id?: string;
     question_html?: string;
     question_text?: string;
-    question_images?: { original_url: string }[];
-    explanation_html?: string;
-    explanation_images?: { original_url: string }[];
+    subject: string;
+    topic: string;
+    question_label?: string;
+    title?: string;
     options: {
         label?: string;
         text_html?: string;
         text?: string;
         is_correct?: boolean;
     }[];
+    question_type: string;
+    explanation_html?: string;
+    explanation_text?: string;
+    tags?: string[];
+    
+    // Legacy fields for backward compatibility during processing
+    year?: string;
+    branch?: string;
+    question_images?: { original_url: string }[];
+    explanation_images?: { original_url: string }[];
     nat_answer_min?: string;
     nat_answer_max?: string;
-    tags?: string[];
 }
 
 export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImportModalProps) {
+    const { metadata } = useMetadata();
+    const existingSubjects = metadata?.subjects || [];
+    const existingTopics = metadata?.topics || [];
+
     const [file, setFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [logs, setLogs] = useState<string[]>([]);
@@ -47,6 +56,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
     const [bulkSubject, setBulkSubject] = useState('');
     const [bulkTopic, setBulkTopic] = useState('');
     const [bulkTags, setBulkTags] = useState('');
+    const [jsonSummary, setJsonSummary] = useState<{ subjects: string[], topics: string[] } | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -76,10 +86,20 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                     if (!Array.isArray(parsed)) {
                         parsed = [parsed];
                     }
+                    
+                    const uniqueSubjects = Array.from(new Set(parsed.map((q: any) => q.subject).filter(Boolean))) as string[];
+                    const uniqueTopics = Array.from(new Set(parsed.map((q: any) => q.topic).filter(Boolean))) as string[];
+                    
+                    setJsonSummary({ subjects: uniqueSubjects, topics: uniqueTopics });
+                    if (uniqueSubjects.length > 0) setBulkSubject(uniqueSubjects[0]);
+                    if (uniqueTopics.length > 0) setBulkTopic(uniqueTopics[0]);
+                    if (parsed.length > 0 && parsed[0].tags) setBulkTags(parsed[0].tags.join(", "));
+                    
                     setParsedQuestions(parsed);
                 } catch (err: any) {
                     setError("Failed to parse JSON: " + err.message);
                     setParsedQuestions(null);
+                    setJsonSummary(null);
                 }
             };
             reader.readAsText(selectedFile);
@@ -228,11 +248,13 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                     }
 
                     const questionData = {
-                        scraped_id: q.question_id,
-                        title: title,
+                        scraped_id: q.question_id || q.title || title,
+                        title: q.question_label || title,
+                        question_text: q.question_text || "",
                         question_html: q.question_html || q.question_text || "",
                         question_image_links: question_images,
 
+                        explanation_text: q.explanation_text || "",
                         explanation_html: q.explanation_html || "",
                         explanation_image_links: explanation_images,
 
@@ -267,7 +289,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                     count++;
 
                     // Track for metadata sorting
-                    questionsForSorting.push({ id: docRef.id, title: title });
+                    questionsForSorting.push({ id: docRef.id, title: title, qIndex: autoIndex } as any);
 
                     if (count % MAX_WRITES_PER_BATCH === 0) {
                         batchCount++;
@@ -309,11 +331,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 }
 
                 // Sorting for Daily Challenge
-                questionsForSorting.sort((a, b) => {
-                    const numA = parseInt((a.title || '0').replace(/\D/g, ''), 10);
-                    const numB = parseInt((b.title || '0').replace(/\D/g, ''), 10);
-                    return numA - numB;
-                });
+                questionsForSorting.sort((a, b) => (a as any).qIndex - (b as any).qIndex);
                 const sortedQuestionIds = questionsForSorting.map(q => q.id);
                 
                 const finalAllQuestionIds = Array.from(new Set([...(existingData.allQuestionIds || []), ...sortedQuestionIds]));
@@ -422,14 +440,30 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
 
                             {parsedQuestions && (
                                 <div className="space-y-4 border border-gray-200 dark:border-zinc-800 rounded-lg p-4 bg-gray-50 dark:bg-zinc-900/50">
-                                    <h3 className="text-sm font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-zinc-800 pb-2">
-                                        Bulk Edit ({parsedQuestions.length} Questions)
-                                    </h3>
+                                    <div className="border-b border-gray-200 dark:border-zinc-800 pb-2">
+                                        <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+                                            Bulk Edit ({parsedQuestions.length} Questions)
+                                        </h3>
+                                        {jsonSummary && (
+                                            <p className="text-xs text-gray-500 mt-1">
+                                                <strong>JSON Contains:</strong> {jsonSummary.subjects.join(', ') || 'No subject'} &rarr; {jsonSummary.topics.join(', ') || 'No topic'}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    <datalist id="existing-subjects">
+                                        {existingSubjects.map(s => <option key={s} value={s} />)}
+                                    </datalist>
+                                    <datalist id="existing-topics">
+                                        {existingTopics.map(t => <option key={t} value={t} />)}
+                                    </datalist>
+
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div>
                                             <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Apply Subject</label>
                                             <input
                                                 type="text"
+                                                list="existing-subjects"
                                                 value={bulkSubject}
                                                 onChange={(e) => setBulkSubject(e.target.value)}
                                                 placeholder="e.g. Machine Learning"
@@ -440,6 +474,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                                             <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Apply Topic</label>
                                             <input
                                                 type="text"
+                                                list="existing-topics"
                                                 value={bulkTopic}
                                                 onChange={(e) => setBulkTopic(e.target.value)}
                                                 placeholder="e.g. Neural Networks"

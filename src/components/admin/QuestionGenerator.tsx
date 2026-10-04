@@ -161,26 +161,25 @@ ${useReferenceBooks && CCAT_SYLLABUS[subject]?.books?.length > 0 ? `7. BASE YOUR
 REQUIRED JSON SCHEMA (Output MUST be an array of objects structured exactly like this):
 [
   {
-    "title": "string (max 3-4 words)",
-    "question_text": "string",
     "question_html": "string (with proper <pre><code> formatting for code)",
+    "question_text": "string",
     "subject": "${subject}",
     "topic": "string (specific topic)",
-    "year": "2026",
-    "branch": "${CCAT_SYLLABUS[subject]?.section || "Section A"}",
-    "question_label": "string",
-    "question_type": "mcq",
+    "question_label": "string (short descriptive title of the question)",
     "options": [
       {
         "label": "A",
         "text_html": "string",
+        "text": "string",
         "is_correct": boolean
       },
       ... (exactly 4 options)
     ],
-    "explanation_text": "string",
+    "question_type": "mcq",
     "explanation_html": "string",
-    "tags": ["string"]
+    "explanation_text": "string",
+    "tags": ["string"],
+    "question_id": "string (e.g., dbda_python_001)"
   }
 ]
 
