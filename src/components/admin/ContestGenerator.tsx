@@ -126,7 +126,7 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                             Target Branch
                         </label>
                         <div className="w-full p-2.5 border border-gray-200 dark:border-zinc-700 rounded-xl bg-gray-50 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 text-sm shadow-sm cursor-not-allowed">
-                            Big Data Analytics (BDA)
+                            BDA
                         </div>
                         <p className="text-[11px] text-gray-400 mt-1.5 font-medium">Source: <code className="bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded">ccat_questions</code></p>
                     </div>

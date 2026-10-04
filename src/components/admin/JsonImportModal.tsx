@@ -43,11 +43,16 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
     const [logs, setLogs] = useState<string[]>([]);
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState<string | null>(null);
+    const [parsedQuestions, setParsedQuestions] = useState<ImportedQuestion[] | null>(null);
+    const [bulkSubject, setBulkSubject] = useState('');
+    const [bulkTopic, setBulkTopic] = useState('');
+    const [bulkTags, setBulkTags] = useState('');
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Dynamic Collection Selection State
-    const [selectedBranch, setSelectedBranch] = useState<string>("");
-    const branches = ["CSE", "ECE", "EE", "ME", "CE", "IN", "DA"];
+    const [selectedBranch, setSelectedBranch] = useState<string>("bda");
+    const branches = ["bda"];
 
     if (!isOpen) return null;
 
@@ -57,10 +62,27 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setFile(e.target.files[0]);
+            const selectedFile = e.target.files[0];
+            setFile(selectedFile);
             setError(null);
             setLogs([]);
             setProgress(0);
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const content = event.target?.result as string;
+                    let parsed = JSON.parse(content);
+                    if (!Array.isArray(parsed)) {
+                        parsed = [parsed];
+                    }
+                    setParsedQuestions(parsed);
+                } catch (err: any) {
+                    setError("Failed to parse JSON: " + err.message);
+                    setParsedQuestions(null);
+                }
+            };
+            reader.readAsText(selectedFile);
         }
     };
 
@@ -87,7 +109,10 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
     };
 
     const handleImport = async () => {
-        if (!file) return;
+        if (!parsedQuestions || parsedQuestions.length === 0) {
+            setError("No valid questions parsed from file.");
+            return;
+        }
         if (!selectedBranch) {
             setError("Please select a target branch.");
             return;
@@ -99,22 +124,14 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
         setProgress(0);
         addLog(`Starting import process for Branch: ${selectedBranch}...`);
 
-        const reader = new FileReader();
+        try {
+            const questions = parsedQuestions;
+            const totalQuestionCount = questions.length;
 
-        reader.onload = async (e) => {
-            try {
-                const content = e.target?.result as string;
-                const questions: ImportedQuestion[] = JSON.parse(content);
-                const totalQuestionCount = questions.length;
+            addLog(`✅ Processing ${totalQuestionCount} questions.`);
 
-                addLog(`✅ File parsed. Found ${totalQuestionCount} questions.`);
-
-                if (totalQuestionCount === 0) {
-                    throw new Error("No questions found in the JSON file.");
-                }
-
-                // --- Part 1: Calculate Metadata ---
-                addLog("Calculating metadata...");
+            // --- Part 1: Calculate Metadata ---
+            addLog("Calculating metadata...");
 
                 const subjectCounts: Record<string, number> = {};
                 const topicCounts: Record<string, number> = {};
@@ -336,16 +353,13 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 // Close after a short delay or let user close
                 // setTimeout(onClose, 2000);
 
-            } catch (err: any) {
-                console.error(err);
-                setError(err.message || "An error occurred during import.");
-                addLog(`❌ Error: ${err.message}`);
-            } finally {
-                setIsUploading(false);
-            }
-        };
-
-        reader.readAsText(file);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || "An error occurred during import.");
+            addLog(`❌ Error: ${err.message}`);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     return (
@@ -406,13 +420,70 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                                 </p>
                             </div>
 
-                            {file && (
+                            {parsedQuestions && (
+                                <div className="space-y-4 border border-gray-200 dark:border-zinc-800 rounded-lg p-4 bg-gray-50 dark:bg-zinc-900/50">
+                                    <h3 className="text-sm font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-zinc-800 pb-2">
+                                        Bulk Edit ({parsedQuestions.length} Questions)
+                                    </h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Apply Subject</label>
+                                            <input
+                                                type="text"
+                                                value={bulkSubject}
+                                                onChange={(e) => setBulkSubject(e.target.value)}
+                                                placeholder="e.g. Machine Learning"
+                                                className="w-full px-3 py-1.5 border border-gray-300 dark:border-zinc-800 rounded bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Apply Topic</label>
+                                            <input
+                                                type="text"
+                                                value={bulkTopic}
+                                                onChange={(e) => setBulkTopic(e.target.value)}
+                                                placeholder="e.g. Neural Networks"
+                                                className="w-full px-3 py-1.5 border border-gray-300 dark:border-zinc-800 rounded bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Apply Tags (comma sep)</label>
+                                            <input
+                                                type="text"
+                                                value={bulkTags}
+                                                onChange={(e) => setBulkTags(e.target.value)}
+                                                placeholder="e.g. bda, ml, nn"
+                                                className="w-full px-3 py-1.5 border border-gray-300 dark:border-zinc-800 rounded bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            setParsedQuestions(prev => {
+                                                if (!prev) return prev;
+                                                return prev.map(q => ({
+                                                    ...q,
+                                                    subject: bulkSubject || q.subject,
+                                                    topic: bulkTopic || q.topic,
+                                                    tags: bulkTags ? bulkTags.split(',').map(t => t.trim()).filter(Boolean) : q.tags
+                                                }));
+                                            });
+                                            addLog(`Applied bulk edits to ${parsedQuestions.length} questions.`);
+                                        }}
+                                        className="w-full py-2 bg-gray-200 hover:bg-gray-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-gray-800 dark:text-gray-200 text-sm font-semibold rounded transition-colors"
+                                    >
+                                        Apply to All Questions
+                                    </button>
+                                </div>
+                            )}
+
+                            {file && parsedQuestions && (
                                 <div className="flex justify-end">
                                     <button
                                         onClick={handleImport}
                                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-blue-500/20 flex items-center gap-2"
                                     >
-                                        Start Import
+                                        Confirm & Import {parsedQuestions.length} Questions
                                     </button>
                                 </div>
                             )}
