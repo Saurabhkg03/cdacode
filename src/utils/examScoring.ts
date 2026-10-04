@@ -13,11 +13,15 @@ export function evaluateExam(contestData: any, responses: any) {
     if (contestData?.sections) {
         contestData.sections.forEach((sec: any) => {
             sec.questions.forEach((q: any) => {
+                // If a question doesn't have marks set, default to 1 as requested (+1 / -1)
+                const pMarks = Number(q.marks) || 1;
+                const nMarks = q.negativeMarks !== undefined ? Number(q.negativeMarks) : 1;
+                
                 questionMap.set(q.id, {
                     type: q.question_type,
                     options: q.options,
-                    marks: 3,
-                    negativeMarks: 1
+                    marks: pMarks,
+                    negativeMarks: nMarks
                 });
             });
         });

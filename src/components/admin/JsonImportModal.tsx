@@ -236,7 +236,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                         subject: subject,
                         branch: branch,
                         topic: topic,
-                        tags: q.tags || [branch, subject, topic, `GATE ${year}`].filter(Boolean),
+                        tags: q.tags || [branch, subject, topic].filter(Boolean),
                         createdAt: new Date().toISOString(),
 
                         verified: false,

@@ -53,60 +53,38 @@ const getSubjectTheme = (subject: string) => {
         theme.icon = <Calculator className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-blue-500", bgHover: "hover:bg-blue-50/50 dark:hover:bg-blue-900/20", bgActive: "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-500/20", badgeActive: "bg-blue-500 text-white", badgeInactive: "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400" });
     }
-    // ========== COMPUTER SCIENCE (CSE) / IT ==========
-    else if (s.includes('algorithm') || s.includes('data structure') || s.includes('theory') || s.includes('compiler') || s.includes('programming')) {
+    // ========== COMPUTER SCIENCE & BDA CORE ==========
+    else if (s.includes('algorithm') || s.includes('data structure') || s.includes('theory') || s.includes('compiler') || s.includes('programming') || s.includes('python') || s.includes('r ')) {
         theme.icon = <Code2 className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-cyan-500", bgHover: "hover:bg-cyan-50/50 dark:hover:bg-cyan-900/20", bgActive: "bg-cyan-600 border-cyan-600 text-white shadow-sm shadow-cyan-500/20", badgeActive: "bg-cyan-500 text-white", badgeInactive: "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" });
     }
-    else if (s.includes('dbms') || s.includes('database')) {
+    else if (s.includes('dbms') || s.includes('database') || s.includes('data warehous') || s.includes('mining')) {
         theme.icon = <Database className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-orange-500", bgHover: "hover:bg-orange-50/50 dark:hover:bg-orange-900/20", bgActive: "bg-orange-600 border-orange-600 text-white shadow-sm shadow-orange-500/20", badgeActive: "bg-orange-500 text-white", badgeInactive: "bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400" });
     }
-    else if (s.includes('os') || s.includes('operating')) {
+    else if (s.includes('os') || s.includes('operating') || s.includes('cloud') || s.includes('distribut')) {
         theme.icon = <Terminal className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-indigo-500", bgHover: "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20", bgActive: "bg-indigo-600 border-indigo-600 text-white shadow-sm shadow-indigo-500/20", badgeActive: "bg-indigo-500 text-white", badgeInactive: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400" });
     }
-    else if (s.includes('network') || s.includes('communication')) {
+    else if (s.includes('network') || s.includes('communication') || s.includes('big data')) {
         theme.icon = s.includes('communication') ? <Radio className="w-4 h-4" /> : <Share2 className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-emerald-500", bgHover: "hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20", bgActive: "bg-emerald-600 border-emerald-600 text-white shadow-sm shadow-emerald-500/20", badgeActive: "bg-emerald-500 text-white", badgeInactive: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" });
     }
-    // ========== ELECTRONICS / VLSI (ECE & EE) ==========
-    else if (s.includes('signal') || s.includes('control')) {
-        theme.icon = s.includes('signal') ? <Activity className="w-4 h-4" /> : <Combine className="w-4 h-4" />;
+    // ========== ADVANCED BDA (AI / ML / STATS) ==========
+    else if (s.includes('machine learning') || s.includes('deep learning') || s.includes('ai') || s.includes('artificial')) {
+        theme.icon = <Activity className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-amber-500", bgHover: "hover:bg-amber-50/50 dark:hover:bg-amber-900/20", bgActive: "bg-amber-600 border-amber-600 text-white shadow-sm shadow-amber-500/20", badgeActive: "bg-amber-500 text-white", badgeInactive: "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400" });
     }
-    else if (s.includes('analog') || s.includes('magnetic')) {
-        theme.icon = s.includes('analog') ? <Zap className="w-4 h-4" /> : <Layers className="w-4 h-4" />;
+    else if (s.includes('visual') || s.includes('analytic')) {
+        theme.icon = <Layers className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-rose-500", bgHover: "hover:bg-rose-50/50 dark:hover:bg-rose-900/20", bgActive: "bg-rose-600 border-rose-600 text-white shadow-sm shadow-rose-500/20", badgeActive: "bg-rose-500 text-white", badgeInactive: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400" });
     }
-    else if (s.includes('digital') || s.includes('cpu') || s.includes('architecture') || s.includes('device') || s.includes('electron')) {
+    else if (s.includes('digital') || s.includes('cpu') || s.includes('architecture') || s.includes('device')) {
         theme.icon = <Cpu className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-purple-500", bgHover: "hover:bg-purple-50/50 dark:hover:bg-purple-900/20", bgActive: "bg-purple-600 border-purple-600 text-white shadow-sm shadow-purple-500/20", badgeActive: "bg-purple-500 text-white", badgeInactive: "bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400" });
     }
-    // ========== CIVIL ENGINEERING (CE) ==========
-    else if (s.includes('structural') || s.includes('structure') || s.includes('geotechnical') || s.includes('soil')) {
-        theme.icon = s.includes('soil') || s.includes('geo') ? <Mountain className="w-4 h-4" /> : <HardHat className="w-4 h-4" />;
-        Object.assign(theme, { accent: "text-amber-600", bgHover: "hover:bg-amber-50/50 dark:hover:bg-amber-900/20", bgActive: "bg-amber-700 border-amber-700 text-white shadow-sm shadow-amber-600/20", badgeActive: "bg-amber-600 text-white", badgeInactive: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-500" });
-    }
-    else if (s.includes('environmental') || s.includes('water') || s.includes('hydrology') || s.includes('irrigation')) {
-        theme.icon = s.includes('water') || s.includes('hydro') ? <Droplets className="w-4 h-4" /> : <Leaf className="w-4 h-4" />;
-        Object.assign(theme, { accent: "text-teal-600", bgHover: "hover:bg-teal-50/50 dark:hover:bg-teal-900/20", bgActive: "bg-teal-700 border-teal-700 text-white shadow-sm shadow-teal-600/20", badgeActive: "bg-teal-600 text-white", badgeInactive: "bg-teal-50 dark:bg-teal-500/10 text-teal-700 dark:text-teal-500" });
-    }
-    else if (s.includes('transportation') || s.includes('surveying') || s.includes('traffic')) {
-        theme.icon = s.includes('transport') || s.includes('traffic') ? <Car className="w-4 h-4" /> : <Map className="w-4 h-4" />;
-        Object.assign(theme, { accent: "text-indigo-600", bgHover: "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20", bgActive: "bg-indigo-700 border-indigo-700 text-white shadow-sm shadow-indigo-600/20", badgeActive: "bg-indigo-600 text-white", badgeInactive: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-500" });
-    }
-    // ========== MECHANICAL ENGINEERING (ME) ==========
-    else if (s.includes('thermo') || s.includes('heat') || s.includes('fluid')) {
-        theme.icon = s.includes('fluid') ? <Droplets className="w-4 h-4" /> : <Flame className="w-4 h-4" />;
-        Object.assign(theme, { accent: "text-orange-600", bgHover: "hover:bg-orange-50/50 dark:hover:bg-orange-900/20", bgActive: "bg-orange-700 border-orange-700 text-white shadow-sm shadow-orange-600/20", badgeActive: "bg-orange-600 text-white", badgeInactive: "bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-500" });
-    }
-    else if (s.includes('manufactur') || s.includes('production') || s.includes('machine') || s.includes('mechanics')) {
-        theme.icon = s.includes('manufactur') ? <Wrench className="w-4 h-4" /> : <Settings className="w-4 h-4" />;
-        Object.assign(theme, { accent: "text-fuchsia-600", bgHover: "hover:bg-fuchsia-50/50 dark:hover:bg-fuchsia-900/20", bgActive: "bg-fuchsia-700 border-fuchsia-700 text-white shadow-sm shadow-fuchsia-600/20", badgeActive: "bg-fuchsia-600 text-white", badgeInactive: "bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-500" });
-    }
-    // ========== ELECTRICAL ENGINEERING (EE) Extras ==========
-    else if (s.includes('power') || s.includes('measurement')) {
+    // ========== OTHER / FALLBACK ==========
+    else {
         theme.icon = <Plug className="w-4 h-4" />;
         Object.assign(theme, { accent: "text-rose-600", bgHover: "hover:bg-rose-50/50 dark:hover:bg-rose-900/20", bgActive: "bg-rose-700 border-rose-700 text-white shadow-sm shadow-rose-600/20", badgeActive: "bg-rose-600 text-white", badgeInactive: "bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-500" });
     }

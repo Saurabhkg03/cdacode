@@ -290,6 +290,11 @@ const ListsModal = ({
     );
 };
 
+// Module-level cache for question content (static data that never changes).
+// Survives navigation between question pages — zero Firestore reads on revisits.
+// Key: `${questionCollectionPath}/${id}` to be branch-aware.
+const globalQuestionCache: Record<string, Question> = {};
+
 export default function QuestionClient({ id }: { id: string }) {
     const router = useRouter();
     const { user, userInfo, setUserInfo, loading: loadingAuth, isAuthenticated } = useAuth();
@@ -345,37 +350,44 @@ export default function QuestionClient({ id }: { id: string }) {
             setIsTimerOn(false);
 
             try {
-                const docRef = doc(db, questionCollectionPath, id);
-                const docSnap = await getDoc(docRef);
+                // --- Question content: serve from cache if available (zero reads on revisit) ---
+                const cacheKey = `${questionCollectionPath}/${id}`;
+                let fetchedQuestion = globalQuestionCache[cacheKey] ?? null;
 
-                if (docSnap.exists()) {
-                    const fetchedQuestion = { id: docSnap.id, ...docSnap.data() } as Question;
-                    setQuestion(fetchedQuestion);
-
-                    if (user && isAuthenticated && !loadingAuth) {
-                        const submissionRef = doc(db, `users/${user.uid}/submissions`, id);
-                        const userQuestionDataRef = doc(db, `users/${user.uid}/userQuestionData`, id);
-
-                        const [submissionSnap, userQuestionDataSnap] = await Promise.all([
-                            getDoc(submissionRef),
-                            getDoc(userQuestionDataRef)
-                        ]);
-
-                        if (submissionSnap.exists()) {
-                            const sub = submissionSnap.data() as Submission;
-                            setSubmitted(true);
-                            setIsCorrect(Boolean(sub.correct));
-                            setSelectedOptions(sub.selectedOptions || []);
-                            setTimeElapsed(sub.timeTaken || 0);
-                        }
-                        if (userQuestionDataSnap.exists()) {
-                            const data = userQuestionDataSnap.data() as UserQuestionData;
-                            setIsFavorite(data.isFavorite || false);
-                            setNote(data.note || '');
-                        }
+                if (!fetchedQuestion) {
+                    const docRef = doc(db, questionCollectionPath, id);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        fetchedQuestion = { id: docSnap.id, ...docSnap.data() } as Question;
+                        // Cache the static question content for future visits
+                        globalQuestionCache[cacheKey] = fetchedQuestion;
                     }
-                } else {
-                    setQuestion(null);
+                }
+
+                setQuestion(fetchedQuestion);
+
+                if (fetchedQuestion && user && isAuthenticated && !loadingAuth) {
+                    // --- User data: always fetch fresh (submission / favorite / note can change anytime) ---
+                    const submissionRef = doc(db, `users/${user.uid}/submissions`, id);
+                    const userQuestionDataRef = doc(db, `users/${user.uid}/userQuestionData`, id);
+
+                    const [submissionSnap, userQuestionDataSnap] = await Promise.all([
+                        getDoc(submissionRef),
+                        getDoc(userQuestionDataRef)
+                    ]);
+
+                    if (submissionSnap.exists()) {
+                        const sub = submissionSnap.data() as Submission;
+                        setSubmitted(true);
+                        setIsCorrect(Boolean(sub.correct));
+                        setSelectedOptions(sub.selectedOptions || []);
+                        setTimeElapsed(sub.timeTaken || 0);
+                    }
+                    if (userQuestionDataSnap.exists()) {
+                        const data = userQuestionDataSnap.data() as UserQuestionData;
+                        setIsFavorite(data.isFavorite || false);
+                        setNote(data.note || '');
+                    }
                 }
 
             } catch (error) {
@@ -510,12 +522,19 @@ export default function QuestionClient({ id }: { id: string }) {
             await batch.commit();
 
             // Update local question state to reflect new accuracy stats immediately
-            setQuestion(prev => prev ? {
-                ...prev,
+            const updatedQuestion = question ? {
+                ...question,
                 attempts: newAttempts,
                 correctCount: newCorrectCount,
                 accuracy: newAccuracy,
-            } : prev);
+            } : null;
+            setQuestion(updatedQuestion);
+
+            // Keep the cache in sync so the updated stats are shown on revisit
+            if (updatedQuestion) {
+                const cacheKey = `${questionCollectionPath}/${question.id}`;
+                globalQuestionCache[cacheKey] = updatedQuestion;
+            }
 
             setUserInfo((prev: User | null) => {
                 if (!prev) return null;
@@ -684,7 +703,7 @@ export default function QuestionClient({ id }: { id: string }) {
     const cleanedQuestionHtml = extractAndCleanHtml(question.question_html, 'question_text');
     let cleanedExplanationHtml: string;
     if (question.explanation_redirect_url) {
-        cleanedExplanationHtml = `<p>This explanation is provided by GateOverflow. <a href="${question.explanation_redirect_url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold inline-flex items-center gap-1">Click here to view the full discussion</a></p>`;
+        cleanedExplanationHtml = `<p>This explanation is provided by External Resource. <a href="${question.explanation_redirect_url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold inline-flex items-center gap-1">Click here to view the full discussion</a></p>`;
     } else {
         cleanedExplanationHtml = extractAndCleanHtml(question.explanation_html, 'mtq_explanation-text');
     }

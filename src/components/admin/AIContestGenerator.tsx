@@ -69,7 +69,7 @@ export default function AIContestGenerator() {
                 body: JSON.stringify({
                     model,
                     mode,
-                    branch: selectedBranch || 'ece',
+                    branch: selectedBranch || 'bda',
                     customSubject,
                     customCount,
                     contestTitle: contestTitle || `AI Generated ${MODES.find(m => m.id === mode)?.name} Test`,

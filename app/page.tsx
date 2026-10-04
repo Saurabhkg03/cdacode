@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
     let initialQuestions: Question[] = [];
-    let initialBranch = "ece";
+    let initialBranch = "bda";
 
     try {
         const cookieStore = await cookies();

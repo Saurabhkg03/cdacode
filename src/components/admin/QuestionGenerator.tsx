@@ -5,53 +5,45 @@ import { Sparkles, Loader2, Database, Settings, FileText, Info, BookOpen, Termin
 import { useAuth } from "@/contexts/AuthContext";
 
 const CCAT_SYLLABUS: Record<string, { section: string; books: string[] }> = {
-    "English": {
-        section: "Section A",
-        books: ["Any High School Grammar Book (e.g. Wren & Martin)"]
+    "Data Engineering & Big Data": {
+        section: "BDA",
+        books: ["Designing Data-Intensive Applications", "Fundamentals of Data Engineering"]
     },
-    "Quantitative Aptitude": {
-        section: "Section A",
-        books: ["Quantitative Aptitude Fully Solved (R. S. Aggrawal)", "Quantitative Aptitude (M Tyara)", "Barron’s New GRE"]
+    "Machine Learning": {
+        section: "BDA",
+        books: ["Pattern Recognition and Machine Learning", "Hands-On Machine Learning"]
     },
-    "Reasoning": {
-        section: "Section A",
-        books: ["Quantitative Aptitude Fully Solved (R. S. Aggrawal)", "Quantitative Aptitude (M Tyara)", "Barron’s New GRE"]
+    "Deep Learning & AI": {
+        section: "BDA",
+        books: ["Deep Learning (Goodfellow)", "Artificial Intelligence: A Modern Approach"]
     },
-    "Computer Fundamentals & Concepts of Programming": {
-        section: "Section A",
-        books: ["Foundations of Computing (Pradeep Sinha & Priti Sinha)"]
+    "Data Warehousing & Mining": {
+        section: "BDA",
+        books: ["Data Mining: Concepts and Techniques"]
     },
-    "C Programming": {
-        section: "Section B",
-        books: ["C Programming Language (Kernighan & Ritchie)", "Let Us C (Yashavant Kanetkar)"]
+    "Statistics & Probability": {
+        section: "BDA",
+        books: ["Introduction to Probability and Statistics"]
     },
-    "Data Structures": {
-        section: "Section B",
-        books: ["Data Structures Through C in Depth (S. K. Srivastava)"]
+    "Database Management": {
+        section: "BDA",
+        books: ["Database System Concepts (Silberschatz)"]
     },
-    "Object Oriented Programming Concepts using C++": {
-        section: "Section B",
-        books: ["Test Your C ++ Skills (Yashavant Kanetkar)"]
+    "Cloud Computing": {
+        section: "BDA",
+        books: ["Cloud Computing: Concepts, Technology & Architecture"]
     },
-    "Operating Systems & Networking": {
-        section: "Section B",
-        books: ["Operating System Principles (Silberschatz, Galvin, Gagne)", "Data Communication & Networking (Forouzan)"]
+    "Programming & Python": {
+        section: "BDA",
+        books: ["Python Crash Course", "Fluent Python"]
     },
-    "Basics of Big Data & Artificial Intelligence": {
-        section: "Section B",
-        books: ["Fundamentals of Data Engineering (Joe Reis, Matt Housley)", "Artificial Intelligence for Dummies (John Paul Mueller, Luca Massaron)"]
+    "Data Visualization": {
+        section: "BDA",
+        books: ["The Visual Display of Quantitative Information"]
     },
-    "Computer Architecture": {
-        section: "Section C",
-        books: ["Computer Organization & Architecture (William Stallings)"]
-    },
-    "Digital Electronics": {
-        section: "Section C",
-        books: ["Digital Design (Morris Mano)", "Digital Design: Principles & Practices (John Wakerly)", "Modern Digital Electronics (R. P. Jain)"]
-    },
-    "Microprocessors": {
-        section: "Section C",
-        books: ["Microprocessor Architecture, Programming & Applications with 8085 (Ramesh Gaonkar)", "The Intel Microprocessor (Barry Brey)"]
+    "Algorithms & Data Structures": {
+        section: "BDA",
+        books: ["Introduction to Algorithms (CLRS)"]
     }
 };
 

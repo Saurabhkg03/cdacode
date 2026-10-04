@@ -54,7 +54,7 @@ export async function processContestRatings(db: admin.firestore.Firestore, conte
         });
     }
 
-    const branch = contestData.branch || 'ece';
+    const branch = contestData.branch || 'bda';
     
     validAttempts.forEach(docSnap => {
         const data = docSnap.data();

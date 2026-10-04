@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
             if (contestId.startsWith('weekly-') || contestId.startsWith('biweekly-')) {
                 const userRef = db.collection('users').doc(uid);
                 const userSnap = await userRef.get();
-                const userBranch = userSnap.exists ? (userSnap.data()?.branch || 'ece').toLowerCase() : 'ece';
+                const userBranch = userSnap.exists ? (userSnap.data()?.branch || 'bda').toLowerCase() : 'ece';
                 
                 actualContestId = `${contestId}-${userBranch}`;
                 contestRef = db.collection('contests').doc(actualContestId);

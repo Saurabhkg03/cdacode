@@ -3,42 +3,7 @@
 import React, { useState } from 'react';
 import { Loader2, Wand2, AlertTriangle, CheckCircle, Calendar, Clock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-
-const BRANCH_SUBJECTS: Record<string, string[]> = {
-    cse: [
-        'Digital Logic', 'General Aptitude', 'Software Engg', 'Compiler Design',
-        'Data Structure', 'Theory of Computation', 'Engineering Mathematics',
-        'Computer Network', 'Discrete Mathematics', 'Operating System',
-        'Algorithm', 'Computer Organization', 'Database Management System',
-        'C Programming', 'Web Technology', 'General'
-    ],
-    ece: [
-        'Communication Systems', 'Digital Circuits', 'Analog Circuits',
-        'Signals and Systems', 'General Aptitude', 'Electromagnetics',
-        'Network Theory', 'Engineering Mathematics', 'Control Systems',
-        'Electronic Devices', 'Microprocessors', 'General'
-    ],
-    me: [
-        'Manufacturing Engineering', 'Industrial Engineering', 'Engineering Mathematics',
-        'Theory of Machine', 'Heat Transfer', 'Strength of Materials',
-        'General Aptitude', 'Fluid Mechanics', 'Machine Design',
-        'Thermodynamics', 'General', 'Engineering Mechanics',
-        'Refrigeration and Air-conditioning'
-    ],
-    ee: [
-        'Power Electronics', 'Engineering Mathematics', 'Electrical Machines',
-        'Electric Circuits', 'Analog Electronics', 'Signals and Systems',
-        'Control Systems', 'Digital Electronics', 'Power Systems',
-        'Electrical and Electronic Measurements', 'Electromagnetic Theory',
-        'General Aptitude', 'Electromagnetic Fields', 'General'
-    ],
-    in: [
-        'Engineering Mathematics', 'Control Systems', 'Electrical Circuits and Machines',
-        'Measurements', 'Analog Electronics', 'Digital Electronics',
-        'Signals and Systems', 'Sensors and Industrial Instrumentation',
-        'Communication and Optical Instrumentation', 'General Aptitude', 'General'
-    ]
-};
+import { useMetadata } from '@/contexts/MetadataContext';
 
 interface ContestGeneratorProps {
     onContestCreated?: () => void;
@@ -47,9 +12,12 @@ interface ContestGeneratorProps {
 
 const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, isAdminContest = false }) => {
     const { userInfo } = useAuth();
+    const { metadata } = useMetadata();
+    const metadataSubjects: string[] = metadata?.subjects || [];
+    
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState('');
-    const [branch, setBranch] = useState('ece');
+    const [branch, setBranch] = useState('bda');
     const [contestTitle, setContestTitle] = useState('');
     const [difficulty, setDifficulty] = useState('Medium');
     const [durationMinutes, setDurationMinutes] = useState(180);
@@ -61,8 +29,9 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
 
     const [examMode, setExamMode] = useState<'full' | 'custom'>('full');
     const [targetSubjects, setTargetSubjects] = useState<string[]>([]);
+    const [subjectSearch, setSubjectSearch] = useState('');
     const [target1MarkCount, setTarget1MarkCount] = useState<number>(10);
-    const [target2MarkCount, setTarget2MarkCount] = useState<number>(5);
+    const [target2MarkCount, setTarget2MarkCount] = useState<number>(0);
 
     const [description, setDescription] = useState('Welcome to this CDACode contest. Challenge yourself against other engineers and test your knowledge and speed.');
     const [prizes, setPrizes] = useState<Array<{ rank: string; prize: string }>>([]);
@@ -156,21 +125,10 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                             Target Branch
                         </label>
-                        <select
-                            value={branch}
-                            onChange={(e) => {
-                                setBranch(e.target.value);
-                                setTargetSubjects([]);
-                            }}
-                            className="w-full p-2.5 border border-gray-200 dark:border-zinc-700 rounded-xl bg-white dark:bg-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none transition shadow-sm"
-                        >
-                            <option value="ece">Electronics (ECE)</option>
-                            <option value="cse">Computer Science (CSE)</option>
-                            <option value="me">Mechanical (ME)</option>
-                            <option value="ee">Electrical (EE)</option>
-                            <option value="in">Instrumentation (IN)</option>
-                        </select>
-                        <p className="text-[11px] text-gray-400 mt-1.5 font-medium">Source: <code className="bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded">questions_{branch}</code></p>
+                        <div className="w-full p-2.5 border border-gray-200 dark:border-zinc-700 rounded-xl bg-gray-50 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 text-sm shadow-sm cursor-not-allowed">
+                            Big Data Analytics (BDA)
+                        </div>
+                        <p className="text-[11px] text-gray-400 mt-1.5 font-medium">Source: <code className="bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded">ccat_questions</code></p>
                     </div>
 
                     <div>
@@ -251,8 +209,15 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
                                     Target Subjects <span className="text-xs font-normal text-gray-500">(Pick one or more)</span>
                                 </label>
+                                <input
+                                    type="text"
+                                    placeholder="Search available subjects..."
+                                    value={subjectSearch}
+                                    onChange={(e) => setSubjectSearch(e.target.value)}
+                                    className="w-full mb-3 p-2 border border-purple-200 dark:border-purple-800/50 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
+                                />
                                 <div className="flex flex-wrap gap-2">
-                                    {(BRANCH_SUBJECTS[branch] || []).map(sub => {
+                                    {(metadataSubjects || []).filter(sub => sub.toLowerCase().includes(subjectSearch.toLowerCase())).map(sub => {
                                         const isSelected = targetSubjects.includes(sub);
                                         return (
                                             <button
@@ -275,35 +240,26 @@ const ContestGenerator: React.FC<ContestGeneratorProps> = ({ onContestCreated, i
                                     <p className="text-xs text-amber-500 mt-2 font-medium flex items-center gap-1"><AlertTriangle className="w-3.5 h-3.5" /> Please select at least one subject.</p>
                                 )}
                             </div>
-                            <div className="grid grid-cols-2 gap-6 pt-2 border-t border-purple-100 dark:border-purple-900/30">
+                            <div className="pt-2 border-t border-purple-100 dark:border-purple-900/30">
                                 <div>
                                     <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">
-                                        1-Mark Questions
+                                        Number of Questions (1 Mark each)
                                     </label>
                                     <input
                                         type="number"
-                                        min="0"
+                                        min="1"
                                         value={target1MarkCount}
-                                        onChange={(e) => setTarget1MarkCount(parseInt(e.target.value) || 0)}
-                                        className="w-full p-2.5 border border-purple-200 dark:border-purple-800/50 rounded-xl bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">
-                                        2-Mark Questions
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={target2MarkCount}
-                                        onChange={(e) => setTarget2MarkCount(parseInt(e.target.value) || 0)}
+                                        onChange={(e) => {
+                                            setTarget1MarkCount(parseInt(e.target.value) || 0);
+                                            setTarget2MarkCount(0);
+                                        }}
                                         className="w-full p-2.5 border border-purple-200 dark:border-purple-800/50 rounded-xl bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
                                     />
                                 </div>
                             </div>
                             <div className="flex justify-between items-center bg-white dark:bg-zinc-900 px-4 py-3 rounded-xl border border-purple-100 dark:border-purple-900/30 shadow-sm">
-                                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">Calculated Total Marks</span>
-                                <span className="text-lg font-black text-purple-600 dark:text-purple-400">{(target1MarkCount * 1) + (target2MarkCount * 2)}</span>
+                                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">Total Marks</span>
+                                <span className="text-lg font-black text-purple-600 dark:text-purple-400">{target1MarkCount}</span>
                             </div>
                         </div>
                     )}

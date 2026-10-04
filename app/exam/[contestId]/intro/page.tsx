@@ -131,7 +131,7 @@ export default function ExamIntroPage() {
         }
     };
 
-    const canReattempt = !contest || contest.type !== 'admin' || (contest.endTime && new Date(contest.endTime).getTime() <= Date.now());
+    const canReattempt = true; // User requested to always allow reattempts
 
     if (loading || !user) return <div className="h-screen bg-gray-50 dark:bg-zinc-950"></div>;
 

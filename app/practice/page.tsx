@@ -242,15 +242,22 @@ function PracticeContent() {
                 if (topicFilter !== 'all') constraints.push(where('topic', '==', topicFilter));
                 if (yearFilter !== 'all') constraints.push(where('year', '==', yearFilter));
 
-                // Cache check removed to ensure fresh data after verification
+                // Serve from page cache — zero Firestore reads for already-visited pages
+                const cachedPage = pageCache[pageToFetch];
+                if (cachedPage) {
+                    setQuestions(cachedPage);
+                    setIsLoadingQuestions(false);
+                    return;
+                }
 
-                // 1. Get exact total count for pagination first!
-                const countQuery = query(collection(db, questionCollectionPath), ...constraints);
-                const countSnapshot = await getCountFromServer(countQuery);
-                const exactTotal = countSnapshot.data().count;
-                
-                setTotalQuestions(exactTotal);
-                setTotalPages(Math.max(1, Math.ceil(exactTotal / CLIENT_PAGE_SIZE)));
+                // 1. Get exact total count for pagination — only on the first fetch for this filter set
+                if (pageToFetch === 1) {
+                    const countQuery = query(collection(db, questionCollectionPath), ...constraints);
+                    const countSnapshot = await getCountFromServer(countQuery);
+                    const exactTotal = countSnapshot.data().count;
+                    setTotalQuestions(exactTotal);
+                    setTotalPages(Math.max(1, Math.ceil(exactTotal / CLIENT_PAGE_SIZE)));
+                }
 
                 // 2. Query Configuration
                 if (sortOrder === 'year-desc') constraints.push(orderBy('year', 'desc'));
@@ -302,8 +309,24 @@ function PracticeContent() {
         }
     };
 
-    // Auto-fetch when filters/dependencies change
+    // Auto-fetch when filters/dependencies change.
+    // Critically: if we already have page 1 in the global cache for this exact cacheKey
+    // (e.g. user navigated to a question and came back), restore from cache — zero extra reads.
     useEffect(() => {
+        const cached = globalPracticeCache[cacheKey];
+        if (cached && cached.pageCache[1] && cached.pageCache[1].length > 0) {
+            // Restore full cached state — no Firestore read needed
+            setPageCache(cached.pageCache);
+            setPageCursors(cached.pageCursors);
+            setMaxReachedPage(cached.maxReachedPage);
+            setTotalQuestions(cached.totalQuestions);
+            setTotalPages(cached.totalPages);
+            setCurrentPage(1);
+            setQuestions(cached.pageCache[1]);
+            setIsLoadingQuestions(false);
+            return;
+        }
+        // No valid cache — reset everything and fetch fresh from Firestore
         setQuestions([]);
         setCurrentPage(1);
         setPageCache({});
