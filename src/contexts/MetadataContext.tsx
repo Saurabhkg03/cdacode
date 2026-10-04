@@ -12,26 +12,13 @@ import { db } from '../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { getCache, setCache } from '../utils/cache';
 
-// A map of available branches from your seeder script
-const BRANCH_MAP: Record<string, string> = {
-  ece: 'ECE',
-  cse: 'CSE',
-  me: 'ME',
-  ce: 'CE',
-  ee: 'EE',
-  in: 'IN', // Added IN (Instrumentation) just in case, removing if not needed is fine but safer to have generic map
-};
-// Ensure we use the exact map from the previous file if strict adherence is needed, 
-// but the previous file had: ece, cse, me, ce, ee. I will stick to that.
+// CDACode only has one branch: BDA (Big Data Analytics)
 const BRANCH_MAP_STRICT: Record<string, string> = {
-  ece: 'ECE',
-  cse: 'CSE',
-  me: 'ME',
-  ce: 'CE',
-  ee: 'EE',
+  bda: 'Big Data Analytics',
 };
 
-const DEFAULT_BRANCH = 'ece';
+const DEFAULT_BRANCH = 'bda';
+
 const BRANCH_CACHE_KEY = 'CDACode_selected_branch';
 const METADATA_CACHE_TTL = 3600;
 

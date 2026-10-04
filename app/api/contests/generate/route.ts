@@ -7,67 +7,18 @@ import { apiError, apiSuccess } from '@/lib/apiResponse';
 const shuffle = <T,>(array: T[]) => array.sort(() => Math.random() - 0.5);
 
 const branchBlueprints: Record<string, Record<string, number>> = {
-  cse: {
-    'Engineering Mathematics': 10,
-    'Discrete Mathematics': 5,
-    'Digital Logic': 5,
-    'Computer Organization': 8,
-    'C Programming': 5,
-    'Data Structure': 6,
-    'Algorithm': 7,
-    'Operating System': 8,
-    'Database Management System': 7,
-    'Computer Network': 7,
-    'Theory of Computation': 7,
-    'Compiler Design': 4,
+  bda: {
+    'Data Engineering & Big Data': 10,
+    'Machine Learning': 10,
+    'Deep Learning & AI': 8,
+    'Data Warehousing & Mining': 8,
+    'Statistics & Probability': 7,
+    'Database Management': 7,
+    'Cloud Computing': 6,
+    'Programming & Python': 8,
+    'Data Visualization': 4,
+    'Algorithms & Data Structures': 7,
   },
-  ece: {
-    'Engineering Mathematics': 10,
-    'Communication Systems': 10,
-    'Digital Circuits': 9,
-    'Analog Circuits': 10,
-    'Signals and Systems': 9,
-    'Electromagnetics': 8,
-    'Network Theory': 8,
-    'Control Systems': 8,
-    'Electronic Devices': 8,
-    'Microprocessors': 5,
-  },
-  me: {
-    'Engineering Mathematics': 10,
-    'Manufacturing Engineering': 12,
-    'Thermodynamics': 10,
-    'Fluid Mechanics': 8,
-    'Heat Transfer': 7,
-    'Theory of Machine': 7,
-    'Strength of Materials': 7,
-    'Machine Design': 5,
-    'Industrial Engineering': 5,
-    'Engineering Mechanics': 5,
-    'Refrigeration and Air-conditioning': 3,
-  },
-  ee: {
-    'Engineering Mathematics': 10,
-    'Electrical Machines': 10,
-    'Power Systems': 10,
-    'Control Systems': 9,
-    'Power Electronics': 9,
-    'Signals and Systems': 8,
-    'Electric Circuits': 8,
-    'Analog & Digital Electronics': 6,
-    'Electromagnetic Fields': 5,
-  },
-  in: {
-    'Engineering Mathematics': 10,
-    'Control Systems': 12,
-    'Electrical Circuits and Machines': 10,
-    'Measurements': 9,
-    'Analog Electronics': 8,
-    'Digital Electronics': 8,
-    'Signals and Systems': 7,
-    'Sensors and Industrial Instrumentation': 7,
-    'Communication and Optical Instrumentation': 5,
-  }
 };
 
 export async function POST(req: NextRequest) {
@@ -101,7 +52,7 @@ export async function POST(req: NextRequest) {
             return apiError('Firebase Admin not initialized', 'SERVER_ERROR', 500);
         }
 
-        const sourceCollection = `questions_${branch}`;
+        const sourceCollection = `ccat_questions`;
 
         let qCol = adminDb.collection(sourceCollection);
         let qSnapshot = await qCol.get();
@@ -402,9 +353,9 @@ export async function POST(req: NextRequest) {
         const prefix = isAdminContest ? 'admin' : 'mock';
         const newContestId = `${Date.now()}-${prefix}-${branch}`;
         
-        let defaultTitle = `C-CAT ${branch.toUpperCase()} ${isAdminContest ? 'Live Competition' : 'Practice Contest'} (Real)`;
+        let defaultTitle = `C-CAT BDA ${isAdminContest ? 'Live Competition' : 'Practice Contest'} (Real)`;
         if (examMode === 'custom') {
-            defaultTitle = `${branch.toUpperCase()} Custom Test: ${targetSubjects.length <= 2 ? targetSubjects.join(' & ') : targetSubjects.length + ' Subjects'}`;
+            defaultTitle = `BDA Custom Test: ${targetSubjects.length <= 2 ? targetSubjects.join(' & ') : targetSubjects.length + ' Subjects'}`;
         }
         
         const title = contestTitle || defaultTitle;

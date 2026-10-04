@@ -10,7 +10,7 @@ const getDashboardSummary = unstable_cache(
         const db = app.firestore();
         
         // 1. Fetch Recent Questions
-        const qSnapshot = await db.collection(`questions_${branch}`)
+        const qSnapshot = await db.collection(`ccat_questions`)
             .orderBy('year', 'desc')
             .limit(20)
             .get();

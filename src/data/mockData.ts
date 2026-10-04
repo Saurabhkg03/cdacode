@@ -8,7 +8,7 @@ export interface Question {
   question_image_links?: string[];
   explanation_html: string;
   explanation_image_links?: string[];
-  explanation_redirect_url?: string | null; // For GateOverflow links
+  explanation_redirect_url?: string | null; // For External Resource links
   options: {
     label: string;
     text_html: string;

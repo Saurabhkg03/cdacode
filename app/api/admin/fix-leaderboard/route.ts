@@ -4,7 +4,7 @@ import { requireAdmin } from '@/lib/adminAuth';
 import { adminLimiter } from '@/lib/rateLimit';
 import { apiError, apiSuccess } from '@/lib/apiResponse';
 
-const BRANCHES = ['ece', 'cse', 'me', 'ce', 'ee'];
+const BRANCHES = ['bda'];
 
 export async function GET(req: NextRequest) {
     try {

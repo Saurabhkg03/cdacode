@@ -231,19 +231,17 @@ const LiveExamUI = () => {
     }
 
     if (isSubmitted) {
+        if (typeof window !== 'undefined' && state.attemptId) {
+            window.location.href = `/exam/${contest.id}/result?attemptId=${state.attemptId}`;
+        }
         return (
             <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-zinc-950">
-                <div className="text-center max-w-md p-8 bg-white dark:bg-zinc-900 rounded-lg shadow-lg">
-                    <h2 className="text-2xl font-bold text-green-600 mb-4">Exam Submitted Successfully!</h2>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                        Thank you for taking the contest. You can now view your detailed analysis and solutions.
+                <div className="flex flex-col items-center text-center max-w-md p-8 bg-white dark:bg-zinc-900 rounded-lg shadow-lg">
+                    <Loader2 className="w-12 h-12 text-purple-600 animate-spin mb-4" />
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Generating Result...</h2>
+                    <p className="text-gray-500 dark:text-gray-400">
+                        Please wait while we calculate your final score and redirect you.
                     </p>
-                    <a
-                        href={`/exam/${contest.id}/result`}
-                        className="inline-block px-6 py-3 bg-purple-600 text-white font-medium rounded hover:bg-purple-700 transition"
-                    >
-                        View Result
-                    </a>
                 </div>
             </div>
         )

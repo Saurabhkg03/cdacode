@@ -243,7 +243,7 @@ export default function ReviewModeUI({ questionAnalysis, contest, onExit }: any)
                                     <div className="prose dark:prose-invert max-w-none text-blue-900 dark:text-blue-100">
                                         {question.explanation_redirect_url ? (
                                             <p>
-                                                This explanation is provided by GateOverflow.
+                                                This explanation is provided by External Resource.
                                                 <a
                                                     href={question.explanation_redirect_url}
                                                     target="_blank"

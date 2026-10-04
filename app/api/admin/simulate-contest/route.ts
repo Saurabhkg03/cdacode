@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         }
         
         const contestData = contestSnap.data()!;
-        const branch = contestData.branch || 'ece';
+        const branch = contestData.branch || 'bda';
         const totalMarks = contestData.totalMarks || 100;
         
         console.log(`[Simulation] Starting simulation for ${contestId} with ${userCount} users`);

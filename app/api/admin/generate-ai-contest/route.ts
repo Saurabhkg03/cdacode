@@ -97,21 +97,21 @@ export async function POST(req: NextRequest) {
                     } else if (mode === 'section-b') {
                         subjectStr = 'C Programming, Data Structures, OOP (C++), Operating Systems, Networking, Big Data & AI';
                         totalCount = 50;
-                        targetBranch = 'cse';
+                        targetBranch = 'bda';
                     } else if (mode === 'section-c') {
                         subjectStr = 'Computer Architecture, Digital Electronics, Microprocessors';
                         totalCount = 50;
-                        targetBranch = 'ece';
+                        targetBranch = 'bda';
                     } else if (mode === 'custom') {
                         subjectStr = customSubject;
                         totalCount = customCount;
-                        targetBranch = 'cse'; // Default generic
+                        targetBranch = 'bda'; // Default generic
                     } else if (mode === 'full-exam') {
                         // For full exam, we would need 150 Qs. 
                         // To avoid timeout, we might have to batch, but for now we'll do 50 Qs as a demo full exam or single prompt.
                         subjectStr = 'Full C-CAT Syllabus (A, B, C)';
                         totalCount = 150; // VERY aggressive for a single LLM prompt, likely will truncate. 
-                        targetBranch = 'cse';
+                        targetBranch = 'bda';
                     }
 
                     const BATCH_SIZE = 10;
@@ -265,7 +265,7 @@ export async function POST(req: NextRequest) {
                         title: contestTitle || `AI Generated Contest (${newQuestions.length} Qs)`,
                         type: 'mock',
                         section: targetBranch,
-                        branch: branch || 'ece',
+                        branch: branch || 'bda',
                         createdBy: uid || 'AI Generator',
                         isPublic: isPublic,
                         isRated: isRated,

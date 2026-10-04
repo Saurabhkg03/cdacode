@@ -60,8 +60,9 @@ type TabType = "official" | "community" | "mine";
 const ITEMS_PER_PAGE = 12;
 
 const AVAILABLE_BRANCHES = [
-    "ECE", "CSE", "ME", "CE", "EE"
+    "BDA"
 ];
+
 
 const mapPageBranchToDbBranch = (branch: string): string => branch.toLowerCase();
 
@@ -383,7 +384,7 @@ const ContestsPage = () => {
     const [loadingMore, setLoadingMore] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("ECE");
+    const [selectedBranch, setSelectedBranch] = useState("BDA");
     const [selectedDifficulty, setSelectedDifficulty] = useState("All");
     const [selectedDuration, setSelectedDuration] = useState("All");
     const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -664,7 +665,7 @@ const ContestsPage = () => {
     // weekly/biweekly scheduled contest IDs for registration badge
     const weeklyInfo = getNextWeeklyContest();
     const biweeklyInfo = getNextBiweeklyContest();
-    const activeBranch = selectedBranch !== "All" ? mapPageBranchToDbBranch(selectedBranch) : (globalBranch || "ece");
+    const activeBranch = selectedBranch !== "All" ? mapPageBranchToDbBranch(selectedBranch) : (globalBranch || "bda");
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors">

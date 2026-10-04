@@ -54,8 +54,8 @@ export async function POST(req: NextRequest) {
                 name: `Sim ${profile.charAt(0).toUpperCase() + profile.slice(1)} ${i}`,
                 email: `sim${i}@example.com`,
                 createdAt: new Date().toISOString(),
-                branchRatings: { cse: 1500 },
-                highestBranchRatings: { cse: 1500 },
+                branchRatings: { bda: 1500 },
+                highestBranchRatings: { bda: 1500 },
                 contestCount: 0,
                 isSimulated: true,
                 role: 'user'
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
             batch.set(adminDb.collection('contests').doc(contestId), {
                 id: contestId,
                 title: `Simulated Series Contest ${c}`,
-                branch: 'cse',
+                branch: 'bda',
                 totalMarks: 100,
                 durationMinutes: 90,
                 startTime: Date.now() - (6 - c) * 86400000, // c days ago

@@ -281,7 +281,7 @@ export default function QuestionForm({ questionId }: QuestionFormProps) {
 
                             {/* Redirect URL */}
                             <div>
-                                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">GateOverflow Redirect URL (Optional)</label>
+                                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">External Resource Redirect URL (Optional)</label>
                                 <input type="text" value={formData.explanation_redirect_url || ''} onChange={e => setFormData({ ...formData, explanation_redirect_url: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none" placeholder="https://gateoverflow.in/..." />
                             </div>
 
@@ -362,7 +362,7 @@ export default function QuestionForm({ questionId }: QuestionFormProps) {
                                         <MathRenderer
                                             content={
                                                 formData.explanation_redirect_url
-                                                    ? `<p>This explanation is provided by GateOverflow. <a href="${formData.explanation_redirect_url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold inline-flex items-center gap-1">Click here to view the full discussion</a></p>`
+                                                    ? `<p>This explanation is provided by External Resource. <a href="${formData.explanation_redirect_url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold inline-flex items-center gap-1">Click here to view the full discussion</a></p>`
                                                     : extractAndCleanHtml(formData.explanation_html || '', 'mtq_explanation-text')
                                             }
                                             className="prose prose-sm dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300"

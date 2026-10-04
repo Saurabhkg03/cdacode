@@ -67,8 +67,8 @@ export async function POST(req: NextRequest) {
                 name: fullName,
                 email: `${username}@example.com`,
                 createdAt: new Date(Date.now() - 30 * 86400000).toISOString(), // Created 30 days ago
-                branchRatings: { cse: 1500 },
-                highestBranchRatings: { cse: 1500 },
+                branchRatings: { bda: 1500 },
+                highestBranchRatings: { bda: 1500 },
                 contestCount: 0,
                 isSimulated: true, // Legacy compatibility
                 isAuthenticSeed: true,
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
             batch.set(adminDb.collection('contests').doc(contestId), {
                 id: contestId,
                 title: `Weekly C-CAT Mock ${Date.now().toString().slice(-4)} - Pt ${c}`,
-                branch: 'cse',
+                branch: 'bda',
                 totalMarks: 100,
                 durationMinutes: 90,
                 startTime: Date.now() - (15 - c*3) * 86400000, // Every 3 days over last 15 days

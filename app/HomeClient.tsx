@@ -52,7 +52,7 @@ const getColorForString = (str: string): string => {
 
 export default function HomeClient({
   initialQuestions = [],
-  initialBranch = "ece",
+  initialBranch = "bda",
 }: {
   initialQuestions?: any[];
   initialBranch?: string;

@@ -74,7 +74,7 @@ export default function ExamResultPage() {
                     // Hydrate questions if contest exists
                     if (fetchedContest && fetchedContest.section) {
                         const branch = fetchedContest.section.toLowerCase();
-                        const questionCollection = `questions_${branch}`;
+                        const questionCollection = `ccat_questions`;
                         const allQIds = fetchedContest.sections.flatMap(s => s.questions.map(q => q.id));
 
                         // Fetch unique questions

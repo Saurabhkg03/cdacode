@@ -196,12 +196,11 @@ Examples:
 \`\`\`text
 DBDA
 DAC
-ECE
-CSE
-Mechanical
+BDA
+DBDA
+DAC
 CDAC
-GATE-ECE
-GATE-CSE
+C-CAT BDA
 \`\`\`
 
 Use the value specified by the user.
@@ -532,7 +531,7 @@ Examples:
 dbda_python_001
 dbda_sql_001
 dbda_dbms_001
-gate_ece_001
+bda_001
 dac_java_001
 \`\`\`
 

@@ -11,7 +11,7 @@ import { Contest, Question, Section } from "@/types/exam";
 const shuffle = <T>(array: T[]) => array.sort(() => Math.random() - 0.5);
 
 // Allowed branches for auto generation
-const TARGET_BRANCHES = ["ece", "cse", "me", "ee", "in"];
+const TARGET_BRANCHES = ["bda"];
 
 export async function GET(request: Request) {
   const app = await initAdmin();
@@ -110,7 +110,7 @@ async function attemptToGenerateContest(
   durationMinutes: number,
 ) {
   const adminDb = (await initAdmin())!.firestore();
-  const sourceCollection = `questions_${branch}`;
+  const sourceCollection = `ccat_questions`;
 
   let qCol = adminDb.collection(sourceCollection);
   let qSnapshot = await qCol.get();
@@ -201,7 +201,7 @@ async function attemptToGenerateContest(
 
   const newContest: Contest = {
     id: fullContestId,
-    title: `C-CAT ${branch.toUpperCase()} ${contestType} Contest ${baseId.split("-")[1]}`,
+    title: `C-CAT BDA ${contestType} Contest ${baseId.split("-")[1]}`,
     type: "admin",
     section: branch,
     createdBy: "system-auto",
