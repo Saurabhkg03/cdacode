@@ -14,7 +14,7 @@ import { getCache, setCache } from '../utils/cache';
 
 // CDACode only has one branch: BDA (Big Data Analytics)
 const BRANCH_MAP_STRICT: Record<string, string> = {
-  bda: 'Big Data Analytics',
+  bda: 'BDA',
 };
 
 const DEFAULT_BRANCH = 'bda';

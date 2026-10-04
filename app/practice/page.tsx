@@ -144,7 +144,33 @@ function PracticeContent() {
     const [subjectFilter, setSubjectFilter] = useState<string>(searchParams.get('subject') || 'all');
     const [yearFilter, setYearFilter] = useState<string>('all');
     const [sortOrder, setSortOrder] = useState<string>('qIndex-asc');
+    const [statusFilter, setStatusFilter] = useState<'all' | 'solved' | 'unsolved'>('all');
     const [selectedListId, setSelectedListId] = useState<string | null>(null);
+
+    // Submissions and solved status (defined early so filters have immediate access)
+    const [submissions, setSubmissions] = useState<Submission[]>([]);
+
+    useEffect(() => {
+        if (user?.uid) {
+            const subsCollection = collection(db, `users/${user.uid}/submissions`);
+            const unsubscribe = onSnapshot(subsCollection, (snapshot) => {
+                const subsData = snapshot.docs.map(doc => ({ qid: doc.id, ...doc.data() } as unknown as Submission));
+                setSubmissions(subsData);
+            }, (error) => console.error("Error fetching submissions:", error));
+            return () => unsubscribe();
+        } else {
+            setSubmissions([]);
+        }
+    }, [user?.uid]);
+
+    const solvedQuestionIds = useMemo(() =>
+        new Set(submissions.filter(s => s.correct).map(s => s.qid)),
+        [submissions]
+    );
+    const incorrectQuestionIds = useMemo(() =>
+        new Set(submissions.filter(s => !s.correct).map(s => s.qid)),
+        [submissions]
+    );
 
     // Mobile UI States
     const [isMobileListsOpen, setIsMobileListsOpen] = useState(false);
@@ -160,7 +186,7 @@ function PracticeContent() {
             return (listDoc.data() as QuestionList).questionIds || [];
         },
         enabled: !!selectedListId && !!user,
-        staleTime: 0, // Always refetch when coming back — list may have been changed from the question page
+        staleTime: 0,
         refetchOnWindowFocus: true,
     });
 
@@ -173,10 +199,13 @@ function PracticeContent() {
             topicFilter,
             yearFilter,
             sortOrder,
+            statusFilter,
             selectedListId,
-            listQuestionIdsStr: listQuestionIds?.join(',') || ''
+            listQuestionIdsStr: listQuestionIds?.join(',') || '',
+            // If statusFilter is active, track solved count so new attempts refresh
+            solvedCount: statusFilter !== 'all' ? solvedQuestionIds.size : 0
         });
-    }, [questionCollectionPath, userInfo?.role, questionTypeFilter, subjectFilter, topicFilter, yearFilter, sortOrder, selectedListId, listQuestionIds]);
+    }, [questionCollectionPath, userInfo?.role, questionTypeFilter, subjectFilter, topicFilter, yearFilter, sortOrder, statusFilter, selectedListId, listQuestionIds, solvedQuestionIds.size]);
 
     const initialCache = globalPracticeCache[cacheKey];
 
@@ -186,24 +215,12 @@ function PracticeContent() {
     const [totalQuestions, setTotalQuestions] = useState(initialCache?.totalQuestions || 0);
     const [isLoadingQuestions, setIsLoadingQuestions] = useState(!initialCache);
     
-    // Ultra-Low Read Memory Caching for Pagination (Now globally backed)
     const [pageCache, setPageCache] = useState<Record<number, Question[]>>(initialCache?.pageCache || {});
     const [pageCursors, setPageCursors] = useState<Record<number, DocumentSnapshot>>(initialCache?.pageCursors || {});
     const [maxReachedPage, setMaxReachedPage] = useState(initialCache?.maxReachedPage || 1);
     const [queryError, setQueryError] = useState<string>('');
 
-    // Sync to global cache
-    useEffect(() => {
-        globalPracticeCache[cacheKey] = {
-            pageCache,
-            pageCursors,
-            maxReachedPage,
-            totalQuestions,
-            totalPages
-        };
-    }, [pageCache, pageCursors, maxReachedPage, totalQuestions, totalPages, cacheKey]);
-
-    const fetchQuestions = async (pageToFetch = 1) => {
+    const fetchQuestions = async (pageToFetch = 1, forceFresh = false) => {
         if (!questionCollectionPath) return;
         if (selectedListId !== null && !listQuestionIds) return;
 
@@ -227,95 +244,172 @@ function PracticeContent() {
                     const listQuery = query(collection(db, questionCollectionPath), ...listConstraints);
                     const snapshot = await getDocs(listQuery);
                     
-                    // Maintain original selected order
                     const qDataUnsorted = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Question));
                     const qData = nextIds.map(id => qDataUnsorted.find(q => q.id === id)).filter(Boolean) as Question[];
 
                     setQuestions(qData);
                 }
             } else {
+                // If not forcing fresh, serve from page cache if available
+                if (!forceFresh && pageCache[pageToFetch]) {
+                    setQuestions(pageCache[pageToFetch]);
+                    setIsLoadingQuestions(false);
+                    return;
+                }
+
                 const constraints: QueryConstraint[] = [];
-                // All users now see all questions regardless of verification status
-                
                 if (questionTypeFilter !== 'all') constraints.push(where('question_type', '==', questionTypeFilter));
                 if (subjectFilter !== 'all') constraints.push(where('subject', '==', subjectFilter));
                 if (topicFilter !== 'all') constraints.push(where('topic', '==', topicFilter));
                 if (yearFilter !== 'all') constraints.push(where('year', '==', yearFilter));
 
-                // Serve from page cache — zero Firestore reads for already-visited pages
-                const cachedPage = pageCache[pageToFetch];
-                if (cachedPage) {
-                    setQuestions(cachedPage);
-                    setIsLoadingQuestions(false);
-                    return;
-                }
-
-                // 1. Get exact total count for pagination — only on the first fetch for this filter set
+                // 1. Get exact total count for pagination
                 if (pageToFetch === 1) {
-                    const countQuery = query(collection(db, questionCollectionPath), ...constraints);
-                    const countSnapshot = await getCountFromServer(countQuery);
-                    const exactTotal = countSnapshot.data().count;
-                    setTotalQuestions(exactTotal);
-                    setTotalPages(Math.max(1, Math.ceil(exactTotal / CLIENT_PAGE_SIZE)));
+                    try {
+                        const countQuery = query(collection(db, questionCollectionPath), ...constraints);
+                        const countSnapshot = await getCountFromServer(countQuery);
+                        const exactTotal = countSnapshot.data().count;
+                        setTotalQuestions(exactTotal);
+                        setTotalPages(Math.max(1, Math.ceil(exactTotal / CLIENT_PAGE_SIZE)));
+                    } catch (countErr) {
+                        console.warn("Count query failed, defaulting total:", countErr);
+                    }
                 }
 
-                // 2. Query Configuration
+                // 2. Query Configuration with sort order
                 if (sortOrder === 'year-desc') constraints.push(orderBy('year', 'desc'));
                 else if (sortOrder === 'year-asc') constraints.push(orderBy('year', 'asc'));
                 else if (sortOrder === 'qIndex-desc') constraints.push(orderBy('qIndex', 'desc'));
-                else constraints.push(orderBy('qIndex', 'asc')); // Default to qIndex-asc
+                else constraints.push(orderBy('qIndex', 'asc'));
 
-                // Guest limitation: if they are guest, we only let them fetch the first page
                 if (!user && pageToFetch > 1) {
                     setIsLoadingQuestions(false);
                     return;
                 }
 
-                // --- Ultra-Low-Read Cursor Navigation ---
-                if (pageToFetch > 1) {
-                    const previousCursor = pageCursors[pageToFetch - 1];
-                    if (previousCursor) {
-                        constraints.push(startAfter(previousCursor));
-                    } else {
-                        // Failsafe: If a user somehow attempts to jump to a totally uncached page 
-                        // deeper than sequential allowed (e.g. hack/edge-case).
-                        console.warn("Attempted to fetch uncached page. Read minimized.");
-                        setIsLoadingQuestions(false);
-                        return;
-                    }
+                // Cursor pagination
+                let currentCursor = (!forceFresh && pageToFetch > 1) ? pageCursors[pageToFetch - 1] : undefined;
+                if (pageToFetch > 1 && !currentCursor && !forceFresh) {
+                    console.warn("Attempted to fetch uncached page without cursor.");
+                    setIsLoadingQuestions(false);
+                    return;
                 }
 
-                constraints.push(limit(CLIENT_PAGE_SIZE));
-
-                const finalQuery = query(collection(db, questionCollectionPath), ...constraints);
-                const snapshot = await getDocs(finalQuery);
-
-                const qData = snapshot.docs.map(document => ({ id: document.id, ...document.data() } as Question));
+                let matchedQuestions: Question[] = [];
+                let lastMatchedSnapshot: DocumentSnapshot | undefined = undefined;
+                let fetchLoops = 0;
                 
-                // Store fetched data in Cache to ensure subsequent requests are 0 reads
-                setQuestions(qData);
-                setPageCache(prev => ({ ...prev, [pageToFetch]: qData }));
+                while (matchedQuestions.length < CLIENT_PAGE_SIZE && fetchLoops < 5) {
+                    const tempConstraints = [...constraints];
+                    if (currentCursor) tempConstraints.push(startAfter(currentCursor));
+                    tempConstraints.push(limit(CLIENT_PAGE_SIZE));
+
+                    const finalQuery = query(collection(db, questionCollectionPath), ...tempConstraints);
+                    const snapshot = await getDocs(finalQuery);
+                    
+                    if (snapshot.empty) break;
+
+                    for (const docSnap of snapshot.docs) {
+                        const q = { id: docSnap.id, ...docSnap.data() } as Question;
+                        
+                        let keep = true;
+                        if (statusFilter === 'solved' && !solvedQuestionIds.has(q.id)) keep = false;
+                        if (statusFilter === 'unsolved' && solvedQuestionIds.has(q.id)) keep = false;
+
+                        if (keep && matchedQuestions.length < CLIENT_PAGE_SIZE) {
+                            matchedQuestions.push(q);
+                            lastMatchedSnapshot = docSnap;
+                        }
+                    }
+
+                    currentCursor = snapshot.docs[snapshot.docs.length - 1];
+                    fetchLoops++;
+                }
                 
-                if (snapshot.docs.length > 0) {
-                    setPageCursors(prev => ({ ...prev, [pageToFetch]: snapshot.docs[snapshot.docs.length - 1] }));
+                setQuestions(matchedQuestions);
+                setPageCache(prev => {
+                    const next = { ...prev, [pageToFetch]: matchedQuestions };
+                    // Safely update globalPracticeCache with genuinely fetched data
+                    globalPracticeCache[cacheKey] = {
+                        pageCache: next,
+                        pageCursors: lastMatchedSnapshot ? { ...pageCursors, [pageToFetch]: lastMatchedSnapshot } : pageCursors,
+                        maxReachedPage: Math.max(maxReachedPage, pageToFetch),
+                        totalQuestions,
+                        totalPages
+                    };
+                    return next;
+                });
+                
+                if (lastMatchedSnapshot) {
+                    setPageCursors(prev => ({ ...prev, [pageToFetch]: lastMatchedSnapshot }));
                 }
                 setMaxReachedPage(prev => Math.max(prev, pageToFetch));
             }
         } catch (error: any) {
             console.error("Error fetching questions:", error);
-            setQueryError(error.message || 'An error occurred fetching questions.');
+            const errMsg = error.message || '';
+            
+            // AUTOMATIC FALLBACK: If composite index is missing in Firestore, fetch without orderBy and filter/sort in memory!
+            if (errMsg.includes('index') || errMsg.includes('FAILED_PRECONDITION')) {
+                try {
+                    console.warn("Index missing in Firestore, executing instant in-memory filtered & sorted fallback...");
+                    const fallbackConstraints: QueryConstraint[] = [];
+                    if (questionTypeFilter !== 'all') fallbackConstraints.push(where('question_type', '==', questionTypeFilter));
+                    if (subjectFilter !== 'all') fallbackConstraints.push(where('subject', '==', subjectFilter));
+                    if (topicFilter !== 'all') fallbackConstraints.push(where('topic', '==', topicFilter));
+                    if (yearFilter !== 'all') fallbackConstraints.push(where('year', '==', yearFilter));
+                    fallbackConstraints.push(limit(150));
+
+                    const fallbackQ = query(collection(db, questionCollectionPath), ...fallbackConstraints);
+                    const fallbackSnap = await getDocs(fallbackQ);
+                    let fallbackData = fallbackSnap.docs.map(d => ({ id: d.id, ...d.data() } as Question));
+
+                    // In-memory status filter
+                    if (statusFilter === 'solved') {
+                        fallbackData = fallbackData.filter(q => solvedQuestionIds.has(q.id));
+                    } else if (statusFilter === 'unsolved') {
+                        fallbackData = fallbackData.filter(q => !solvedQuestionIds.has(q.id));
+                    }
+
+                    // In-memory sort
+                    if (sortOrder === 'year-desc') fallbackData.sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
+                    else if (sortOrder === 'year-asc') fallbackData.sort((a, b) => Number(a.year || 0) - Number(b.year || 0));
+                    else if (sortOrder === 'qIndex-desc') fallbackData.sort((a, b) => (b.qIndex || 0) - (a.qIndex || 0));
+                    else fallbackData.sort((a, b) => (a.qIndex || 0) - (b.qIndex || 0));
+
+                    const exactTotal = fallbackData.length;
+                    setTotalQuestions(exactTotal);
+                    setTotalPages(Math.max(1, Math.ceil(exactTotal / CLIENT_PAGE_SIZE)));
+
+                    const pageData = fallbackData.slice((pageToFetch - 1) * CLIENT_PAGE_SIZE, pageToFetch * CLIENT_PAGE_SIZE);
+                    setQuestions(pageData);
+                    setPageCache(prev => ({ ...prev, [pageToFetch]: pageData }));
+                    setQueryError('');
+
+                    globalPracticeCache[cacheKey] = {
+                        pageCache: { [pageToFetch]: pageData },
+                        pageCursors: {},
+                        maxReachedPage: 1,
+                        totalQuestions: exactTotal,
+                        totalPages: Math.max(1, Math.ceil(exactTotal / CLIENT_PAGE_SIZE))
+                    };
+                    return;
+                } catch (fallbackErr) {
+                    console.error("Fallback query failed:", fallbackErr);
+                }
+            }
+
+            setQueryError(errMsg || 'An error occurred fetching questions.');
         } finally {
             setIsLoadingQuestions(false);
         }
     };
 
-    // Auto-fetch when filters/dependencies change.
-    // Critically: if we already have page 1 in the global cache for this exact cacheKey
-    // (e.g. user navigated to a question and came back), restore from cache — zero extra reads.
+    // Auto-fetch when filters/dependencies change
     useEffect(() => {
         const cached = globalPracticeCache[cacheKey];
         if (cached && cached.pageCache[1] && cached.pageCache[1].length > 0) {
-            // Restore full cached state — no Firestore read needed
+            // Restore genuine cached state for this exact filter combination
             setPageCache(cached.pageCache);
             setPageCursors(cached.pageCursors);
             setMaxReachedPage(cached.maxReachedPage);
@@ -326,30 +420,16 @@ function PracticeContent() {
             setIsLoadingQuestions(false);
             return;
         }
-        // No valid cache — reset everything and fetch fresh from Firestore
+
+        // Fresh filter selection: clear and fetch fresh from Firestore
         setQuestions([]);
         setCurrentPage(1);
         setPageCache({});
         setPageCursors({});
         setMaxReachedPage(1);
-        fetchQuestions(1);
+        fetchQuestions(1, true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cacheKey]);
-
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
-
-    useEffect(() => {
-        if (user) {
-            const subsCollection = collection(db, `users/${user.uid}/submissions`);
-            const unsubscribe = onSnapshot(subsCollection, (snapshot) => {
-                const subsData = snapshot.docs.map(doc => doc.data() as Submission);
-                setSubmissions(subsData);
-            }, (error) => console.error(error));
-            return () => unsubscribe();
-        } else {
-            setSubmissions([]);
-        }
-    }, [user]);
 
     useEffect(() => {
         const subject = searchParams.get('subject');
@@ -357,23 +437,14 @@ function PracticeContent() {
             setSelectedListId(null);
             setSubjectFilter(subject);
         }
-    }, [searchParams, subjectFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams]);
 
     // Derived Data
     const subjects = useMemo(() => metadata?.subjects || [], [metadata]);
     const topics = useMemo(() => metadata?.topics || [], [metadata]);
     const years = useMemo(() => metadata?.years || [], [metadata]);
     const tags = useMemo(() => metadata?.tags || [], [metadata]);
-    const solvedQuestionIds = useMemo(() =>
-        new Set(submissions.filter(s => s.correct).map(s => s.qid)),
-        [submissions]
-    );
-    const incorrectQuestionIds = useMemo(() =>
-        new Set(submissions.filter(s => !s.correct).map(s => s.qid)),
-        [submissions]
-    );
-
-
 
     const filteredTopics = useMemo(() => {
         if (subjectFilter === 'all') return topics;
@@ -390,11 +461,12 @@ function PracticeContent() {
         setSubjectFilter('all');
         setYearFilter('all');
         setSortOrder('qIndex-asc');
+        setStatusFilter('all');
         if (selectedListId !== null) setSelectedListId(null);
     };
 
     const filtersDisabled = selectedListId !== null;
-    const filtersAreActive = (questionTypeFilter !== 'all' || subjectFilter !== 'all' || topicFilter !== 'all' || yearFilter !== 'all');
+    const filtersAreActive = (questionTypeFilter !== 'all' || subjectFilter !== 'all' || topicFilter !== 'all' || yearFilter !== 'all' || statusFilter !== 'all');
 
     if (authLoading || metadataLoading) return <PracticeSkeleton />;
     const branchName = availableBranches[selectedBranch] || 'Practice';
@@ -453,6 +525,11 @@ function PracticeContent() {
                     <option value="all">Year</option>
                     {years.map((year: string) => <option key={year} value={year}>{year}</option>)}
                 </select>
+                <select disabled={filtersDisabled} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all'|'solved'|'unsolved')} className="w-full sm:w-auto px-2 py-1 border border-zinc-300 dark:border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white">
+                    <option value="all">Status: All</option>
+                    <option value="unsolved">Unsolved</option>
+                    <option value="solved">Solved</option>
+                </select>
                 <div className="flex items-center gap-1 border border-zinc-300 dark:border-zinc-700 rounded-md px-2 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white">
                     <ArrowDownUp className="w-4 h-4 text-zinc-400" />
                     <select disabled={filtersDisabled} value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className="bg-transparent dark:bg-zinc-800 dark:text-white border-none focus:ring-0 text-sm appearance-none cursor-pointer">
@@ -479,7 +556,7 @@ function PracticeContent() {
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-48 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.15),transparent_70%)] rounded-full" />
                 </div>
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-1.5 relative z-10">
-                    Practice Questions <span className="text-indigo-600 dark:text-indigo-400 font-extrabold">({branchName})</span>
+                    Practice Questions 
                 </h1>
                 <div className="text-gray-500 dark:text-zinc-400 text-sm relative z-10 flex items-center justify-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-amber-500 flex-shrink-0 animate-pulse" />
@@ -638,6 +715,11 @@ function PracticeContent() {
                                         <option value="all">Any Year</option>
                                         {years.map((year: string) => <option key={year} value={year}>{year}</option>)}
                                     </select>
+                                    <select disabled={filtersDisabled} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'all'|'solved'|'unsolved')} className="px-3 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white transition-shadow">
+                                        <option value="all">Any Status</option>
+                                        <option value="unsolved">Unsolved</option>
+                                        <option value="solved">Solved</option>
+                                    </select>
                                     <div className="flex items-center gap-2 px-3 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white transition-shadow focus-within:ring-2 focus-within:ring-blue-500">
                                         <ArrowDownUp className="w-4 h-4 text-zinc-400" />
                                         <select disabled={filtersDisabled} value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className="bg-transparent dark:bg-zinc-800 dark:text-white border-none focus:ring-0 text-sm appearance-none cursor-pointer p-0">
@@ -681,12 +763,22 @@ function PracticeContent() {
                                             <span className="text-red-500 dark:text-red-400 font-bold text-2xl">!</span>
                                         </div>
                                         <h3 className="text-lg sm:text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
-                                            Error Loading Questions
+                                            Missing Firestore Index
                                         </h3>
-                                        <p className="text-red-500/80 dark:text-red-400/80 max-w-md mb-6 text-sm">
+                                        <p className="text-red-500/80 dark:text-red-400/80 max-w-lg mb-4 text-sm font-mono break-all bg-red-50 dark:bg-red-950/40 p-3 rounded border border-red-200 dark:border-red-800">
                                             {queryError}
                                         </p>
-                                        <p className="text-xs text-zinc-500 dark:text-zinc-500">You may need to build Firestore indexes.</p>
+                                        {queryError.includes('https://console.firebase.google.com') && (
+                                            <a 
+                                                href={queryError.match(/https:\/\/console\.firebase\.google\.com[^\s)]+/)?.[0] || '#'} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm shadow transition-colors mb-2 inline-flex items-center gap-2"
+                                            >
+                                                👉 Click Here to Create this Index Automatically
+                                            </a>
+                                        )}
+                                        <p className="text-xs text-zinc-500 dark:text-zinc-500">Firebase takes 1–2 minutes to build the index once clicked.</p>
                                     </div>
                                 ) : questions.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-24 px-4 text-center">

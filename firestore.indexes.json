@@ -4,122 +4,306 @@
       "collectionGroup": "questions_section_a",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "qIndex", "order": "ASCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_a",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "qIndex", "order": "DESCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_a",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "year", "order": "ASCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "year",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_a",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "year", "order": "DESCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "year",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_a",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "addedBy", "order": "ASCENDING" },
-        { "fieldPath": "qIndex", "order": "ASCENDING" }
+        {
+          "fieldPath": "addedBy",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_b",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "qIndex", "order": "ASCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_b",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "qIndex", "order": "DESCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_b",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "year", "order": "ASCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "year",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_b",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "verified", "order": "ASCENDING" },
-        { "fieldPath": "year", "order": "DESCENDING" }
+        {
+          "fieldPath": "verified",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "year",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "questions_section_b",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "addedBy", "order": "ASCENDING" },
-        { "fieldPath": "qIndex", "order": "ASCENDING" }
+        {
+          "fieldPath": "addedBy",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "contests",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type", "order": "ASCENDING" },
-        { "fieldPath": "id", "order": "DESCENDING" }
+        {
+          "fieldPath": "type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "contests",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "createdBy", "order": "ASCENDING" },
-        { "fieldPath": "id", "order": "DESCENDING" }
+        {
+          "fieldPath": "createdBy",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "contests",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "isPublic", "order": "ASCENDING" },
-        { "fieldPath": "type", "order": "ASCENDING" },
-        { "fieldPath": "id", "order": "DESCENDING" }
+        {
+          "fieldPath": "isPublic",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "contests",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "section", "order": "ASCENDING" },
-        { "fieldPath": "id", "order": "DESCENDING" }
+        {
+          "fieldPath": "section",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "contest_attempts",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "uid", "order": "ASCENDING" },
-        { "fieldPath": "isSubmitted", "order": "ASCENDING" },
-        { "fieldPath": "submittedAt", "order": "DESCENDING" }
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isSubmitted",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "submittedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ccat_questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "subject",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ccat_questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "subject",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ccat_questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "topic",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ccat_questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "question_type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ccat_questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "year",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ccat_questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "subject",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "topic",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "qIndex",
+          "order": "ASCENDING"
+        }
       ]
     }
   ],

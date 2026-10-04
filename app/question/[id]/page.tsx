@@ -12,15 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     let title = `Question ${id} | C-CAT Code`;
     let description = `Practice question ${id} on C-CAT Code.`;
 
-    // Collections to check in order (default first, then branches)
+    // Collections to check in order
     const collectionsToCheck = [
-        'questions', // Main/Default
-        'questions_ece',
-        'questions_cse',
-        'questions_me',
-        'questions_ce',
-        'questions_ee',
-        'questions_in'
+        'ccat_questions'
     ];
 
     try {
