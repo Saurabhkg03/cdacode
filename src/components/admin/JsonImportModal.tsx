@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { db } from '@/firebase';
-import { collection, writeBatch, doc, setDoc, getDoc, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { collection, writeBatch, doc, setDoc, getDoc, query, orderBy, limit, getDocs, getCountFromServer } from 'firebase/firestore';
 import { X, Upload, FileJson, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 import { useMetadata } from '@/contexts/MetadataContext';
@@ -57,6 +57,8 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
     const [bulkTopic, setBulkTopic] = useState('');
     const [bulkTags, setBulkTags] = useState('');
     const [jsonSummary, setJsonSummary] = useState<{ subjects: string[], topics: string[] } | null>(null);
+    const [resetIndexing, setResetIndexing] = useState(false);
+    const [customStartIndex, setCustomStartIndex] = useState<string>('');
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -193,23 +195,58 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 }
                 addLog("✅ Metadata calculated.");
 
-                // --- Part 1.5: Determine Starting qIndex from Metadata ---
-                addLog("Fetching existing metadata to determine next available index...");
+                // --- Part 1.5: Determine Starting qIndex from Actual Database ---
+                addLog("Checking existing questions in database to determine next index...");
+                const targetCollectionName = `ccat_questions`;
+                const questionsCollection = collection(db, targetCollectionName);
+
+                let actualDbCount = 0;
+                try {
+                    const countSnapshot = await getCountFromServer(questionsCollection);
+                    actualDbCount = countSnapshot.data().count;
+                } catch (cErr) {
+                    console.warn("Could not fetch server count:", cErr);
+                }
+
                 const globalMetadataRef = doc(db, "ccat_metadata", "global");
                 const globalMetadataSnap = await getDoc(globalMetadataRef);
                 let existingData: any = { allQuestionIds: [], subjects: [], topics: [], subjectCounts: {} };
                 if (globalMetadataSnap.exists()) {
                     existingData = globalMetadataSnap.data();
                 }
-                
-                let startingQIndex = (existingData.allQuestionIds || []).length;
-                addLog(`Found ${startingQIndex} existing questions in metadata. Starting index at ${startingQIndex}.`);
+
+                let startingQIndex = 0;
+
+                if (actualDbCount === 0 || resetIndexing) {
+                    if (customStartIndex && !isNaN(parseInt(customStartIndex, 10))) {
+                        startingQIndex = Math.max(0, parseInt(customStartIndex, 10) - 1);
+                    } else {
+                        startingQIndex = 0;
+                    }
+                    existingData = { allQuestionIds: [], subjects: [], topics: [], subjectCounts: {} };
+                    addLog(`Clean start! Resetting metadata. Numbering will start at Question ${startingQIndex + 1}.`);
+                } else {
+                    if (customStartIndex && !isNaN(parseInt(customStartIndex, 10))) {
+                        startingQIndex = Math.max(0, parseInt(customStartIndex, 10) - 1);
+                    } else {
+                        let highestQ = actualDbCount;
+                        try {
+                            const maxQQuery = query(questionsCollection, orderBy('qIndex', 'desc'), limit(1));
+                            const maxQSnap = await getDocs(maxQQuery);
+                            if (!maxQSnap.empty) {
+                                highestQ = maxQSnap.docs[0].data().qIndex || actualDbCount;
+                            }
+                        } catch (qErr) {
+                            console.warn("Could not order by qIndex, using count:", qErr);
+                        }
+                        startingQIndex = highestQ;
+                    }
+                    addLog(`Found ${actualDbCount} questions in DB (highest index: ${startingQIndex}). Numbering will start at Question ${startingQIndex + 1}.`);
+                }
 
                 // --- Part 2: Seed Questions ---
-                const targetCollectionName = `ccat_questions`;
                 addLog(`Starting database upload to '${targetCollectionName}'...`);
 
-                const questionsCollection = collection(db, targetCollectionName);
                 const MAX_WRITES_PER_BATCH = 500;
                 let batch = writeBatch(db);
                 let count = 0;
@@ -320,27 +357,36 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 // OR we can fetch existing metadata first. 
                 // For now, I will derive them from the mapped data to ensure self-consistency.
 
-                // We already fetched existing metadata in Part 1.5 (existingData)
-
-                const finalSubjects = Array.from(new Set([...(existingData.subjects || []), ...Object.keys(subjectCounts)])).sort();
-                const finalTopics = Array.from(new Set([...(existingData.topics || []), ...Object.keys(topicCounts)])).sort();
-                
-                const mergedSubjectCounts = { ...(existingData.subjectCounts || {}) };
-                for (const [subj, count] of Object.entries(subjectCounts)) {
-                    mergedSubjectCounts[subj] = (mergedSubjectCounts[subj] || 0) + count;
-                }
-
                 // Sorting for Daily Challenge
                 questionsForSorting.sort((a, b) => (a as any).qIndex - (b as any).qIndex);
                 const sortedQuestionIds = questionsForSorting.map(q => q.id);
-                
-                const finalAllQuestionIds = Array.from(new Set([...(existingData.allQuestionIds || []), ...sortedQuestionIds]));
+
+                let finalSubjects: string[] = [];
+                let finalTopics: string[] = [];
+                let mergedSubjectCounts: Record<string, number> = {};
+                let finalAllQuestionIds: string[] = [];
+
+                if (actualDbCount === 0 || resetIndexing) {
+                    // Fresh metadata without ghost IDs or old counts
+                    finalSubjects = Object.keys(subjectCounts).sort();
+                    finalTopics = Object.keys(topicCounts).sort();
+                    mergedSubjectCounts = { ...subjectCounts };
+                    finalAllQuestionIds = sortedQuestionIds;
+                } else {
+                    finalSubjects = Array.from(new Set([...(existingData.subjects || []), ...Object.keys(subjectCounts)])).sort();
+                    finalTopics = Array.from(new Set([...(existingData.topics || []), ...Object.keys(topicCounts)])).sort();
+                    mergedSubjectCounts = { ...(existingData.subjectCounts || {}) };
+                    for (const [subj, count] of Object.entries(subjectCounts)) {
+                        mergedSubjectCounts[subj] = (mergedSubjectCounts[subj] || 0) + count;
+                    }
+                    finalAllQuestionIds = Array.from(new Set([...(existingData.allQuestionIds || []), ...sortedQuestionIds]));
+                }
 
                 const finalMetadata = {
                     branch: "global",
                     subjects: finalSubjects,
                     topics: finalTopics,
-                    years: Object.keys(yearCounts).sort(), // Not strictly merged but okay for now
+                    years: Object.keys(yearCounts).sort(),
                     tags: [],
 
                     branches: Array.from(allBranches).sort(),
@@ -361,7 +407,7 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                 };
 
                 // Write to global metadata document
-                await setDoc(globalMetadataRef, finalMetadata, { merge: true });
+                await setDoc(globalMetadataRef, finalMetadata);
 
                 addLog("✅ Metadata document updated successfully.");
                 addLog("🎉 All Done!");
@@ -509,6 +555,30 @@ export default function JsonImportModal({ isOpen, onClose, onSuccess }: JsonImpo
                                     >
                                         Apply to All Questions
                                     </button>
+                                </div>
+                            )}
+
+                            {file && parsedQuestions && (
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-gray-100 dark:bg-zinc-800/60 rounded-lg border border-gray-200 dark:border-zinc-700 text-sm">
+                                    <label className="flex items-center gap-2.5 cursor-pointer font-medium text-gray-800 dark:text-zinc-200 select-none">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={resetIndexing} 
+                                            onChange={(e) => setResetIndexing(e.target.checked)} 
+                                            className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-zinc-600 cursor-pointer"
+                                        />
+                                        <span>Start numbering fresh from Question 1 (Reset metadata)</span>
+                                    </label>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs text-gray-500 dark:text-zinc-400 whitespace-nowrap">Start # (optional):</span>
+                                        <input 
+                                            type="number" 
+                                            placeholder="Auto" 
+                                            value={customStartIndex} 
+                                            onChange={(e) => setCustomStartIndex(e.target.value)} 
+                                            className="w-20 px-2 py-1 border border-gray-300 dark:border-zinc-700 rounded bg-white dark:bg-zinc-900 text-xs focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
+                                    </div>
                                 </div>
                             )}
 
