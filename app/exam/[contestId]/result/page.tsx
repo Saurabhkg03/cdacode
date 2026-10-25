@@ -163,8 +163,9 @@ export default function ExamResultPage() {
 
         // Determine Negative Marks (Standard C-CAT Rule: 1/3rd of marks for MCQ, 0 for NAT/MSQ)
         let negativeMarks = Number(q.negative_marks);
+        const qTypeLower = (q.question_type || 'mcq').toLowerCase();
         if (isNaN(negativeMarks)) {
-            if (q.question_type === 'mcq') {
+            if (qTypeLower === 'mcq') {
                 negativeMarks = marks / 3;
             } else {
                 negativeMarks = 0;
@@ -185,13 +186,13 @@ export default function ExamResultPage() {
         let userVal: any = null;
 
         if (isAttempted) {
-            if (q.question_type === 'mcq') {
+            if (qTypeLower === 'mcq') {
                 const correctOption = q.options?.find(o => o.is_correct);
                 const correctLabel = correctOption?.label;
                 userVal = response.selectedOptions?.[0];
 
                 if (correctLabel && userVal === correctLabel) isCorrect = true;
-            } else if (q.question_type === 'msq') {
+            } else if ((q.question_type as string) === 'msq') {
                 const correctLabels = q.options?.filter(o => o.is_correct).map(o => o.label).sort();
                 userVal = response.selectedOptions?.sort();
                 if (correctLabels && userVal &&
@@ -566,7 +567,7 @@ function SolutionCard({ question, index, isGivenCorrect, isAttempted, userVal }:
 
             {/* Options / Answer */}
             <div className="space-y-3 mb-6">
-                {question.question_type === 'mcq' && (
+                {((question.question_type || '').toLowerCase() === 'mcq' || !!question.options?.length) && (
                     question.options?.map((opt: any, i: number) => {
                         const isSelected = Array.isArray(userVal) ? userVal.includes(opt.label) : userVal === opt.label;
                         const isOptCorrect = opt.is_correct;
@@ -577,9 +578,9 @@ function SolutionCard({ question, index, isGivenCorrect, isAttempted, userVal }:
                         else if (!isSelected && isOptCorrect) optClass = "border-green-500 border-dashed bg-green-50/30 dark:bg-green-900/10 opacity-100";
 
                         return (
-                            <div key={i} className={`flex p-3 rounded-lg border ${optClass} transition-colors items-start`}>
+                            <div key={i} className={`flex p-3 rounded-lg border ${optClass} transition-colors items-start min-w-0 w-full`}>
                                 <div className={`font-bold mr-3 w-6 shrink-0 mt-0.5 ${isOptCorrect ? 'text-green-600' : 'text-gray-500'}`}>{opt.label}.</div>
-                                <div className="flex-1 text-sm"><LatexRenderer content={extractAndCleanHtml(opt.text_html)} inline /></div>
+                                <div className="flex-1 min-w-0 text-sm break-words overflow-x-auto max-w-full"><LatexRenderer content={extractAndCleanHtml(opt.text_html)} inline /></div>
                                 {isOptCorrect && <CheckCircle className="w-5 h-5 text-green-600 ml-2 shrink-0" />}
                                 {isSelected && !isOptCorrect && <XCircle className="w-5 h-5 text-red-600 ml-2 shrink-0" />}
                             </div>

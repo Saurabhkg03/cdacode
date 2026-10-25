@@ -71,11 +71,24 @@ const initialState: ExamState = {
 function examReducer(state: ExamState, action: ExamAction): ExamState {
     switch (action.type) {
         case 'INIT_EXAM':
+            const normalizedQuestions = (action.payload.questions || []).map((q: Question) => ({
+                ...q,
+                question_type: (q.question_type || 'mcq').toLowerCase() as any,
+                options: q.options || []
+            }));
+            const normalizedSections = (action.payload.contest.sections || []).map((sec: Section) => ({
+                ...sec,
+                questions: (sec.questions || []).map((q: Question) => ({
+                    ...q,
+                    question_type: (q.question_type || 'mcq').toLowerCase() as any,
+                    options: q.options || []
+                }))
+            }));
             return {
                 ...state,
-                questions: action.payload.questions,
+                questions: normalizedQuestions,
                 contest: action.payload.contest,
-                sections: action.payload.contest.sections,
+                sections: normalizedSections,
                 responses: action.payload.attempt.responses || {},
                 timeLeft: action.payload.attempt.timeLeftSeconds,
                 startedAt: action.payload.attempt.startedAt,

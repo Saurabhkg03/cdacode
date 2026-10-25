@@ -18,7 +18,7 @@ export function evaluateExam(contestData: any, responses: any) {
                 const nMarks = q.negativeMarks !== undefined ? Number(q.negativeMarks) : 1;
                 
                 questionMap.set(q.id, {
-                    type: q.question_type,
+                    type: (q.question_type || 'mcq').toLowerCase(),
                     options: q.options,
                     marks: pMarks,
                     negativeMarks: nMarks

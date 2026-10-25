@@ -256,7 +256,8 @@ const LiveExamUI = () => {
     // --- Actions ---
 
     const handleOptionSelect = (optLabel: string) => {
-        if (currentQuestion.question_type === 'mcq') {
+        const qType = (currentQuestion.question_type || 'mcq').toLowerCase();
+        if (qType === 'mcq') {
             // Strict MCQ: Prevent deselection via clicking the same option again.
             if (selectedOpts.includes(optLabel)) return;
 
@@ -389,10 +390,11 @@ const LiveExamUI = () => {
 
                     {/* Mobile Palette Toggle */}
                     <button
-                        className="sm:hidden p-2"
+                        className="lg:hidden p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors flex items-center justify-center"
                         onClick={() => setIsPaletteOpen(!isPaletteOpen)}
+                        aria-label="Toggle Question Palette"
                     >
-                        {isPaletteOpen ? <X /> : <Menu />}
+                        {isPaletteOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
                 </div>
             </header>
@@ -460,10 +462,10 @@ const LiveExamUI = () => {
             </div>
 
             {/* --- MAIN CONTENT --- */}
-            <div className="flex-1 flex overflow-hidden relative">
+            <div className="flex-1 flex min-h-0 overflow-hidden relative">
 
                 {/* LEFT: QUESTION AREA */}
-                <main className="flex-1 flex flex-col h-full bg-white dark:bg-zinc-900 overflow-hidden relative border-r dark:border-zinc-800">
+                <main className="flex-1 flex flex-col min-h-0 bg-white dark:bg-zinc-900 overflow-hidden relative border-r dark:border-zinc-800">
 
                     {/* Fixed Question Header */}
                     <div className="p-4 border-b dark:border-zinc-800 flex justify-between items-center bg-gray-50/50 dark:bg-zinc-900/50 shrink-0">
@@ -485,7 +487,7 @@ const LiveExamUI = () => {
                     </div>
 
                     {/* SCROLLABLE CONTENT BODY */}
-                    <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
+                    <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
                         <div className="max-w-4xl mx-auto pb-20">
                             {/* Question Text */}
                             <div
@@ -511,43 +513,53 @@ const LiveExamUI = () => {
                                 </div>
                             )}
 
-                            {/* Options / Inputs (Reverted to single pane, stacked below question) */}
-                            <div className="space-y-3 mt-8">
-                                {currentQuestion.question_type === 'mcq' && (
-                                    currentQuestion.options?.map((opt, idx) => {
-                                        const isSelected = selectedOpts.includes(opt.label);
-                                        return (
-                                            <div
-                                                key={idx}
-                                                onClick={() => handleOptionSelect(opt.label)}
-                                                className={`
-                                                    flex items-start gap-4 p-4 rounded-lg border cursor-pointer transition-all group
-                                                    ${isSelected
-                                                        ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 shadow-md transform scale-[1.01]'
-                                                        : 'bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 hover:border-blue-300 dark:hover:border-blue-700'}
-                                                `}
-                                            >
-                                                <div className={`
-                                                    w-6 h-6 flex items-center justify-center border shrink-0 mt-0.5 transition-colors rounded-full
-                                                    ${isSelected
-                                                        ? 'bg-blue-600 border-blue-600 text-white'
-                                                        : 'border-gray-400 group-hover:border-blue-400'}
-                                                `}>
-                                                    {isSelected && (
-                                                        <div className="w-2.5 h-2.5 bg-white rounded-full" />
-                                                    )}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <span className="font-bold mr-2 text-gray-500 dark:text-gray-400">{opt.label}.</span>
-                                                    <div className="inline-block prose dark:prose-invert">
-                                                        <LatexRenderer content={extractAndCleanHtml(opt.text_html)} inline />
+                            {/* Options / Inputs (Responsive & LaTeX Overflow Proof) */}
+                            {(() => {
+                                const qType = (currentQuestion.question_type || 'mcq').toLowerCase();
+                                const hasOptions = !!(currentQuestion.options && currentQuestion.options.length > 0);
+                                const isMcq = qType === 'mcq' || hasOptions;
+
+                                return (
+                                    <div className="space-y-3 mt-6 sm:mt-8">
+                                        {isMcq && (
+                                            currentQuestion.options?.map((opt, idx) => {
+                                                const isSelected = selectedOpts.includes(opt.label);
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        onClick={() => handleOptionSelect(opt.label)}
+                                                        className={`
+                                                            flex items-start gap-3 sm:gap-4 p-3.5 sm:p-4 rounded-xl border cursor-pointer transition-all group w-full min-w-0 select-none
+                                                            ${isSelected
+                                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 shadow-md ring-1 ring-blue-500/40 transform sm:scale-[1.005]'
+                                                                : 'bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700/80 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-gray-50/50 dark:hover:bg-zinc-800/40'}
+                                                        `}
+                                                    >
+                                                        <div className={`
+                                                            w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center border shrink-0 mt-0.5 transition-colors rounded-full
+                                                            ${isSelected
+                                                                ? 'bg-blue-600 border-blue-600 text-white'
+                                                                : 'border-gray-400 dark:border-zinc-500 group-hover:border-blue-400'}
+                                                        `}>
+                                                            {isSelected && (
+                                                                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white rounded-full" />
+                                                            )}
+                                                        </div>
+                                                        <div className="flex-1 min-w-0 flex items-start gap-2 overflow-hidden">
+                                                            <span className="font-bold text-gray-600 dark:text-gray-300 shrink-0 text-sm sm:text-base leading-relaxed">
+                                                                {opt.label}.
+                                                            </span>
+                                                            <div className="flex-1 min-w-0 text-gray-800 dark:text-gray-200 text-sm sm:text-base leading-relaxed break-words overflow-x-auto overflow-y-hidden max-w-full">
+                                                                <LatexRenderer content={extractAndCleanHtml(opt.text_html)} />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                )}
-                            </div>
+                                                );
+                                            })
+                                        )}
+                                    </div>
+                                );
+                            })()}
                         </div>
                     </div>
 
@@ -591,19 +603,19 @@ const LiveExamUI = () => {
                     </div>
                 </main>
 
-                {/* RIGHT: PALETTE (Responsive) */}
+                {/* RIGHT: PALETTE (Responsive Slide-over Drawer) */}
                 <aside className={`
-                    w-80 bg-white dark:bg-zinc-900 border-l dark:border-zinc-800 absolute right-0 top-0 bottom-0 z-30 transform transition-transform duration-300 ease-in-out
+                    w-80 bg-white dark:bg-zinc-900 border-l dark:border-zinc-800 fixed lg:static right-0 top-0 bottom-0 z-40 lg:z-auto transform transition-transform duration-300 ease-in-out
                     ${isPaletteOpen ? 'translate-x-0' : 'translate-x-full'}
-                    sm:static sm:translate-x-0 sm:block overflow-y-auto
+                    lg:translate-x-0 lg:block overflow-y-auto shrink-0 shadow-2xl lg:shadow-none
                 `}>
-                    <QuestionPalette />
+                    <QuestionPalette onCloseMobile={() => setIsPaletteOpen(false)} />
                 </aside>
 
                 {/* Overlay for mobile palette */}
                 {isPaletteOpen && (
                     <div
-                        className="fixed inset-0 bg-black/50 z-20 sm:hidden"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-xs z-30 lg:hidden"
                         onClick={() => setIsPaletteOpen(false)}
                     ></div>
                 )}
