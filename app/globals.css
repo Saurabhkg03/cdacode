@@ -199,20 +199,39 @@
 .katex-display {
   margin: 0 !important;
   display: inline-block !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  vertical-align: middle !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 .katex {
   line-height: 1.2 !important;
   vertical-align: middle !important;
+  max-width: 100% !important;
+  white-space: normal !important;
 }
 
 .katex .base {
   margin: 0 !important;
   display: inline-block !important;
+  max-width: 100% !important;
+  white-space: normal !important;
 }
 
 .katex-html {
   display: inline-block !important;
+  max-width: 100% !important;
+}
+
+.katex-display::-webkit-scrollbar {
+  height: 4px;
+}
+
+.katex-display::-webkit-scrollbar-thumb {
+  background-color: rgba(113, 113, 122, 0.4);
+  border-radius: 2px;
 }
 
 .dark .katex {

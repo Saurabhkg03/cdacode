@@ -215,11 +215,11 @@ export default function ReviewModeUI({ questionAnalysis, contest, onExit }: any)
                                             }
 
                                             return (
-                                                <div key={opt.label} className={`flex items-start p-4 rounded-xl border-2 transition-all ${optColor}`}>
+                                                <div key={opt.label} className={`flex items-start p-4 rounded-xl border-2 transition-all min-w-0 w-full ${optColor}`}>
                                                     <div className="flex-shrink-0 mt-0.5 w-6 flex justify-center">
                                                         <span className={`font-bold ${isOptCorrect ? 'text-green-600' : (isUserSelected ? 'text-red-500' : 'text-gray-500')}`}>{opt.label}.</span>
                                                     </div>
-                                                    <div className={`ml-3 flex-1 prose-sm sm:prose dark:prose-invert max-w-none ${isOptCorrect ? 'text-green-900 dark:text-green-100' : (isUserSelected ? 'text-red-900 dark:text-red-100' : '')}`}>
+                                                    <div className={`ml-3 flex-1 min-w-0 break-words overflow-x-auto max-w-full text-sm sm:text-base ${isOptCorrect ? 'text-green-900 dark:text-green-100' : (isUserSelected ? 'text-red-900 dark:text-red-100' : '')}`}>
                                                         <LatexRenderer content={opt.text_html || ""} />
                                                     </div>
                                                     <div className="flex-shrink-0 ml-3">

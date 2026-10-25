@@ -179,7 +179,11 @@ export async function POST(req: NextRequest) {
                 // @ts-ignore
                 const { explanation_html, explanation_image_links, options, correctAnswerLabel, correctAnswerLabels, nat_answer_min, nat_answer_max, ...safeRest } = q;
                 const safeOptions = q.options?.map((opt: any) => ({ label: opt.label, text_html: opt.text_html }));
-                return { ...safeRest, options: safeOptions };
+                return { 
+                    ...safeRest, 
+                    question_type: (q.question_type || 'mcq').toLowerCase() as any,
+                    options: safeOptions 
+                };
             });
 
             resultPayload = {

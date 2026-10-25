@@ -95,12 +95,12 @@ const QuestionPaperModal: React.FC<QuestionPaperModalProps> = ({
                                         )}
 
                                         {/* Options (Read Only) */}
-                                        {(q.question_type === 'mcq' || q.question_type === 'msq') && (
+                                        {((q.question_type || '').toLowerCase() === 'mcq' || (q.question_type || '').toLowerCase() === 'msq' || !!q.options?.length) && (
                                             <div className="space-y-2 pl-2">
                                                 {q.options?.map((opt, oIdx) => (
-                                                    <div key={oIdx} className="flex gap-3 text-sm text-gray-700 dark:text-gray-300">
-                                                        <span className="font-semibold text-gray-500 min-w-[20px]">{opt.label}.</span>
-                                                        <div>
+                                                    <div key={oIdx} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300 min-w-0">
+                                                        <span className="font-semibold text-gray-500 min-w-[20px] shrink-0">{opt.label}.</span>
+                                                        <div className="flex-1 min-w-0 break-words overflow-x-auto max-w-full">
                                                             <LatexRenderer content={extractAndCleanHtml(opt.text_html)} inline />
                                                         </div>
                                                     </div>

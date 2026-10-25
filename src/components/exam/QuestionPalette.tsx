@@ -3,8 +3,13 @@
 import React, { useState, useMemo } from 'react';
 import { useExam } from '../../contexts/ExamContext';
 import { getPaletteColor } from '../../types/exam';
+import { X } from 'lucide-react';
 
-const QuestionPalette = () => {
+interface QuestionPaletteProps {
+    onCloseMobile?: () => void;
+}
+
+const QuestionPalette: React.FC<QuestionPaletteProps> = ({ onCloseMobile }) => {
     const { state, dispatch, submitExam } = useExam();
     const { questions, responses, currentQuestionIndex, sections } = state;
     const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
@@ -63,6 +68,15 @@ const QuestionPalette = () => {
             <div className="p-4 bg-gray-50 dark:bg-zinc-900 border-b dark:border-zinc-800">
                 <div className="flex items-center justify-between mb-2">
                     <h3 className="font-bold text-lg dark:text-white">Question Palette</h3>
+                    {onCloseMobile && (
+                        <button
+                            onClick={onCloseMobile}
+                            className="lg:hidden p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors"
+                            aria-label="Close question palette"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    )}
                 </div>
 
                 {/* User Info (Placeholder) */}
@@ -120,7 +134,7 @@ const QuestionPalette = () => {
                                     return (
                                         <button
                                             key={qid}
-                                            onClick={() => dispatch({ type: 'SET_CURRENT_QUESTION', payload: globalIndex })}
+                                            onClick={() => { dispatch({ type: 'SET_CURRENT_QUESTION', payload: globalIndex }); onCloseMobile?.(); }}
                                             className={`
                                                 ${baseClass}
                                                 ${colorClass}
